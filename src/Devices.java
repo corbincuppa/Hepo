@@ -1,0 +1,12 @@
+import be.kuleuven.cs.som.annotate.*;
+
+/**
+ * A class of devices.
+ *
+ * @author  Adelina Vozianu
+ * @author  Boglárka Csorba-Vitus
+ * @version 1.0
+ */
+
+public class Devices {
+}
