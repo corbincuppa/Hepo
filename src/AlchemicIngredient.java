@@ -18,12 +18,18 @@ public class AlchemicIngredient {
      */
     private String name = null;
 
+    private boolean acceptableSymbols(Character character){
+        if (character == '\'' || character == '(' || character == ')') {
+            return true;
+        }
+    }
+
     private boolean startsWithUppercase(String word) {
         char first = word.charAt(0);
         if (Character.isLetter(first)){
             return Character.isUpperCase(first);
         }
-        if (first == '\'' || first == '(' || first == ')'){
+        if (acceptableSymbols(first)){
             char second = word.charAt(1);
             return Character.isUpperCase(second);
         }
@@ -33,16 +39,19 @@ public class AlchemicIngredient {
     private boolean restWithLowercases(String word) {
         for (int i = 1; i < word.length(); i++) {
             char c = word.charAt(i);
+            if ( acceptableSymbols(c)){
+                i ++;
+            }
             if (!Character.isLowerCase(c)) {
                 return false;
             }
         }
         return true;
-    }// wordt '() als lowercase gezien?
+    }
 
-    private static boolean isValidCharacters(String word) {
+    private boolean isValidCharacters(String word) {
         for (char c : word.toCharArray()) {
-            if (Character.isLetter(c) || c == '\'' || c == '(' || c == ')') {
+            if (Character.isLetter(c) || acceptableSymbols(c)) {
                 return true;
             }
         } return false;
