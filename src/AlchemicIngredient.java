@@ -22,24 +22,25 @@ public class AlchemicIngredient {
         if (character == '\'' || character == '(' || character == ')') {
             return true;
         }
+        return false;
     }
 
-    private boolean startsWithUppercase(String word) {
+    private boolean startsUppercaseRestLower(String word) {
         char first = word.charAt(0);
         if (Character.isLetter(first)){
-            return Character.isUpperCase(first);
+            return (Character.isUpperCase(first) && restWithLowercases(word, 1));
         }
         if (acceptableSymbols(first)){
             char second = word.charAt(1);
-            return Character.isUpperCase(second);
+            return (Character.isUpperCase(second) && restWithLowercases(word, 2));
         }
         return false;
     }
 
-    private boolean restWithLowercases(String word) {
-        for (int i = 1; i < word.length(); i++) {
+    private boolean restWithLowercases(String word, int index) {
+        for (int i = index; i < word.length(); i++) {
             char c = word.charAt(i);
-            if ( acceptableSymbols(c)){
+            if (acceptableSymbols(c)){
                 i ++;
             }
             if (!Character.isLowerCase(c)) {
@@ -49,43 +50,36 @@ public class AlchemicIngredient {
         return true;
     }
 
-    private boolean isValidCharacters(String word) {
-        for (char c : word.toCharArray()) {
-            if (Character.isLetter(c) || acceptableSymbols(c)) {
-                return true;
-            }
-        } return false;
-    }
 
-        /**
-         * Check whether the given name is a legal name for an alchemic ingredients.
-         *
-         * @param  	name
-         *			The name to be checked
-         * @return
-         */
+    /**
+     * Check whether the given name is a legal name for an alchemic ingredients.
+     *
+     * @param  	name
+     *			The name to be checked
+     * @return
+     */
     private boolean isValidName(String name) {
         if (name == null || name.isEmpty()) {
             return false;
-        } else {
-            String[] words = name.split(" ");
-            if (words.length == 1) {
-                if (words[0].length() < 3) {
-                    return false;
-                } else {
-                    //  checking characters
-                }
+        }
+        String[] words = name.split(" ");
+        if (words.length == 1) {
+            if (words[0].length() < 3) {
+                return false;
             } else {
-                for (String word : words) {
-                    if (words[0].length() < 2) {
-                        return false;
-                    } else {
-                        // checking characters
-                    }
-                }
-                return true;
+                return startsUppercaseRestLower(words[0]);
             }
         }
+        for (String word : words) {
+            if (word.length() < 2) {
+                return false;
+            } else {
+                if (!startsUppercaseRestLower(word)){
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     /**
