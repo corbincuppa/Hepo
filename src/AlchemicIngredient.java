@@ -59,7 +59,7 @@ public class AlchemicIngredient {
      * @return
      */
     private boolean isValidName(String name) {
-        if (name == null || name.isEmpty()) {
+        if (name == null || name.isEmpty() || name.contains("mixed") || name.contains("with")) {
             return false;
         }
         String[] words = name.split(" ");
