@@ -1,4 +1,4 @@
-import be.kuleuven.cs.som.annotate.*;
+package alchemy;
 
 /**
  * A class of ingredient types.
@@ -11,33 +11,43 @@ import be.kuleuven.cs.som.annotate.*;
 public enum IngredientType {
 
     /**********************************************************
-     * IngredientType
+     * alchemy.IngredientType
      **********************************************************/
     WATER("water", State.LIQUID, new int[]{0, 20});
 
     /**********************************************************
      * Name
      **********************************************************/
-    private final String name;
+    // FINAL??
+    private String name;
 
     // check valid name (eenvoudige naam.upper())
 
     /**********************************************************
      * Standard state
      **********************************************************/
-    protected final State stdState;
+    // FINAL??
+    protected State stdState;
 
     /**********************************************************
      * Standard temperature
      **********************************************************/
-    protected final int[] stdTemp;
+    // FINAL??
+    protected int[] stdTemp;
     // Temperature class or ArrayList?
 
     /**********************************************************
      * Constructors
      **********************************************************/
-    IngredientType(String name, State stdState, int[] stdTemp) {
-        this.name = name;
+    /**
+     *
+     * @param name
+     * @param stdState
+     * @param stdTemp
+     */
+    protected IngredientType(String name, State stdState, int[] stdTemp) {
+        if (isValidName(name) == true) {
+            this.name = name;}
         this.stdState = stdState;
         this.stdTemp = stdTemp;
     }

@@ -1,4 +1,4 @@
-import be.kuleuven.cs.som.annotate.*;
+package alchemy;
 
 /**
  * A class of ingredient types.

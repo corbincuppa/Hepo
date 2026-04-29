@@ -1,20 +1,24 @@
-import be.kuleuven.cs.som.annotate.*;
+package alchemy;
 
 /**
- * A class of ingredient containers.
+ * A class of laboratories.
  *
  * @author  Adelina Vozianu
  * @author  Boglárka Csorba-Vitus
  * @version 1.0
  */
 
-public class IngredientContainer {
+public class Laboratory {
+
     /**********************************************************
-     * Capacity
+     * alchemy.IngredientType
      **********************************************************/
 
     /**********************************************************
-     * Constructors
+     * alchemy.State
      **********************************************************/
 
+    /**********************************************************
+     * Quantity
+     **********************************************************/
 }
