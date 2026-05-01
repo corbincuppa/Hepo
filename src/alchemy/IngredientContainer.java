@@ -11,6 +11,36 @@ import java.util.ArrayList;
  */
 
 public class IngredientContainer {
+
+    /**********************************************************
+     * Constructors
+     **********************************************************/
+
+    /**
+     * Initialize a new ingredient container with a given capacity and alchemic ingredient.
+     *
+     * @param   capacity
+     *          The given capacity of the ingredient container expressed in amount of spoons.
+     * @param   ingredient
+     *          The given alchemic ingredient.
+     *
+     * @effect  If the given capacity is valid and the quantity of the given
+     *          alchemic ingredient is lesser than or equal to the given capacity,
+     *          then the capacity of the initialized container is incremented by the quantity.
+     *          | if (isValidCapacity(capacity) && quantity <= capacity)
+     *          |   then setCapacity(this.capacity + quantity)
+     *          \XXXXXXXXXX // IS CORRECT??
+     */
+    public IngredientContainer(int capacity, AlchemicIngredient ingredient) {
+        setContents(ingredient);
+        int quantity = getQuantity();
+        if (isValidCapacity(capacity) && quantity <= capacity) {
+            setCapacity(this.capacity + quantity);
+        }
+    }
+
+
+
     /**********************************************************
      * Capacity
      **********************************************************/
@@ -81,31 +111,5 @@ public class IngredientContainer {
         return (int) contents.get(1);
     }
 
-    /**********************************************************
-     * Constructors
-     **********************************************************/
-
-    /**
-     * Initialize a new ingredient container with a given capacity and alchemic ingredient.
-     *
-     * @param   capacity
-     *          The given capacity of the ingredient container expressed in amount of spoons.
-     * @param   ingredient
-     *          The given alchemic ingredient.
-     *
-     * @effect  If the given capacity is valid and the quantity of the given
-     *          alchemic ingredient is lesser than or equal to the given capacity,
-     *          then the capacity of the initialized container is incremented by the quantity.
-     *          | if (isValidCapacity(capacity) && quantity <= capacity)
-     *          |   then setCapacity(this.capacity + quantity)
-     *          \XXXXXXXXXX // IS CORRECT??
-     */
-    public void IngredientContainer(int capacity, AlchemicIngredient ingredient) {
-        setContents(ingredient);
-        int quantity = getQuantity();
-        if (isValidCapacity(capacity) && quantity <= capacity) {
-            setCapacity(this.capacity + quantity);
-        }
-    }
 
 }

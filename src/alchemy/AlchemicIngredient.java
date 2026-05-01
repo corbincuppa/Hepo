@@ -10,106 +10,47 @@ import be.kuleuven.cs.som.annotate.*;
  * @version 1.0
  */
 
-public class AlchemicIngredient {
+public class AlchemicIngredient extends IngredientType{
+
+    /**********************************************************
+     * Constructors
+     **********************************************************/
+
+    /**
+     * Create a new alchemic ingredient with a given name, ingredient type,
+     * state, quantity and temperature.
+     *
+     * @param name
+     *        The given name for the alchemic ingredient.
+     * @param ingredientType
+     *        The given ingredient type of the alchemic ingredient.
+     * @param state
+     *        The given state of the alchemic ingredient.
+     * @param quantity
+     *        The given quantity of the alchemic ingredient.
+     * @param temperature
+     *        The given temperature of the alchemic ingredient.
+     */
+    public void AlchemicIngredient(String name, IngredientType ingredientType, State state, int quantity, int[] temperature) {
+        setName(name);
+        setIngredientType(ingredientType);
+        setState(state);
+        setQuantity(quantity);
+        setTemperature(temperature);
+    }
+
+
+
     /**********************************************************
      * Name - Defensive programming
      **********************************************************/
 
-    /**
-     * Variable referencing the name of this alchemic ingredients.
-     */
-    private String name = null;
-
-    private boolean acceptableSymbols(Character character){
-        if (character == '\'' || character == '(' || character == ')') {
-            return true;
-        }
-        return false;
-    }
-
-    private boolean startsUppercaseRestLower(String word) {
-        char first = word.charAt(0);
-        if (Character.isLetter(first)){
-            return (Character.isUpperCase(first) && restWithLowercases(word, 1));
-        }
-        if (acceptableSymbols(first)){
-            char second = word.charAt(1);
-            return (Character.isUpperCase(second) && restWithLowercases(word, 2));
-        }
-        return false;
-    }
-
-    private boolean restWithLowercases(String word, int index) {
-        for (int i = index; i < word.length(); i++) {
-            char c = word.charAt(i);
-            if (acceptableSymbols(c)){
-                i ++;
-            }
-            if (!Character.isLowerCase(c)) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-
-    /**
-     * Check whether the given name is a legal name for an alchemic ingredients.
-     *
-     * @param  	name
-     *			The name to be checked
-     * @return
-     */
-    protected boolean isValidName(String name) {
-        if (name == null || name.isEmpty() || name.contains("mixed") || name.contains("with")) {
-            return false;
-        }
-        String[] words = name.split(" ");
-        if (words.length == 1) {
-            if (words[0].length() < 3) {
-                return false;
-            } else {
-                return startsUppercaseRestLower(words[0]);
-            }
-        }
-        for (String word : words) {
-            if (word.length() < 2) {
-                return false;
-            } else {
-                if (!startsUppercaseRestLower(word)){
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
-
-    /**
-     * Set the name of this alchemic ingredients to the given name.
-     *
-     * @param   name
-     * 			The new name for this alchemic ingredients.
-     * @post    If the given name is valid, the name of
-     *          this alchemic ingredients is set to the given name,
-     *          otherwise !!!!exception!!!!!!.
-     *          | if (isValidName(name))
-     *          |      then new.getName().equals(name)
-     *          |      else throws exception++++++++++
-     */
-    @Raw @Model
-    private void setName(String name) {
-        if (isValidName(name)) {
-            this.name = name;
-        } else {
-            //exception;
-        }
-    }
 
 
     /**********************************************************
      * IngredientType
      **********************************************************/
-    //      THIS OR THE ALCHEMIC INGREDIENT? PERIOD OR NO PERIOD?????????????
+    //      THIS OR THE ALCHEMIC INGREDIENT? PERIOD OR NO PERIOD FOR JAVADOC COMMENTS?????????????
     /**
      * The ingredient type of the alchemic ingredient.
      */
@@ -170,6 +111,14 @@ public class AlchemicIngredient {
         this.quantity = quantity;
     }
 
+    /**
+     * Return the quantity of this alchemic ingredient.
+     */
+    protected int getQuantity() {
+        return this.quantity;
+    }
+
+    // CHECK VALID QUANTITY
 
 
     /**********************************************************
@@ -191,35 +140,6 @@ public class AlchemicIngredient {
         this.temperature = temperature;
     }
 
-
-
-    /**********************************************************
-     * Constructors
-     **********************************************************/
-
-    /**
-     * Create a new alchemic ingredient with a given name, ingredient type,
-     * state, quantity and temperature.
-     *
-     * @param name
-     *        The given name for the alchemic ingredient.
-     * @param ingredientType
-     *        The given ingredient type of the alchemic ingredient.
-     * @param state
-     *        The given state of the alchemic ingredient.
-     * @param quantity
-     *        The given quantity of the alchemic ingredient.
-     * @param temperature
-     *        The given temperature of the alchemic ingredient.
-     */
-    public void AlchemicIngredient(String name, IngredientType ingredientType, State state, int quantity, int[] temperature) {
-        setName(name);
-        setIngredientType(ingredientType);
-        setState(state);
-        setQuantity(quantity);
-        setTemperature(temperature);
-
-    }
 
 
 }
