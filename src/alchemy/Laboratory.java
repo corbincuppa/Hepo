@@ -1,9 +1,6 @@
 package alchemy;
 
 import java.util.ArrayList;
-import java.util.Dictionary;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * A class of laboratories.
@@ -111,42 +108,92 @@ public class Laboratory {
     private ArrayList<IngredientContainer> storage = new ArrayList<>();
 
     /**
+     * Add the contents of the given container to the laboratory.
      *
-     * @param container
+     * @param  container
+     *         The given container to be added to storage.
+     *
+     * @effect  OLD CONTAINER IS DESTROYED
      */
     public void storeIngredient(IngredientContainer container) {
         //AlchemicIngredient ingredient = container.getIngredient();
         //Integer quantity = ingredient.getQuantity();
         //storage.put(ingredient, quantity);
-        // THEN DELETE CONTAINER
         // this isn't right, storage should contain containers.
-        storage.add(container);
+
+        int capacity = container.getCapacity();
+        AlchemicIngredient ingredient = container.getIngredient();
+        IngredientContainer newContainer = new IngredientContainer(capacity, ingredient);
+        storage.add(newContainer);
+        // THEN DELETE CONTAINER
 
     }
 
     /**
+     *
      *
      * @param name
      * @param quantity
      */
-    public void takeIngredient(String name, int quantity) {
+    public IngredientContainer takeIngredient(String name, int quantity) {
+        for (IngredientContainer container : storage) {
+            String ingName = container.getIngredient().getName();
+            int ingQuantity = container.getIngredient().getQuantity();
+            if (ingName.equals(name)) {
+                // ingQuantity - quantity
+                container.getIngredient().setQuantity(-quantity);
+                // check if ingQuantity is now null
+                if (ingQuantity == 0) {
+                    // delete container from storage
+                }
+                // new container with taken ingredient
+                IngredientContainer newContainer = new IngredientContainer(quantity, container.getIngredient());
+                return newContainer;
+            }
 
+            if (!ingName.equals(name)) {
+                // EXCEPTION INGREDIENT NOT IN STORAGE
+            }
+        }
     }
 
     /**
      *
      * @param name
      */
-    public void takeIngredient(String name) {
+    public IngredientContainer takeIngredient(String name) {
+        for (IngredientContainer container : storage) {
+            String ingName = container.getIngredient().getName();
+            int ingQuantity = container.getIngredient().getQuantity();
+            if (ingName.equals(name)) {
 
+                // delete container from storage
+
+                // new container with taken ingredient
+                IngredientContainer newContainer = new IngredientContainer(ingQuantity, container.getIngredient());
+                return newContainer;
+            }
+
+            if (!ingName.equals(name)) {
+                // EXCEPTION INGREDIENT NOT IN STORAGE
+            }
+        }
     }
 
     /**
-     *
-     * @return
+     * Returns the stored ingredients and their respective quantities.
      */
+    //    CHECK QUANTITIES, HOW EXPRESSED?!?!?!!?
     public String getStoredIng() {
         String returnStr = new String();
+        // THERE CAN ALSO BE NO CONTAINERS
+        for (IngredientContainer container : storage) {
+            String ingName = container.getIngredient().getName();
+            int ingQuantity = container.getIngredient().getQuantity();
+
+            returnStr += "- " + ingName + ", " + ingQuantity + "\n";
+        }
+        System.out.println(returnStr);
     }
 
 

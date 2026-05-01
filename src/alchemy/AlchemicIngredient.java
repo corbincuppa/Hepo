@@ -107,7 +107,7 @@ public class AlchemicIngredient extends IngredientType{
      * @param quantity
      *        The given quantity
      */
-    private void setQuantity(int quantity) {
+    void setQuantity(int quantity) {
         this.quantity = quantity;
     }
 

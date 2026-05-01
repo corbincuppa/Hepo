@@ -133,6 +133,11 @@ public class IngredientType {
         }
     }
 
+    // CHECK IF EXTRA PREFIXES NEED TO BE ADDED? RETURN SIMPLE OR FULL NAME?
+    public String getName() {
+        return this.name;
+    }
+
 
 
     /**********************************************************
