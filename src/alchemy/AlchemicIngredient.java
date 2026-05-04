@@ -1,6 +1,7 @@
 package alchemy;
 
 import be.kuleuven.cs.som.annotate.*;
+import exceptions.*;
 
 /**
  * A class of alchemic ingredients.
@@ -11,7 +12,6 @@ import be.kuleuven.cs.som.annotate.*;
  */
 
 public class AlchemicIngredient {
-
     /**********************************************************
      * Constructors
      **********************************************************/
@@ -26,13 +26,12 @@ public class AlchemicIngredient {
      *        The given quantity of the alchemic ingredient.
      */
     public void AlchemicIngredient( IngredientType ingredientType, int quantity) {
-        String simpleName = ingredientType.getName(); // is het nodig? --> getSimpleName = this.getIngredientType.getName()
-        String fullName = ingredientType.getName();
-        String specialName = null;
+        setFullName(null);
+        this.specialName = null;
         setIngredientType(ingredientType);
-        State state = ingredientType.getStdState();
+        this.state = ingredientType.getStdState();
         setQuantity(quantity);
-        int[] temperature = ingredientType.getStdTemp();
+        this.temperature = ingredientType.getStdTemp();
     }
 
 
@@ -40,10 +39,66 @@ public class AlchemicIngredient {
     /**********************************************************
      * Name - Defensive programming
      **********************************************************/
-    // adding prefix (heated / cooled) to full name
-    // the possibility to add a special name
-    // get simple, full(if full==simple, return null??) and special name
-    // for things that has been in the kettle "mixed with" needs to be added
+    private String fullName;
+    private String specialName;
+
+    public String getSimpleName() {
+        return this.getIngredientType().getName();
+    }
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public String getSpecialName() {
+        return specialName;
+    }
+
+    public String getName() {
+        if (this.getSpecialName() != null){
+            return (this.getSpecialName() + "(" + this.getFullName() + ")" );
+        }
+        return this.getFullName();
+    }
+
+    protected void setFullName(String fullName) {
+        if (fullName == null) {
+            this.fullName = getSimpleName();
+        }
+        else{
+            this.fullName = fullName;
+        }
+    }
+
+
+    //only oven can use this
+    protected void addPrefixHeated(){
+        String newName = "Heated" + this.getFullName();
+        setFullName(newName);
+    }
+
+    //only cooler can use this
+    protected void addPrefixCooled(){
+        String newName = "Cooled" + this.getFullName();
+        setFullName(newName);
+    }
+
+    protected void setSpecialName(String specialName) throws IllegalNameException{
+        if (isValidName(specialName)) {
+            this.specialName = specialName;
+        } else {
+            throw new IllegalNameException(specialName);
+        }
+    }
+    //--> something is probably wrong, also in the constructor
+
+    protected void mixedNames(String[] ingredients){
+        int length = ingredients.length;
+        if (length == 2){
+            String newName = ingredients[0] + "mixed with" + ingredients[1];
+
+        }
+    }
 
 
     /**********************************************************

@@ -4,7 +4,7 @@ package exceptions;
  * A class for signaling illegal names.
  *
  * @version  2.0
- * @author   Eric Steegmans
+ * @author   Eric Steegmansx
  */
 public class IllegalNameException extends Exception {
 
