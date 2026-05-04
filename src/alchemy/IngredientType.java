@@ -134,8 +134,7 @@ public class IngredientType {
      *          |      then new.getName().equals(name)
      *          |      else throws IllegalNameException
      * @throws IllegalNameException [must]
-     * 	       The given name is not a legal name for any dog and
-     * 	       this dog is not yet terminated.
+     * 	       The given name is not a legal name for any ingredient type
      * 	       | (! isValidName(name)
      */
     @Raw
