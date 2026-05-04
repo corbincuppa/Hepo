@@ -94,11 +94,21 @@ public class AlchemicIngredient {
 
     protected void mixedNames(String[] ingredients){
         int length = ingredients.length;
-        if (length == 2){
-            String newName = ingredients[0] + "mixed with" + ingredients[1];
-
+        if (length < 2){
+            //exception
+        }else{
+            String newName = ingredients[0] + " mixed with " + ingredients[1];
+            for (int i = 2 ; i < length; i++){
+                    if (i == length-1){
+                        newName = newName +" and " + ingredients[i];
+                    }else {
+                        newName = newName + ", " + ingredients[i];
+                    }
+                }
+            setFullName(newName);
         }
     }
+    //--> only kettle can use this
 
 
     /**********************************************************
