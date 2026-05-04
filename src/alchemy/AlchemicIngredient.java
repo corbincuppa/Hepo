@@ -10,7 +10,7 @@ import be.kuleuven.cs.som.annotate.*;
  * @version 1.0
  */
 
-public class AlchemicIngredient extends IngredientType{
+public class AlchemicIngredient {
 
     /**********************************************************
      * Constructors
@@ -20,23 +20,19 @@ public class AlchemicIngredient extends IngredientType{
      * Create a new alchemic ingredient with a given name, ingredient type,
      * state, quantity and temperature.
      *
-     * @param name
-     *        The given name for the alchemic ingredient.
      * @param ingredientType
      *        The given ingredient type of the alchemic ingredient.
-     * @param state
-     *        The given state of the alchemic ingredient.
      * @param quantity
      *        The given quantity of the alchemic ingredient.
-     * @param temperature
-     *        The given temperature of the alchemic ingredient.
      */
-    public void AlchemicIngredient(String name, IngredientType ingredientType, State state, int quantity, int[] temperature) {
-        setName(name);
+    public void AlchemicIngredient( IngredientType ingredientType, int quantity) {
+        String simpleName = ingredientType.getName(); // is het nodig? --> getSimpleName = this.getIngredientType.getName()
+        String fullName = ingredientType.getName();
+        String specialName = null;
         setIngredientType(ingredientType);
-        setState(state);
+        State state = ingredientType.getStdState();
         setQuantity(quantity);
-        setTemperature(temperature);
+        int[] temperature = ingredientType.getStdTemp();
     }
 
 
@@ -44,7 +40,10 @@ public class AlchemicIngredient extends IngredientType{
     /**********************************************************
      * Name - Defensive programming
      **********************************************************/
-
+    // adding prefix (heated / cooled) to full name
+    // the possibility to add a special name
+    // get simple, full(if full==simple, return null??) and special name
+    // for things that has been in the kettle "mixed with" needs to be added
 
 
     /**********************************************************
@@ -67,7 +66,9 @@ public class AlchemicIngredient extends IngredientType{
         this.ingredientType = ingredientType;
     }
 
-
+    public IngredientType getIngredientType() {
+        return ingredientType;
+    }
 
     /**********************************************************
      * State
@@ -87,6 +88,7 @@ public class AlchemicIngredient extends IngredientType{
     private void setState(State state) {
         this.state = state;
     }
+    // --> if it has been in the Transmogrifier
 
 
 
@@ -118,7 +120,7 @@ public class AlchemicIngredient extends IngredientType{
         return this.quantity;
     }
 
-    // CHECK VALID QUANTITY
+    // CHECK VALID QUANTITY --> hoeft niet, nominaal programmeren
 
 
     /**********************************************************
@@ -139,6 +141,8 @@ public class AlchemicIngredient extends IngredientType{
     private void setTemperature(int[] temperature) {
         this.temperature = temperature;
     }
+
+    // if it has been in the oven or cooler
 
 
 
