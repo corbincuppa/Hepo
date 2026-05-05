@@ -2,6 +2,7 @@ package alchemy;
 
 import be.kuleuven.cs.som.annotate.*;
 import exceptions.*;
+import alchemy.*;
 
 /**
  * A class of alchemic ingredients.

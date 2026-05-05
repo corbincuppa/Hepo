@@ -27,6 +27,8 @@ public class Device {
      **********************************************************/
     private ArrayList<AlchemicIngredient> contents = new ArrayList<AlchemicIngredient>();
 
+
+
     /**********************************************************
      *
      **********************************************************/
