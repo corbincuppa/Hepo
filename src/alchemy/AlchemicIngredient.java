@@ -84,7 +84,7 @@ public class AlchemicIngredient {
     }
 
     protected void setSpecialName(String specialName) throws IllegalNameException{
-        if (isValidName(specialName)) {
+        if (IngredientType.isValidName(specialName)) {
             this.specialName = specialName;
         } else {
             throw new IllegalNameException(specialName);

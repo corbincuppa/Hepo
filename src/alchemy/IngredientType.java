@@ -98,7 +98,7 @@ public class IngredientType {
      *			The name to be checked
      * @return
      */
-    protected boolean isValidName(String name) {
+    protected static boolean isValidName(String name) {
         if (name == null || name.isEmpty() || name.contains("mixed") || name.contains("with")) { // Mixed?????
             return false;
         }
@@ -156,7 +156,7 @@ public class IngredientType {
     /**********************************************************
      * Standard state
      **********************************************************/
-    // FINAL?? --> ja
+
     /**
      * Variable referencing the standard state of the ingredient type.
      */
