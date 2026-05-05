@@ -38,7 +38,8 @@ public class IngredientContainer {
             setCapacity(this.capacity + quantity);
         }
     }
-
+    // rare constructor
+    // type container vragen
 
 
     /**********************************************************
@@ -74,6 +75,7 @@ public class IngredientContainer {
         }
         return false;
     }
+    // een fles kan maar 3 vials hebben --> max cap
 
     /**********************************************************
      * Ingredient
@@ -83,6 +85,7 @@ public class IngredientContainer {
      * Variable referencing the contents of this container.
      */
     private ArrayList<Object> contents = new ArrayList<Object>();
+
 
     /**
      * Return the ingredient that is in this container.

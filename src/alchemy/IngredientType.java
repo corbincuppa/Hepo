@@ -11,6 +11,8 @@ import exceptions.*;
  * @version 1.0
  */
 
+//invars???????
+
 public class IngredientType {
 
     /**********************************************************
@@ -31,13 +33,13 @@ public class IngredientType {
         this.stdState = stdState;
         this.stdTemp = stdTemp;
     }
-
+    //klopt dit?
 
 
     /**********************************************************
      * IngredientType
      **********************************************************/
-    IngredientType water = new IngredientType("water", State.LIQUID, new int[]{0, 20});
+    IngredientType water = new IngredientType("Water", State.LIQUID, new int[]{0, 20});
 
     /**********************************************************
      * Name
@@ -48,14 +50,14 @@ public class IngredientType {
      */
     private String name = null;
 
-    private boolean acceptableSymbols(Character character){
+    private static boolean acceptableSymbols(Character character){
         if (character == '\'' || character == '(' || character == ')') {
             return true;
         }
         return false;
     }
 
-    private boolean restWithLowercases(String word, int index) {
+    private static boolean restWithLowercases(String word, int index) {
         for (int i = index; i < word.length(); i++) {
             char c = word.charAt(i);
             if (acceptableSymbols(c)){
@@ -68,7 +70,7 @@ public class IngredientType {
         return true;
     }
 
-    private boolean startsUppercaseRestLower(String word) {
+    private static boolean startsUppercaseRestLower(String word) {
         char first = word.charAt(0);
         if (Character.isLetter(first)){
             return (Character.isUpperCase(first) && restWithLowercases(word, 1));
@@ -80,7 +82,7 @@ public class IngredientType {
         return false;
     }
 
-    protected String[] letters(String word){
+    protected static String[] letters(String word){
         String[] letters = new String[word.length()];
         for (int i = 0 ; i < word.length(); i++) {
             char c = word.charAt(i);
@@ -99,7 +101,7 @@ public class IngredientType {
      * @return
      */
     protected static boolean isValidName(String name) {
-        if (name == null || name.isEmpty() || name.contains("mixed") || name.contains("with")) { // Mixed?????
+        if (name == null || name.isEmpty() || name.toLowerCase().contains("mixed") || name.toLowerCase().contains("with")) {
             return false;
         }
         String[] words = name.split(" ");
@@ -160,19 +162,8 @@ public class IngredientType {
     /**
      * Variable referencing the standard state of the ingredient type.
      */
-    private State stdState;
+    private final State stdState;
 
-    /**
-     * Set the standard state of this ingredient type to the
-     * given state.
-     *
-     * @param stdState
-     *        The given standard state
-     */
-    private void setState(State stdState) {
-        this.stdState = stdState;
-    }
-    // --> exception???
     public State getStdState() {
         return stdState;
     }
@@ -180,17 +171,43 @@ public class IngredientType {
     /**********************************************************
      * Standard temperature
      **********************************************************/
-    // FINAL?? --> ja
+
     /**
      * Variable referencing the standard temperature of the ingredient type.
      *
      * @note The first integer refers to the coldness and the second integer to the hotness.
      */
     private int[] stdTemp;
-    // Temperature class or ArrayList?
-
 
     public int[] getStdTemp() {
         return stdTemp;
+    }
+    public int getStdColdness(){return (this.getStdTemp())[0];}
+    public int getStdHotness(){return (this.getStdTemp())[1];}
+    //--> niet specifiek voor std
+
+
+    protected boolean isValidTemperature(int[] temperature, int maxValue) {
+        if (maxValue > Long.MAX_VALUE) {
+            return false;
+        }
+        if (temperature.length != 2) {
+            return false;
+        }
+        int coldness = temperature[0];  //getStdColdness
+        int hotness = temperature[1];
+
+        if (coldness < 0 || coldness > maxValue) {
+            return false;
+        }
+
+        if (hotness < 0 || hotness > maxValue) {
+            return false;
+        }
+
+        if (coldness != 0 && hotness != 0) {
+            return false;
+        }
+        return true;
     }
 }

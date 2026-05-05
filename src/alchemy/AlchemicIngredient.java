@@ -26,13 +26,12 @@ public class AlchemicIngredient {
      * @param quantity
      *        The given quantity of the alchemic ingredient.
      */
-    public void AlchemicIngredient( IngredientType ingredientType, int quantity) {
+    public void AlchemicIngredient( IngredientType ingredientType, int quantity) throws IllegalNameException {
         setFullName(null);
-        this.specialName = null;
         setIngredientType(ingredientType);
-        this.state = ingredientType.getStdState();
+        //this.state = ingredientType.getStdState();
         setQuantity(quantity);
-        this.temperature = ingredientType.getStdTemp();
+        //this.temperature = ingredientType.getStdTemp();
     }
 
 
@@ -41,7 +40,7 @@ public class AlchemicIngredient {
      * Name - Defensive programming
      **********************************************************/
     private String fullName;
-    private String specialName;
+    private String specialName = null;
 
     public String getSimpleName() {
         return this.getIngredientType().getName();
@@ -142,7 +141,7 @@ public class AlchemicIngredient {
     /**
      * The state of the alchemic ingredient.
      */
-    public State state;
+    public State state = ingredientType.getStdState();
 
     /**
      * Change the state of this alchemic ingredient to the
@@ -183,10 +182,9 @@ public class AlchemicIngredient {
      * Return the quantity of this alchemic ingredient.
      */
     protected int getQuantity() {
-        return this.quantity;
+        return quantity;
     }
 
-    // CHECK VALID QUANTITY --> hoeft niet, nominaal programmeren
 
 
     /**********************************************************
@@ -195,7 +193,7 @@ public class AlchemicIngredient {
     /**
      * The current temperature of the alchemic ingredient.
      */
-    private int[] temperature;
+    private int[] temperature = ingredientType.getStdTemp();
 
     /**
      * Change the curren temperature of this alchemic ingredient to the
@@ -207,8 +205,8 @@ public class AlchemicIngredient {
     private void setTemperature(int[] temperature) {
         this.temperature = temperature;
     }
-
     // if it has been in the oven or cooler
+    // correct input voor temp? --> ingriedientType
 
 
 

@@ -11,7 +11,6 @@ import java.util.ArrayList;
  */
 
 public class Laboratory {
-    // CONSTRUCTORS IN BEGINNING OF CLASSES?
     /**********************************************************
      * Constructors
      **********************************************************/
