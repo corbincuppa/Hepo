@@ -13,7 +13,7 @@ public class CoolingBox extends Device{
     /**********************************************************
      * Contents
      **********************************************************/
-
+    // super(contents)
 
 
     /**********************************************************
@@ -24,6 +24,7 @@ public class CoolingBox extends Device{
     protected void setTemperature(int newTemp) {
         this.temperature += temperature;
     }
+
 
 
     /**********************************************************

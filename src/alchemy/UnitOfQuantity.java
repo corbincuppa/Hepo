@@ -7,6 +7,14 @@ public enum UnitOfQuantity {
     BOTTLE(),
     JUG(),
     BARREL(),
-    STOREROOM()
+    STOREROOM(),
     // quantity = [int, UnitOfQuantity]?
+
+    PINCH(),
+    // spoon
+    SACHET(),
+    BOX(),
+    SACK(),
+    CHEST(),
+    // storeroom
 }
