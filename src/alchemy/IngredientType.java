@@ -162,7 +162,11 @@ public class IngredientType {
     /**
      * Variable referencing the standard state of the ingredient type.
      */
-    private final State stdState;
+    private State stdState;
+
+    public void setState(State state) {
+        this.state = state;
+    }
 
     public State getStdState() {
         return stdState;
@@ -182,10 +186,6 @@ public class IngredientType {
     public int[] getStdTemp() {
         return stdTemp;
     }
-    public int getStdColdness(){return (this.getStdTemp())[0];}
-    public int getStdHotness(){return (this.getStdTemp())[1];}
-    //--> niet specifiek voor std
-
 
     protected boolean isValidTemperature(int[] temperature, int maxValue) {
         if (maxValue > Long.MAX_VALUE) {
@@ -209,5 +209,18 @@ public class IngredientType {
             return false;
         }
         return true;
+    }
+    // std moet strikt warmer zijn dan [0,0]
+
+    private static int[] getDefaultTemp() {
+        return new int[]{0, 20};
+    }
+
+    public void setTemp(int[] temp) {
+        if (isValidTemperature(temp, 10000)){
+            this.stdTemp = temp;
+        }else{
+            this.stdTemp = getDefaultTemp();
+        }
     }
 }

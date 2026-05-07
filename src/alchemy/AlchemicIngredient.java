@@ -32,6 +32,7 @@ public class AlchemicIngredient {
         //this.state = ingredientType.getStdState();
         setQuantity(quantity);
         //this.temperature = ingredientType.getStdTemp();
+        //container
     }
 
 
@@ -193,18 +194,20 @@ public class AlchemicIngredient {
     /**
      * The current temperature of the alchemic ingredient.
      */
-    private int[] temperature = ingredientType.getStdTemp();
+    private int[] temperature;
 
     /**
      * Change the curren temperature of this alchemic ingredient to the
      * given temperature.
      *
-     * @param temperature
-     *        The given temperature.
      */
-    private void setTemperature(int[] temperature) {
-        this.temperature = temperature;
+    private void setTemperature() {
+        this.temperature = ingredientType.getStdTemp();
     }
+
+
+    //get coldness , get hotness
+    // change temp
     // if it has been in the oven or cooler
     // correct input voor temp? --> ingriedientType
 
