@@ -36,23 +36,23 @@ public class Laboratory {
      **********************************************************/
 
     /**
-     * Variable referencing the capacity of this laboratory expressed in spoons.
+     * Variable referencing the capacity of this laboratory expressed in storerooms.
      */
-    // NOT FINAL IN SPOONS
     private int capacity = 0;
 
     /**
      * Return the capacity of this laboratory.
      */
     public String getCapacity() {
-        return this.capacity + " spoons.";
+        return this.capacity + " " + UnitOfQuantity.STOREROOM.getUnit() + "s";
+        // maybe should return the actual int instead..
     }
 
     /**
      * Set the capacity of this laboratory to the given capacity.
      *
      * @param   capacity
-     *          The given capacity
+     *          The given capacity expressed in amount of storerooms.
      *
      * @effect  If the given capacity is strictly positive, then the capacity of this
      *          laboratory is set to the given capacity.
@@ -71,14 +71,15 @@ public class Laboratory {
      **********************************************************/
 
     /**
-     * Variable referencing the device available to use in this laboratory.
+     * Variable referencing the device(s) available to use in this laboratory.
      */
     private ArrayList<Device> devices = new ArrayList<Device>();
 
     /**
-     * Return the devices available in this laboratory.
+     * Return the device(s) available in this laboratory.
      */
     // returns in string so that devices list cannot be changed by the user.
+    // wait but i kinda to return the device so that user can actually use device...uhm
     public String getDevices() {
         String returnStr = new String();
         for (Device device : devices) {
