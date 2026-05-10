@@ -1,5 +1,7 @@
 package alchemy;
 
+import be.kuleuven.cs.som.annotate.*;
+
 import java.util.ArrayList;
 
 /**
@@ -20,27 +22,33 @@ public class IngredientContainer {
      * Initialize a new ingredient container with a given capacity and alchemic ingredient.
      *
      * @param   capacity
-     *          The given capacity of the ingredient container expressed in amount of spoons.
+     *          The given capacity of the ingredient container.
      * @param   ingredient
      *          The given alchemic ingredient.
      *
-     * @effect  If the given capacity is valid and the quantity of the given
-     *          alchemic ingredient is lesser than or equal to the given capacity,
-     *          then the capacity of the initialized container is incremented by the quantity.
-     *          | if (isValidCapacity(capacity) && quantity <= capacity)
-     *          |   then setCapacity(this.capacity + quantity)
-     *          \XXXXXXXXXX // IS CORRECT??
+     * @effect  If the given capacity is valid and the state of the quantity of the given alchemic
+     *          ingredient and the state of the given capacityquantity of the given capacity are equal, and
+     *          if then the quantity of the given alchemic ingredient expressed in spoons is lesser than or equal to
+     *          the given capacity expressed in spoons, then the capacity of the initialized container is set to
+     *          the given capacity.
+     *          | if (isValidCapacity(capacity) && ingredient.getQuantityUnit().getState() == capacity.getState())
+     *          |   then setCapacity(capacity)
+     * @effect  If the given capacity is valid and the state of the quantity of the given alchemic
+     *          ingredient and the state of the given capacityquantity of the given capacity are equal, and
+     *          if then the quantity of the given alchemic ingredient expressed in spoons is lesser than or equal to
+     *          the given capacity expressed in spoons, then the contents of the initialized container are set to the
+     *          given ingredient.
+     *          | if (isValidCapacity(capacity) && ingredient.getQuantityUnit().getState() == capacity.getState())
+     *          |   then setContents(ingredient)
      */
-    public IngredientContainer(ArrayList<Object> capacity, AlchemicIngredient ingredient) {
-        setContents(ingredient);
-        int quantity = ingredient.getQuantity();
-        if ( quantity <= capacity) {
-            setCapacity(this.capacity.get(0) + quantity);
-        }
+    public IngredientContainer(UnitOfQuantity capacity, AlchemicIngredient ingredient) {
+       if (isValidCapacity(capacity) && ingredient.getQuantityUnit().getState() == capacity.getState()) {
+           if (ingredient.getQuantityUnit().getAmountSpoons() <= capacity.getAmountSpoons()) {
+               setCapacity(capacity);
+               setContents(ingredient);
+           }
+       }
     }
-    // rare constructor
-    // type container vragen
-
 
 
     /**********************************************************
@@ -49,28 +57,52 @@ public class IngredientContainer {
 
     /**
      * Variable referencing the capacity of this ingredient container
-     * expressed in amount of spoons.
+     * expressed as one unit of quantity.
      */
     private UnitOfQuantity capacity;
 
-    public String getCapacity() {
-        String returnStr = "1 ";
-        returnStr += capacity;
-        return returnStr;
+    /**
+     * Return the capacity of this container.
+     */
+    public UnitOfQuantity getCapacity() {
+        //String returnStr = "1 ";
+        //returnStr += capacity;
+        //return returnStr;
+        return capacity;
     }
 
-    private void setCapacity(UnitOfQuantity capacity) {
-        this.capacity = capacity;
-    }
-
+    /**
+     * Check is the given capacity is a valid capacity for an ingredient container
+     *
+     * @param   capacity1
+     *          The given capacity to be checked
+     * @return  True if the given capacity is not a DROP, PINCH or STOREROOM, false otherwise.
+     */
     protected boolean isValidCapacity(UnitOfQuantity capacity1) {
         // check that it is not drop(), pinch() or storeroom()
         if (capacity1 == UnitOfQuantity.PINCH || capacity1 == UnitOfQuantity.DROP
-            || capacity1 == UnitOfQuantity.STOREROOM) {
+                || capacity1 == UnitOfQuantity.STOREROOM) {
             //   throw exception
         }
-        this.capacity = capacity1;
     }
+
+    /**
+     * Set the capacity of this ingredient container ot the given capacity.
+     *
+     * @param   capacity
+     *          The given capacity expressed as one unit of quantity
+     *
+     * @effect  The capacity of this container is set to the given capacity if the given
+     *          capacity is a valid capacity.
+     *          | if isValidCapacity(capacity)
+     *          |   then this.capacity = capacity
+     */
+    @Model
+    private void setCapacity(UnitOfQuantity capacity) {
+        if (isValidCapacity(capacity))
+            this.capacity = capacity;
+    }
+
 
 
 

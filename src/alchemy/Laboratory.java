@@ -15,6 +15,14 @@ public class Laboratory {
      * Constructors
      **********************************************************/
 
+    /**
+     * Initialize a new laboratory with a given capacity and a set of devices to be available to use.
+     *
+     * @param capacity
+     *        The capacity of the storage inside this laboratory.
+     * @param devices
+     *        The list of devices which can be accessed in this laboratory.
+     */
     public Laboratory(int capacity, ArrayList<Device> devices) {
         for (Device device : devices) {
             addDevice(device);
@@ -120,9 +128,9 @@ public class Laboratory {
         //storage.put(ingredient, quantity);
         // this isn't right, storage should contain containers.
 
-        String capacity = container.getCapacity();
+        UnitOfQuantity capacity = container.getCapacity();
         AlchemicIngredient ingredient = container.getIngredient();
-
+        // shouldn;t it get the quantity of the ingredient inside the container? and make a new which fits the ingredient best
         IngredientContainer newContainer = new IngredientContainer(capacity, ingredient);
         storage.add(newContainer);
         // THEN DELETE CONTAINER
