@@ -31,15 +31,16 @@ public class IngredientContainer {
      *          |   then setCapacity(this.capacity + quantity)
      *          \XXXXXXXXXX // IS CORRECT??
      */
-    public IngredientContainer(int capacity, AlchemicIngredient ingredient) {
+    public IngredientContainer(ArrayList<Object> capacity, AlchemicIngredient ingredient) {
         setContents(ingredient);
-        int quantity = getQuantity();
-        if (isValidCapacity(capacity) && quantity <= capacity) {
-            setCapacity(this.capacity + quantity);
+        int quantity = ingredient.getQuantity();
+        if ( quantity <= capacity) {
+            setCapacity(this.capacity.get(0) + quantity);
         }
     }
     // rare constructor
     // type container vragen
+
 
 
     /**********************************************************
@@ -50,32 +51,28 @@ public class IngredientContainer {
      * Variable referencing the capacity of this ingredient container
      * expressed in amount of spoons.
      */
-    private int capacity;
+    private UnitOfQuantity capacity;
 
-    public int getCapacity() {
-        return capacity;
+    public String getCapacity() {
+        String returnStr = "1 ";
+        returnStr += capacity;
+        return returnStr;
     }
 
-    private void setCapacity(int capacity) {
-        if (isValidCapacity(capacity))
-            this.capacity = capacity;
+    private void setCapacity(UnitOfQuantity capacity) {
+        this.capacity = capacity;
     }
 
-    /**
-     * Check whether the given capacity is a valid capacity for an ingredient container.
-     *
-     * @param capacity
-     *        The given capacity to be checked.
-     *
-     * @return True is the given capacity is strictly positive, false otherwise.
-     */
-    private boolean isValidCapacity(int capacity) {
-        if (capacity > 0) {
-            return true;
+    protected boolean isValidCapacity(UnitOfQuantity capacity1) {
+        // check that it is not drop(), pinch() or storeroom()
+        if (capacity1 == UnitOfQuantity.PINCH || capacity1 == UnitOfQuantity.DROP
+            || capacity1 == UnitOfQuantity.STOREROOM) {
+            //   throw exception
         }
-        return false;
+        this.capacity = capacity1;
     }
-    // een fles kan maar 3 vials hebben --> max cap
+
+
 
     /**********************************************************
      * Ingredient
@@ -84,35 +81,48 @@ public class IngredientContainer {
     /**
      * Variable referencing the contents of this container.
      */
-    private ArrayList<Object> contents = new ArrayList<Object>();
+    private AlchemicIngredient contents;
 
 
     /**
      * Return the ingredient that is in this container.
      */
     protected AlchemicIngredient getIngredient() {
-        return (AlchemicIngredient) contents.get(0);
+        return (AlchemicIngredient) contents;
     }
 
     /**
-     * Set the contents of this container to the given alchemic ingredient
-     * and its quantity.
+     * Set the contents of this container to the given alchemic ingredient.
      *
      * @param ingredient
      *        The given alchemic ingredient to be stored inside this container.
      */
     private void setContents(AlchemicIngredient ingredient) {
-        this.contents.add(0, ingredient);
         int quantity = ingredient.getQuantity();
-        this.contents.add(1, quantity);
+        UnitOfQuantity quantityUnit = ingredient.getQuantityUnit();
+        if (quantityUnit == capacity) {
+            if (quantity > 1) {
+                // CAN'T! 2 spoons > 1 spoon
+            }
+
+            if (quantity == 1) {
+                // goed, maar container is full!
+            }
+        }
     }
 
     /**
-     * Return the quantity of ingredient inside this container.
+     * Check whether the given quantity is a valid quantity for an ingredient container.
+     *
+     * @param quantity
+     *        The given quantity to be checked.
+     *
+     * @return
      */
-    protected int getQuantity() {
-        return (int) contents.get(1);
+    private boolean isValidQuantity(int quantity) {
+
     }
+
 
 
 }

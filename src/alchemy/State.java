@@ -10,5 +10,6 @@ package alchemy;
 
 public enum State {
     POWDER,
-    LIQUID
+    LIQUID,
+    BOTH
 }

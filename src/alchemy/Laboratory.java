@@ -76,7 +76,7 @@ public class Laboratory {
         for (Device device : devices) {
             returnStr += device;
         }
-        System.out.println(returnStr);
+        return returnStr;
     }
 
     /**
@@ -120,8 +120,9 @@ public class Laboratory {
         //storage.put(ingredient, quantity);
         // this isn't right, storage should contain containers.
 
-        int capacity = container.getCapacity();
+        String capacity = container.getCapacity();
         AlchemicIngredient ingredient = container.getIngredient();
+
         IngredientContainer newContainer = new IngredientContainer(capacity, ingredient);
         storage.add(newContainer);
         // THEN DELETE CONTAINER
@@ -134,11 +135,12 @@ public class Laboratory {
      * @param name
      * @param quantity
      */
-    public IngredientContainer takeIngredient(String name, int quantity) {
+    public IngredientContainer takeIngredient(String name, ArrayList quantity) {
         for (IngredientContainer container : storage) {
             String ingName = container.getIngredient().getName();
             int ingQuantity = container.getIngredient().getQuantity();
             if (ingName.equals(name)) {
+                // check if units are legals
                 // ingQuantity - quantity
                 container.getIngredient().setQuantity(-quantity);
                 // check if ingQuantity is now null
@@ -164,12 +166,14 @@ public class Laboratory {
         for (IngredientContainer container : storage) {
             String ingName = container.getIngredient().getName();
             int ingQuantity = container.getIngredient().getQuantity();
+            UnitOfQuantity ingQuantityUnit = container.getIngredient().getQuantityUnit();
+            ArrayList<Object> quantity = new ArrayList<Object>();
             if (ingName.equals(name)) {
 
                 // delete container from storage
 
                 // new container with taken ingredient
-                IngredientContainer newContainer = new IngredientContainer(ingQuantity, container.getIngredient());
+                IngredientContainer newContainer = new IngredientContainer(quantity, container.getIngredient());
                 return newContainer;
             }
 
@@ -182,15 +186,15 @@ public class Laboratory {
     /**
      * Returns the stored ingredients and their respective quantities.
      */
-    //    CHECK QUANTITIES, HOW EXPRESSED?!?!?!!?
     public String getStoredIng() {
         String returnStr = new String();
         // THERE CAN ALSO BE NO CONTAINERS
         for (IngredientContainer container : storage) {
             String ingName = container.getIngredient().getName();
             int ingQuantity = container.getIngredient().getQuantity();
+            String ingQuantityUnit = container.getIngredient().getQuantityUnit().getUnit();
 
-            returnStr += "- " + ingName + ", " + ingQuantity + "\n";
+            returnStr += "- " + ingName + ", " + ingQuantity + " " + ingQuantityUnit + "\n";
         }
         System.out.println(returnStr);
     }

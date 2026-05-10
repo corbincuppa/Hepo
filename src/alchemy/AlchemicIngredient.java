@@ -4,6 +4,8 @@ import be.kuleuven.cs.som.annotate.*;
 import exceptions.*;
 import alchemy.*;
 
+import java.util.ArrayList;
+
 /**
  * A class of alchemic ingredients.
  *
@@ -26,7 +28,7 @@ public class AlchemicIngredient {
      * @param quantity
      *        The given quantity of the alchemic ingredient.
      */
-    public void AlchemicIngredient( IngredientType ingredientType, int quantity) throws IllegalNameException {
+    public void AlchemicIngredient( IngredientType ingredientType, ArrayList<Object> quantity) throws IllegalNameException {
         setFullName(null);
         setIngredientType(ingredientType);
         //this.state = ingredientType.getStdState();
@@ -162,11 +164,9 @@ public class AlchemicIngredient {
      * Quantity - Nominal programming
      **********************************************************/
     /**
-     * The quantity of the alchemic ingredient expressed in SPOONS:
-     *      - drop, spoon, vial, bottle, jug, barrel, storeroom for this.state == LIQUID
-     *      - pinch, spoon, sachet, box, sack, chest, storeroom for this.state == POWDER
+     * The quantity of the alchemic ingredient expressed in a unit of quantity.
      */
-    private int quantity;
+    private ArrayList<Object> quantity;
 
     /**
      * Change the quantity of this alchemic ingredient to the
@@ -175,15 +175,22 @@ public class AlchemicIngredient {
      * @param quantity
      *        The given quantity
      */
-    void setQuantity(int quantity) {
+    void setQuantity(ArrayList<Object> quantity) {
         this.quantity = quantity;
     }
 
     /**
-     * Return the quantity of this alchemic ingredient.
+     * Return the numerical quantity of this alchemic ingredient.
      */
     protected int getQuantity() {
-        return quantity;
+        return (int)quantity.get(0);
+    }
+
+    /**
+     * Return the unit of quantity of this alchemic ingredient.
+     */
+    protected UnitOfQuantity getQuantityUnit() {
+        return (UnitOfQuantity) quantity.get(1);
     }
 
 

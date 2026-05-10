@@ -1,31 +1,47 @@
 package alchemy;
 
 public enum UnitOfQuantity {
-    DROP(0.125, SPOON),  // 8 drops = 1 spoon
-    SPOON(1, null),
-    VIAL(5, SPOON),      // 1 vial = 5 spoons
-    BOTTLE(3, VIAL),     // 1 bottle = 3 vials
-    JUG(7, BOTTLE),      // 1 jug = 7 bottles
-    BARREL(12, JUG),     // 1 barrel = 12 jugs
-    STOREROOML(5, BARREL), // 1 storeroom = 5 barrels
 
-    PINCH(0.33, SPOON),
+    SPOON(1, State.BOTH, "spoon"),
+
+    DROP(0.125, State.LIQUID, "drop"),  // 8 drops = 1 spoon
     // spoon
-    SACHET(7, SPOON),
-    BOX(6, SACHET),
-    SACK(3, BOX),
-    CHEST(10, SACK),
-    STOREROOMP(5, CHEST);
+    VIAL(5, State.LIQUID, "vial"),      // 1 vial = 5 spoons
+    BOTTLE(15, State.LIQUID, "bottle"),     // 1 bottle = 3 vials
+    JUG(105, State.LIQUID, "jug"),      // 1 jug = 7 bottles
+    BARREL(1260, State.LIQUID, "barrel"),     // 1 barrel = 12 jugs
 
-    private final double conversionFactor;
-    private final UnitOfQuantity smallerUnit;
+    PINCH( 1/6, State.POWDER, "pinch"),
+    // spoon
+    SACHET(7, State.POWDER, "sachet"),
+    BOX(42, State.POWDER, "box"),
+    SACK(126, State.POWDER, "sack"),
+    CHEST(1260, State.POWDER, "chest"),
 
-    UnitOfQuantity(int conversionFactor, UnitOfQuantity smallerUnit) {
-        this.conversionFactor = conversionFactor;
-        this.smallerUnit = smallerUnit;
+
+    STOREROOM(6300, State.BOTH, "storeroom");
+
+    private final double amountSpoons;
+    private final State state;
+    private final String unit;
+
+    UnitOfQuantity(double amountSpoons, State state, String unit) {
+        this.amountSpoons = amountSpoons;
+        this.state = state;
+        this.unit = unit;
     }
 
-    //getQuantity in spoons?
-
+    protected String getUnit() {
+        return unit;
     }
+
+    protected State getState() {
+        return state;
+    }
+
+    protected double getAmountSpoons() {
+        return amountSpoons;
+    }
+
 }
+
