@@ -25,6 +25,10 @@ public class Device {
     /**********************************************************
      * Contents
      **********************************************************/
+
+    /**
+     * Variable referencing the contents of this device.
+     */
     private ArrayList<AlchemicIngredient> contents = new ArrayList<AlchemicIngredient>();
 
 
@@ -32,6 +36,13 @@ public class Device {
     /**********************************************************
      *
      **********************************************************/
+
+    /**
+     * Add the ingredient inside a given container to this device.
+     *
+     * @param   container
+     *          The given container containing the alchemic ingredient to be added
+     */
     public void add(IngredientContainer container){
         // deletes old container
         if (contents.size() == 0) {

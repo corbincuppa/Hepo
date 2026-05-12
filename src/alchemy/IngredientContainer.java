@@ -27,14 +27,14 @@ public class IngredientContainer {
      *          The given alchemic ingredient.
      *
      * @effect  If the given capacity is valid and the state of the quantity of the given alchemic
-     *          ingredient and the state of the given capacityquantity of the given capacity are equal, and
+     *          ingredient and the state of the given capacity are equal, and
      *          if then the quantity of the given alchemic ingredient expressed in spoons is lesser than or equal to
      *          the given capacity expressed in spoons, then the capacity of the initialized container is set to
      *          the given capacity.
      *          | if (isValidCapacity(capacity) && ingredient.getQuantityUnit().getState() == capacity.getState())
      *          |   then setCapacity(capacity)
      * @effect  If the given capacity is valid and the state of the quantity of the given alchemic
-     *          ingredient and the state of the given capacityquantity of the given capacity are equal, and
+     *          ingredient and the state of the given capacity are equal, and
      *          if then the quantity of the given alchemic ingredient expressed in spoons is lesser than or equal to
      *          the given capacity expressed in spoons, then the contents of the initialized container are set to the
      *          given ingredient.

@@ -11,7 +11,7 @@ import exceptions.*;
  * @version 1.0
  */
 
-//invars???????
+//invars??????? :(
 
 public class IngredientType {
 
@@ -21,12 +21,14 @@ public class IngredientType {
     /**
      * Initialize a new ingredient type with a given name, standard state and standard temperature.
      *
-     * @param name
-     *        The given name
-     * @param stdState
-     *        The given standard temperature of the ingredient type.
-     * @param stdTemp
-     *        The given standard temperature of the ingredient type.
+     * @param  name
+     *         The given name
+     * @param  stdState
+     *         The given standard temperature of the ingredient type.
+     * @param  stdTemp
+     *         The given standard temperature of the ingredient type.
+     * @throws IllegalNameException
+     *         | !isValidName(name)
      */
     protected IngredientType(String name, State stdState, int[] stdTemp) throws IllegalNameException {
         setName(name);
@@ -39,6 +41,8 @@ public class IngredientType {
     /**********************************************************
      * IngredientType
      **********************************************************/
+
+    // ???? why is header called ingredient type
     IngredientType water = new IngredientType("Water", State.LIQUID, new int[]{0, 20});
 
     /**********************************************************
@@ -50,13 +54,34 @@ public class IngredientType {
      */
     private String name = null;
 
+    /**
+     * Check whether the given character is a valid character for the name of this ingredient type
+     *
+     * @param   character
+     *          The given character to be checked
+     * @return  True if the given character is equal to the backwards slash, the open bracket or closed bracket,
+     *          false otherwise.
+     *          | character == '\'' || character == '(' || character == ')'
+     */
     private static boolean acceptableSymbols(Character character){
+        // is dat de bedoeling:   '\''   ?
         if (character == '\'' || character == '(' || character == ')') {
             return true;
         }
         return false;
     }
 
+    /**
+     * Check whether the rest of the word (without the first uppercase letter) is a valid word.
+     *
+     * @param   word
+     *          The given word to be checked
+     * @param   index
+     *          The index at which to start so unnecessary beginning of word isn't checked
+     * @return  True if the rest of the word is compiled of acceptable characters, false if the
+     *          rest of the word container an uppercase letter.
+     *          | i dont know??
+     */
     private static boolean restWithLowercases(String word, int index) {
         for (int i = index; i < word.length(); i++) {
             char c = word.charAt(i);
@@ -70,6 +95,12 @@ public class IngredientType {
         return true;
     }
 
+    /**
+     * Check if the word
+     *
+     * @param word
+     * @return
+     */
     private static boolean startsUppercaseRestLower(String word) {
         char first = word.charAt(0);
         if (Character.isLetter(first)){
@@ -82,6 +113,7 @@ public class IngredientType {
         return false;
     }
 
+    // deze paar functies die te maken hebben met een validname moet je me een keer uitleggen want mn brein werkt op dit moment niet
     protected static String[] letters(String word){
         String[] letters = new String[word.length()];
         for (int i = 0 ; i < word.length(); i++) {
@@ -150,6 +182,9 @@ public class IngredientType {
     }
     //  ingredienttype --> total (exception needs to be caught)
 
+    /**
+     * Return the name of this ingredient type.
+     */
     public String getName() {
         return name;
     }
@@ -164,10 +199,19 @@ public class IngredientType {
      */
     private State stdState;
 
-    public void setState(State state) {
-        this.state = state;
+    /**
+     * Set the standard state of this ingredient type to the given state.
+     *
+     * @param state
+     *        The given state
+     */
+    protected void setState(State state) {
+        this.stdState = state;
     }
 
+    /**
+     * Return the standard state of this ingredient type.
+     */
     public State getStdState() {
         return stdState;
     }
@@ -183,10 +227,20 @@ public class IngredientType {
      */
     private int[] stdTemp;
 
+    /**
+     * Return the standard temperature of this ingredient type.
+     */
     public int[] getStdTemp() {
         return stdTemp;
     }
 
+    /**
+     * Check if the given temperature is a valid temperature
+     *
+     * @param temperature
+     * @param maxValue
+     * @return
+     */
     protected boolean isValidTemperature(int[] temperature, int maxValue) {
         if (maxValue > Long.MAX_VALUE) {
             return false;
@@ -212,10 +266,27 @@ public class IngredientType {
     }
     // std moet strikt warmer zijn dan [0,0]
 
+    /**
+     * Return the default temperature.
+     */
     private static int[] getDefaultTemp() {
         return new int[]{0, 20};
     }
 
+    /**
+     * Set the temperature of this ingredient type to the given temperature
+     *
+     * @param   temp
+     *          The given temperature to be set
+     * @effect  If the given temperature is a valid temperature and doesn't go above 10 000,
+     *          then the standard temperature of this ingredient type is set to the given temperature.
+     *          | isValidTemperature(temp, 10 000)
+     *          |   then this.stdTemp = temp
+     * @effect  If the given temperature is not a valid temperature, then the standard temperature of this
+     *          ingredient type is set to the default temperature.
+     *          | ! isValidTemperature(temp, 10 000)
+     *          |   then this.stdTemp = getDefaultTemp()
+     */
     public void setTemp(int[] temp) {
         if (isValidTemperature(temp, 10000)){
             this.stdTemp = temp;

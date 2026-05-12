@@ -19,6 +19,8 @@ public class CoolingBox extends Device{
     /**********************************************************
      * Temperature
      **********************************************************/
+
+
     public final int temperature = 0;
 
     protected void setTemperature(int newTemp) {
@@ -30,8 +32,6 @@ public class CoolingBox extends Device{
     /**********************************************************
      * Methods
      **********************************************************/
-
-    //only cooler can use this
 
     /**
      * Add "Cooled" to the full name of the given alchemic ingredient.
