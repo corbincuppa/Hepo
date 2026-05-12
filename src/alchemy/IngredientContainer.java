@@ -50,6 +50,10 @@ public class IngredientContainer {
        }
     }
 
+    public void terminate() {
+
+    }
+
 
     /**********************************************************
      * Capacity
@@ -154,6 +158,8 @@ public class IngredientContainer {
     private boolean isValidQuantity(int quantity) {
 
     }
+
+
 
 
 

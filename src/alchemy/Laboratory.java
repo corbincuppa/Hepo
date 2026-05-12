@@ -113,7 +113,7 @@ public class Laboratory {
     /**
      * Variable referencing the alchemic ingredients stored in this laboratory.
      */
-    private ArrayList<IngredientContainer> storage = new ArrayList<>();
+    private ArrayList<IngredientContainer> storage = new ArrayList<IngredientContainer>();
 
     /**
      * Add the contents of the given container to the laboratory.
@@ -121,20 +121,17 @@ public class Laboratory {
      * @param  container
      *         The given container to be added to storage.
      *
-     * @effect  OLD CONTAINER IS DESTROYED
+     * @effect  The given container is terminated.
      */
     public void storeIngredient(IngredientContainer container) {
-        //AlchemicIngredient ingredient = container.getIngredient();
-        //Integer quantity = ingredient.getQuantity();
-        //storage.put(ingredient, quantity);
-        // this isn't right, storage should contain containers.
-
+        // CHECK CONTAINER
         UnitOfQuantity capacity = container.getCapacity();
         AlchemicIngredient ingredient = container.getIngredient();
         // shouldn;t it get the quantity of the ingredient inside the container? and make a new which fits the ingredient best
         IngredientContainer newContainer = new IngredientContainer(capacity, ingredient);
         storage.add(newContainer);
         // THEN DELETE CONTAINER
+        container.terminate();
 
     }
 

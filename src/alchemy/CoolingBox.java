@@ -31,6 +31,19 @@ public class CoolingBox extends Device{
      * Methods
      **********************************************************/
 
+    //only cooler can use this
+
+    /**
+     * Add "Cooled" to the full name of the given alchemic ingredient.
+     *
+     * @param ingredient
+     *        The given alchemic ingredient
+     */
+    protected void addPrefixCooled(AlchemicIngredient ingredient){
+        String newName = "Cooled" + ingredient.getFullName();
+        ingredient.setFullName(newName);
+    }
+
 
 
 }

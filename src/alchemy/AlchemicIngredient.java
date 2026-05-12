@@ -42,21 +42,44 @@ public class AlchemicIngredient {
     /**********************************************************
      * Name - Defensive programming
      **********************************************************/
+
+    /**
+     * Variable referencing the full name of the alchemic ingredient.
+     */
     private String fullName;
+
+    /**
+     * Variable referencing the special name of the alchemic ingredient.
+     */
     private String specialName = null;
 
+    /**
+     * Return the simple name of this alchemic ingredient.
+     * @note This is equal to the name of the ingredient type.
+     */
     public String getSimpleName() {
         return this.getIngredientType().getName();
     }
 
+    /**
+     * Return the full name of this alchemic ingredient.
+     */
     public String getFullName() {
         return fullName;
     }
 
+    /**
+     * Return the special name of this alchemic ingredient.
+     */
     public String getSpecialName() {
         return specialName;
     }
 
+    /**
+     *
+     *
+     * @return
+     */
     public String getName() {
         if (this.getSpecialName() != null){
             return (this.getSpecialName() + "(" + this.getFullName() + ")" );
@@ -64,6 +87,17 @@ public class AlchemicIngredient {
         return this.getFullName();
     }
 
+    /**
+     * Set the full name of this alchemic ingredient to the given name.
+     *
+     * @param   fullName
+     *          The given name to be set as the full name
+     * @effect  If the given name is a null-pointer, the full name of this alchemic ingredient is
+     *          set to the simple name of this alchemic ingredient (the name of the type of ingredient).
+     *          The full name of this alchemic ingredient is otherwise set to the given name.
+     *          | fullName == null
+     *          | XCBHIQEWVEFIYPVCBEWHI;VBFEWHI;EWVBUIV;WEB;UIVE //idk
+     */
     protected void setFullName(String fullName) {
         if (fullName == null) {
             this.fullName = getSimpleName();
@@ -73,19 +107,18 @@ public class AlchemicIngredient {
         }
     }
 
-
-    //only oven can use this
-    protected void addPrefixHeated(){
-        String newName = "Heated" + this.getFullName();
-        setFullName(newName);
-    }
-
-    //only cooler can use this
-    protected void addPrefixCooled(){
-        String newName = "Cooled" + this.getFullName();
-        setFullName(newName);
-    }
-
+    /**
+     * Set the special name of this alchemic ingredient to the given name.
+     *
+     * @param   specialName
+     *          The given name
+     * @effect  The special name of this alchemic ingredient is set to the given name if
+     *          the given name is a valid name, otherwise an exception is thrown.
+     *          | if isValidName(specialName)
+     *          |   then this.specialName = specialName
+     * @throws  IllegalNameException
+     *          | ! isValidName(specialName)
+     */
     protected void setSpecialName(String specialName) throws IllegalNameException{
         if (IngredientType.isValidName(specialName)) {
             this.specialName = specialName;
@@ -95,6 +128,12 @@ public class AlchemicIngredient {
     }
     //--> something is probably wrong, also in the constructor
 
+    /**
+     *
+     *
+     * @param   ingredients
+     *
+     */
     protected void mixedNames(String[] ingredients){
         int length = ingredients.length;
         if (length < 2){
@@ -111,7 +150,7 @@ public class AlchemicIngredient {
             setFullName(newName);
         }
     }
-    //--> only kettle can use this
+    //--> only kettle can use this ----> maybe in the MixedIngredient subclass instead?
 
 
     /**********************************************************
