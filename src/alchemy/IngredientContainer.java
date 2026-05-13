@@ -42,11 +42,8 @@ public class IngredientContainer {
      *          |   then setContents(ingredient)
      */
     public IngredientContainer(UnitOfQuantity capacity, AlchemicIngredient ingredient) {
-       if (isValidCapacity(capacity) && ingredient.getQuantityUnit().getState() == capacity.getState()) {
-           if (ingredient.getQuantityUnit().getAmountSpoons() <= capacity.getAmountSpoons()) {
-               setCapacity(capacity);
-               setContents(ingredient);
-           }
+           setCapacity(capacity);
+           setContents(ingredient);
        }
     }
 
@@ -69,9 +66,6 @@ public class IngredientContainer {
      * Return the capacity of this container.
      */
     public UnitOfQuantity getCapacity() {
-        //String returnStr = "1 ";
-        //returnStr += capacity;
-        //return returnStr;
         return capacity;
     }
 
@@ -81,13 +75,18 @@ public class IngredientContainer {
      * @param   capacity1
      *          The given capacity to be checked
      * @return  True if the given capacity is not a DROP, PINCH or STOREROOM, false otherwise.
+     *          | result ==
+     *          |    ! (capacity1 == UnitOfQuantity.PINCH || capacity1 == UnitOfQuantity.DROP
+     *                 || capacity1 == UnitOfQuantity.STOREROOM)
      */
+    @Model
     protected boolean isValidCapacity(UnitOfQuantity capacity1) {
-        // check that it is not drop(), pinch() or storeroom()
+        // Check that it is not drop(), pinch() or storeroom()
         if (capacity1 == UnitOfQuantity.PINCH || capacity1 == UnitOfQuantity.DROP
                 || capacity1 == UnitOfQuantity.STOREROOM) {
-            //   throw exception
+            return false;
         }
+        return true;
     }
 
     /**
@@ -124,43 +123,59 @@ public class IngredientContainer {
      * Return the ingredient that is in this container.
      */
     protected AlchemicIngredient getIngredient() {
-        return (AlchemicIngredient) contents;
+        return contents;
     }
 
     /**
      * Set the contents of this container to the given alchemic ingredient.
      *
-     * @param ingredient
-     *        The given alchemic ingredient to be stored inside this container.
+     * @pre     The states of the capacity of this container and the state of the unit of quantity of the
+     *          given alchemic ingredient must be the same or one of them must have both states.
+     *          | quantityUnit.getState() == capacity.getState() || capacity.getState() == State.BOTH || quantityUnit.getState() == State.BOTH
+     * @pre
+     * @param   ingredient
+     *          The given alchemic ingredient to be stored inside this container.
      */
     private void setContents(AlchemicIngredient ingredient) {
-        int quantity = ingredient.getQuantity();
+        int amount = ingredient.getQuantityAmount();
         UnitOfQuantity quantityUnit = ingredient.getQuantityUnit();
-        if (quantityUnit == capacity) {
-            if (quantity > 1) {
-                // CAN'T! 2 spoons > 1 spoon
-            }
-
-            if (quantity == 1) {
-                // goed, maar container is full!
-            }
+        if( isValidQuantity(amount, quantityUnit) ){
+            this.contents = ingredient;
         }
     }
 
     /**
      * Check whether the given quantity is a valid quantity for an ingredient container.
      *
-     * @param quantity
-     *        The given quantity to be checked.
-     *
-     * @return
+     * @param   quantityAmount
+     *          The given amount of quantity to be checked
+     * @param   quantityUnit
+     *          The given unit of quantity to be checked
+     * @return  True if the states of the given unit of quantity and of the capacity are the same or if one of them
+     *          has both states and if the given amount of quantity expressed in spoons is lesser than or equal to
+     *          the capacity of this container expressed in spoons. False otherwise.
+     *          | result ==
+     *          |   quantityUnit.getState() == capacity.getState() || capacity.getState() == State.BOTH
+     *          |       || quantityUnit.getState() == State.BOTH
+     *          |   && quantityUnit.getAmountSpoons() <= capacity.getAmountSpoons()
      */
-    private boolean isValidQuantity(int quantity) {
+    @Model
+    private boolean isValidQuantity(int quantityAmount, UnitOfQuantity quantityUnit) {
+        // Set the capacity and unit of quantity into amount of spoons
+        double unitSpoons = quantityUnit.getAmountSpoons();
+        double capacitySpoons = capacity.getAmountSpoons();
 
+        // Check if the states of both units are the same or if one of them has both states
+        if (quantityUnit.getState() == capacity.getState() || capacity.getState() == State.BOTH || quantityUnit.getState() == State.BOTH) {
+            if (unitSpoons <= capacitySpoons) {
+                return true;
+            }
+            if (unitSpoons > capacitySpoons) {
+                return false;
+            }
+        }
+        return false;
     }
-
-
-
 
 
 }

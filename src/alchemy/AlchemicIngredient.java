@@ -24,15 +24,17 @@ public class AlchemicIngredient {
      * state, quantity and temperature.
      *
      * @param ingredientType
-     *        The given ingredient type of the alchemic ingredient.
-     * @param quantity
-     *        The given quantity of the alchemic ingredient.
+     *        The given ingredient type of the alchemic ingredient
+     * @param amount
+     *        The given amount of the alchemic ingredient
+     * @param unit
+     *        The given unit of the quantity of the alchemic ingredient
      */
-    public void AlchemicIngredient( IngredientType ingredientType, ArrayList<Object> quantity) throws IllegalNameException {
+    public void AlchemicIngredient( IngredientType ingredientType, int amount, UnitOfQuantity unit) throws IllegalNameException {
         setFullName(null);
         setIngredientType(ingredientType);
         //this.state = ingredientType.getStdState();
-        setQuantity(quantity);
+        setQuantity(amount, unit);
         //this.temperature = ingredientType.getStdTemp();
         //container
     }
@@ -238,13 +240,6 @@ public class AlchemicIngredient {
      */
     protected UnitOfQuantity getQuantityUnit() {
         return quantityUnit;
-    }
-
-    /**
-     * Return the unit of quantity of this alchemic ingredient.
-     */
-    protected UnitOfQuantity getQuantityUnit() {
-        return (UnitOfQuantity) quantity.get(1);
     }
 
 
