@@ -1,5 +1,8 @@
 package alchemy;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public enum UnitOfQuantity {
 
     SPOON(1, State.BOTH, "spoon"),
@@ -41,6 +44,28 @@ public enum UnitOfQuantity {
 
     protected double getAmountSpoons() {
         return amountSpoons;
+    }
+
+    public ArrayList<UnitOfQuantity> getInOrder(State state){
+        if (state == State.LIQUID) {
+            return new ArrayList<UnitOfQuantity>(Arrays.asList(UnitOfQuantity.SACHET,UnitOfQuantity.BOX,UnitOfQuantity.SACK,UnitOfQuantity.CHEST));
+        }
+
+        if (state == State.POWDER) {
+            return new ArrayList<UnitOfQuantity>(Arrays.asList(UnitOfQuantity.VIAL, UnitOfQuantity.BOTTLE, UnitOfQuantity.JUG, UnitOfQuantity.BARREL));
+        }
+    }
+
+    public UnitOfQuantity getBestUnit(int amountSpoons, State state){
+        ArrayList<UnitOfQuantity> order = getInOrder(state);
+        for (UnitOfQuantity unit : order) {
+
+            double unitSpoons = unit.getAmountSpoons();
+
+            if (amountSpoons <= unitSpoons) {
+                capacity = unit;
+            }
+        }
     }
 
 }

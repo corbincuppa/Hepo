@@ -41,9 +41,6 @@ public class IngredientContainer {
         setContents(ingredient);
     }
 
-    public void terminate() {
-
-    }
 
 
     /**********************************************************
@@ -128,6 +125,10 @@ public class IngredientContainer {
      *          | (quantityUnit.getAmountSpoons() * quantityAmount) <= capacity.getAmountSpoons()
      */
     private void setContents(AlchemicIngredient ingredient) {
+        if (isTerminated) {
+            throw new IllegalStateException("Object is terminated");
+        }
+
         int amount = ingredient.getQuantityAmount();
         UnitOfQuantity quantityUnit = ingredient.getQuantityUnit();
         if (isValidQuantity(amount, quantityUnit)) {
@@ -166,5 +167,23 @@ public class IngredientContainer {
             }
         }
         return false;
+    }
+
+
+
+    /**********************************************************
+     * IsTerminated
+     **********************************************************/
+
+    /**
+     * Variable referencing whether this ingredient container is terminated.
+     */
+    private boolean isTerminated = false;
+
+    /**
+     * Terminate this ingredient container.
+     */
+    protected void terminate() {
+        isTerminated = true;
     }
 }

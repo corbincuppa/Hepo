@@ -11,6 +11,7 @@ import java.util.ArrayList;
  */
 
 public class Laboratory {
+
     /**********************************************************
      * Constructors
      **********************************************************/
@@ -43,9 +44,8 @@ public class Laboratory {
     /**
      * Return the capacity of this laboratory.
      */
-    public String getCapacity() {
-        return this.capacity + " " + UnitOfQuantity.STOREROOM.getUnit() + "s";
-        // maybe should return the actual int instead..
+    public int getCapacity() {
+        return capacity;
     }
 
     /**
@@ -61,7 +61,7 @@ public class Laboratory {
      */
     private void setCapacity(int capacity) {
         if (capacity < 0)
-            this.capacity += capacity;
+            this.capacity = capacity;
     }
 
 
@@ -118,44 +118,55 @@ public class Laboratory {
     /**
      * Add the contents of the given container to the laboratory.
      *
-     * @param  container
-     *         The given container to be added to storage.
+     * @param   container
+     *          The given container to be added to storage.
      *
      * @effect  The given container is terminated.
      */
     public void storeIngredient(IngredientContainer container) {
-        // CHECK CONTAINER
         UnitOfQuantity capacity = container.getCapacity();
         AlchemicIngredient ingredient = container.getIngredient();
-        // shouldn;t it get the quantity of the ingredient inside the container? and make a new which fits the ingredient best
         IngredientContainer newContainer = new IngredientContainer(capacity, ingredient);
         storage.add(newContainer);
-        // THEN DELETE CONTAINER
+        // Delete the old container
         container.terminate();
-
     }
 
     /**
      *
      *
      * @param name
-     * @param quantity
+     * @param amount
+     * @param unit
      */
-    public IngredientContainer takeIngredient(String name, ArrayList quantity) {
+    public IngredientContainer takeIngredient(String name, int amount, UnitOfQuantity unit) {
         for (IngredientContainer container : storage) {
             String ingName = container.getIngredient().getName();
-            int ingQuantity = container.getIngredient().getQuantityAmount();
+            int ingAmount = container.getIngredient().getQuantityAmount();
+            UnitOfQuantity ingUnit = container.getIngredient().getQuantityUnit();
             if (ingName.equals(name)) {
-                // check if units are legals
-                // ingQuantity - quantity
-                container.getIngredient().setQuantity();
-                // check if ingQuantity is now null
-                if (ingQuantity == 0) {
-                    // delete container from storage
+                // check if state are legals
+                if (ingUnit.getState() == unit.getState()) {
+                    // make to spoons
+                    double ingSpoons = ingUnit.getAmountSpoons() * ingAmount;
+                    double spoons = unit.getAmountSpoons();
+                    // ingAmount - quantity
+                    if (spoons<ingSpoons) {
+                        int quantityAmount = (int) (ingSpoons - spoons);
+
+                    }
+                    // and if what I ask is more than what's available?
+                    else{}
+                    container.getIngredient().setQuantity(quantityAmount);
+                    // check if ingAmount is now null
+                    if (ingAmount == 0) {
+                        // delete container from storage
+                        container.terminate();
+                    }
+                    // new container with taken ingredient
+                    IngredientContainer newContainer = new IngredientContainer(quantity, container.getIngredient());
+                    return newContainer;
                 }
-                // new container with taken ingredient
-                IngredientContainer newContainer = new IngredientContainer(quantity, container.getIngredient());
-                return newContainer;
             }
 
             if (!ingName.equals(name)) {
@@ -171,7 +182,7 @@ public class Laboratory {
     public IngredientContainer takeIngredient(String name) {
         for (IngredientContainer container : storage) {
             String ingName = container.getIngredient().getName();
-            int ingQuantity = container.getIngredient().getQuantity();
+            int ingQuantityAmount = container.getIngredient().getQuantityAmount();
             UnitOfQuantity ingQuantityUnit = container.getIngredient().getQuantityUnit();
             ArrayList<Object> quantity = new ArrayList<Object>();
             if (ingName.equals(name)) {
@@ -197,12 +208,12 @@ public class Laboratory {
         // THERE CAN ALSO BE NO CONTAINERS
         for (IngredientContainer container : storage) {
             String ingName = container.getIngredient().getName();
-            int ingQuantity = container.getIngredient().getQuantity();
-            String ingQuantityUnit = container.getIngredient().getQuantityUnit().getUnit();
+            int ingQuantityAmount = container.getIngredient().getQuantityAmount();
+            UnitOfQuantity ingQuantityUnit = container.getIngredient().getQuantityUnit();
 
-            returnStr += "- " + ingName + ", " + ingQuantity + " " + ingQuantityUnit + "\n";
+            returnStr += "- " + ingName + ": " + ingQuantityAmount + " " + ingQuantityUnit + "\n";
         }
-        System.out.println(returnStr);
+        return returnStr;
     }
 
 

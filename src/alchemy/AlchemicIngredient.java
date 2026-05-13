@@ -35,7 +35,35 @@ public class AlchemicIngredient {
         this.state = ingredientType.getStdState();
         setQuantity(amount, unit);
         setTemperature();
-        //container
+    }
+
+    // make ingredient with best fitting container
+    public IngredientContainer makeIngredient(AlchemicIngredient ingredient) {
+        State state = ingredient.getState();
+        ArrayList<UnitOfQuantity> order = quantityUnit.getInOrder(state);
+        int amount = ingredient.getQuantityAmount();
+        UnitOfQuantity unit1 = ingredient.getQuantityUnit();
+        double inSpoons = unit1.getAmountSpoons() * amount;
+        //for (int i = 0; i<=order.size()) {
+            //UnitOfQuantity unit = order.get(i);
+            //double unitSpoons = unit.getAmountSpoons();
+            //if (inSpoons > unitSpoons) {
+                //i++;
+            //}
+            //capacity = unit;
+        //}
+
+        UnitOfQuantity capacity = null;
+        for (UnitOfQuantity unit : order) {
+
+            double unitSpoons = unit.getAmountSpoons();
+
+            if (inSpoons <= unitSpoons) {
+                capacity = unit;
+            }
+        }
+
+        IngredientContainer container = new IngredientContainer(capacity, ingredient);
     }
 
 
@@ -200,6 +228,13 @@ public class AlchemicIngredient {
         this.state = state;
     }
     // --> if it has been in the Transmogrifier
+
+    /**
+     * Return the state of this alchemic ingredient.
+     */
+    public State getState() {
+        return state;
+    }
 
 
 
