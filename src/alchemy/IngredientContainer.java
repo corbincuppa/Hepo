@@ -8,7 +8,9 @@ import be.kuleuven.cs.som.annotate.*;
  * @invar   The states of the capacity of this container and the state of the unit of quantity of the
  *          given alchemic ingredient must be the same or one of them must have both states.
  *          | quantityUnit.getState() == capacity.getState() || capacity.getState() == State.BOTH || quantityUnit.getState() == State.BOTH
- *
+ * @invar   The unit of quantity expressed in spoons multiplied by the given amount is lesser than or
+ *          equal to the capacity of this container expressed in spoons.
+ *          | (quantityUnit.getAmountSpoons() * quantityAmount) <= capacity.getAmountSpoons()
  *
  * @author  Adelina Vozianu
  * @author  Boglárka Csorba-Vitus
