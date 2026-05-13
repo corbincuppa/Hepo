@@ -122,7 +122,7 @@ public class AlchemicIngredient {
      *          | ! isValidName(specialName)
      */
     protected void setSpecialName(String specialName) throws IllegalNameException{
-        if (IngredientType.isValidName(specialName)) {
+        if (IngredientType.canHaveAsName(specialName)) {
             this.specialName = specialName;
         } else {
             throw new IllegalNameException(specialName);
