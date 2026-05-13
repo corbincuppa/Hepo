@@ -144,11 +144,11 @@ public class Laboratory {
     public IngredientContainer takeIngredient(String name, ArrayList quantity) {
         for (IngredientContainer container : storage) {
             String ingName = container.getIngredient().getName();
-            int ingQuantity = container.getIngredient().getQuantity();
+            int ingQuantity = container.getIngredient().getQuantityAmount();
             if (ingName.equals(name)) {
                 // check if units are legals
                 // ingQuantity - quantity
-                container.getIngredient().setQuantity(-quantity);
+                container.getIngredient().setQuantity();
                 // check if ingQuantity is now null
                 if (ingQuantity == 0) {
                     // delete container from storage

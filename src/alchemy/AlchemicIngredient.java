@@ -203,26 +203,41 @@ public class AlchemicIngredient {
      * Quantity - Nominal programming
      **********************************************************/
     /**
+     * The quantity of the alchemic ingredient expressed in an amount.
+     */
+    private int quantityAmount;
+
+    /**
      * The quantity of the alchemic ingredient expressed in a unit of quantity.
      */
-    private ArrayList<Object> quantity;
+    private UnitOfQuantity quantityUnit;
 
     /**
      * Change the quantity of this alchemic ingredient to the
      * given quantity.
      *
-     * @param quantity
-     *        The given quantity
+     * @param amount
+     *        The given amount
+     * @param unit
+     *        The given unit
      */
-    void setQuantity(ArrayList<Object> quantity) {
-        this.quantity = quantity;
+    void setQuantity(int amount, UnitOfQuantity unit) {
+        this.quantityAmount = amount;
+        this.quantityUnit = unit;
     }
 
     /**
      * Return the numerical quantity of this alchemic ingredient.
      */
-    protected int getQuantity() {
-        return (int)quantity.get(0);
+    protected int getQuantityAmount() {
+        return quantityAmount;
+    }
+
+    /**
+     * Return the unit of quantity of this alchemic ingredient.
+     */
+    protected UnitOfQuantity getQuantityUnit() {
+        return quantityUnit;
     }
 
     /**
