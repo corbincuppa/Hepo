@@ -1,7 +1,6 @@
 package alchemy;
 
 import be.kuleuven.cs.som.annotate.*;
-import exceptions.*;
 
 /**
  * A class of ingredient types.
@@ -27,15 +26,13 @@ public class IngredientType {
      *         The given standard temperature of the ingredient type.
      * @param  stdTemp
      *         The given standard temperature of the ingredient type.
-     * @throws IllegalNameException
-     *         | !isValidName(name)
      */
-    protected IngredientType(String name, State stdState, int[] stdTemp) throws IllegalNameException {
+    protected IngredientType(String name, State stdState, int[] stdTemp) {
         setName(name);
         this.stdState = stdState;
-        this.stdTemp = stdTemp;
+        setTemp(stdTemp);
     }
-    //klopt dit?
+
 
 
     /**********************************************************
@@ -52,7 +49,19 @@ public class IngredientType {
     /**
      * Variable referencing the name of this alchemic ingredient.
      */
-    private String name = null;
+    private String name = getDefaultName();
+
+    /**
+     * Return the name for a new disk item which is to be used when the
+     * given name is not valid.
+     *
+     * @return	A valid disk item name.
+     *         	| canHaveAsName(result) && result.equals("ingredient_type"")
+     */
+    @Model
+    protected String getDefaultName() {
+        return "ingredient_type";
+    }
 
     /**
      * Check whether the given character is a valid character for the name of this ingredient type
@@ -132,7 +141,8 @@ public class IngredientType {
      *			The name to be checked
      * @return
      */
-    protected static boolean isValidName(String name) {
+    @Raw
+    protected static boolean canHaveAsName(String name) {
         if (name == null || name.isEmpty() || name.toLowerCase().contains("mixed") || name.toLowerCase().contains("with")) {
             return false;
         }
@@ -164,27 +174,23 @@ public class IngredientType {
      * @post    If the given name is valid, the name of
      *          this ingredient type is set to the given name,
      *          otherwise it throws an IllegalNameException
-     *          | if (isValidName(name))
-     *          |      then new.getName().equals(name)
-     *          |      else throws IllegalNameException
-     * @throws IllegalNameException [must]
-     * 	       The given name is not a legal name for any ingredient type
-     * 	       | (! isValidName(name)
+     *          | if (canHaveAsName(name))
+     *          | then new.getName().equals(name)
+     *          | else new.getName().equals(getDefaultName())
      */
-    @Raw
-    @Model
-    private void setName(String name) throws IllegalNameException {
-        if (isValidName(name)) {
+    @Raw @Model
+    private void setName(String name) {
+        if (canHaveAsName(name)) {
             this.name = name;
         } else {
-            throw new IllegalNameException(name);
+            this.name = getDefaultName();
         }
     }
-    //  ingredienttype --> total (exception needs to be caught)
 
     /**
      * Return the name of this ingredient type.
      */
+    @Raw @Basic
     public String getName() {
         return name;
     }
@@ -197,24 +203,29 @@ public class IngredientType {
     /**
      * Variable referencing the standard state of the ingredient type.
      */
-    private State stdState;
+    private final State stdState;
 
     /**
-     * Set the standard state of this ingredient type to the given state.
+     * Return whether the given type is a valid standard state for an ingredient type.
      *
-     * @param state
-     *        The given state
+     * @param  stdState
+     *         The standard state to check.
+     * @return True if and only if the given standard state is effective.
+     *         | result == (stdState != null)
      */
-    protected void setState(State state) {
-        this.stdState = state;
+    public static boolean isValidStdState(State stdState){
+        return stdState != null;
     }
+    // bij vorige practicum was er zoiets bij type -> is het hier ook nodig
 
     /**
      * Return the standard state of this ingredient type.
      */
+    @Raw @Basic @Immutable
     public State getStdState() {
         return stdState;
     }
+
 
     /**********************************************************
      * Standard temperature
@@ -225,7 +236,16 @@ public class IngredientType {
      *
      * @note The first integer refers to the coldness and the second integer to the hotness.
      */
-    private int[] stdTemp;
+    private int[] stdTemp = getDefaultTemp();
+
+
+    /**
+     * Return the default temperature.
+     */
+    private static int[] getDefaultTemp() {
+        return new int[]{0, 20};
+    }
+
 
     /**
      * Return the standard temperature of this ingredient type.
@@ -241,37 +261,27 @@ public class IngredientType {
      * @param maxValue
      * @return
      */
-    protected boolean isValidTemperature(int[] temperature, int maxValue) {
+    protected boolean canHaveAsStdTemperature(int[] temperature, int maxValue) {
         if (maxValue > Long.MAX_VALUE) {
             return false;
         }
         if (temperature.length != 2) {
             return false;
         }
-        int coldness = temperature[0];  //getStdColdness
+        int coldness = temperature[0];
         int hotness = temperature[1];
 
-        if (coldness < 0 || coldness > maxValue) {
+        if (coldness != 0 ) {
             return false;
         }
 
-        if (hotness < 0 || hotness > maxValue) {
-            return false;
-        }
-
-        if (coldness != 0 && hotness != 0) {
+        if (hotness <= 0 || hotness > maxValue) {
             return false;
         }
         return true;
     }
     // std moet strikt warmer zijn dan [0,0]
 
-    /**
-     * Return the default temperature.
-     */
-    private static int[] getDefaultTemp() {
-        return new int[]{0, 20};
-    }
 
     /**
      * Set the temperature of this ingredient type to the given temperature
@@ -288,7 +298,7 @@ public class IngredientType {
      *          |   then this.stdTemp = getDefaultTemp()
      */
     public void setTemp(int[] temp) {
-        if (isValidTemperature(temp, 10000)){
+        if (canHaveAsStdTemperature(temp, 10000)){
             this.stdTemp = temp;
         }else{
             this.stdTemp = getDefaultTemp();

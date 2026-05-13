@@ -253,9 +253,34 @@ public class AlchemicIngredient {
 
 
     //get coldness , get hotness
+
     // change temp
     // if it has been in the oven or cooler
     // correct input voor temp? --> ingriedientType
+
+    protected boolean canHaveAsStdTemperature(int[] temperature, int maxValue) {
+        if (maxValue > Long.MAX_VALUE) {
+            return false;
+        }
+        if (temperature.length != 2) {
+            return false;
+        }
+        int coldness = temperature[0];
+        int hotness = temperature[1];
+
+        if (coldness < 0 || coldness > maxValue) {
+            return false;
+        }
+
+        if (hotness < 0 || hotness > maxValue) {
+            return false;
+        }
+
+        if (coldness != 0 && hotness != 0) {
+            return false;
+        }
+        return true;
+    }
 
 
 
