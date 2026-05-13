@@ -36,6 +36,7 @@ public class IngredientTypeMixed extends IngredientType{
      * Name
      **********************************************************/
 
+    // mixed and with moeten niet met hoofletter beginnen
 
     /**
      * Check whether the given name is a legal name for an ingredient type.
@@ -45,7 +46,7 @@ public class IngredientTypeMixed extends IngredientType{
      * @return
      */
     @Override
-    protected static boolean canHaveAsName(String name) {
+    protected boolean canHaveAsName(String name) {
         if (name == null || name.isEmpty()) {
             return false;
         }

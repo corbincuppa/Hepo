@@ -2,7 +2,6 @@ package alchemy;
 
 import be.kuleuven.cs.som.annotate.*;
 import exceptions.*;
-import alchemy.*;
 
 import java.util.ArrayList;
 
@@ -31,11 +30,11 @@ public class AlchemicIngredient {
      *        The given unit of the quantity of the alchemic ingredient
      */
     public void AlchemicIngredient( IngredientType ingredientType, int amount, UnitOfQuantity unit) throws IllegalNameException {
-        setFullName(null);
+        setFullName();
         setIngredientType(ingredientType);
-        //this.state = ingredientType.getStdState();
+        this.state = ingredientType.getStdState();
         setQuantity(amount, unit);
-        //this.temperature = ingredientType.getStdTemp();
+        setTemperature();
         //container
     }
 
@@ -48,7 +47,7 @@ public class AlchemicIngredient {
     /**
      * Variable referencing the full name of the alchemic ingredient.
      */
-    private String fullName;
+    private String fullName = null;
 
     /**
      * Variable referencing the special name of the alchemic ingredient.
@@ -92,20 +91,22 @@ public class AlchemicIngredient {
     /**
      * Set the full name of this alchemic ingredient to the given name.
      *
-     * @param   fullName
-     *          The given name to be set as the full name
      * @effect  If the given name is a null-pointer, the full name of this alchemic ingredient is
      *          set to the simple name of this alchemic ingredient (the name of the type of ingredient).
      *          The full name of this alchemic ingredient is otherwise set to the given name.
      *          | fullName == null
      *          | XCBHIQEWVEFIYPVCBEWHI;VBFEWHI;EWVBUIV;WEB;UIVE //idk
      */
-    protected void setFullName(String fullName) {
-        if (fullName == null) {
+    protected void setFullName() {
+            this.fullName = getSimpleName();
+    }
+
+    protected void changeFullName(String name){
+        if (name == null) {
             this.fullName = getSimpleName();
         }
         else{
-            this.fullName = fullName;
+            this.fullName = name;
         }
     }
 
@@ -128,7 +129,7 @@ public class AlchemicIngredient {
             throw new IllegalNameException(specialName);
         }
     }
-    //--> something is probably wrong, also in the constructor
+    //--> alleen mixed kan speciale naam hebben
 
     /**
      *
@@ -149,7 +150,7 @@ public class AlchemicIngredient {
                         newName = newName + ", " + ingredients[i];
                     }
                 }
-            setFullName(newName);
+            changeFullName(newName);
         }
     }
     //--> only kettle can use this ----> maybe in the MixedIngredient subclass instead?
@@ -162,7 +163,7 @@ public class AlchemicIngredient {
     /**
      * The ingredient type of the alchemic ingredient.
      */
-    private IngredientType ingredientType;
+    private IngredientType ingredientType = null;
 
     /**
      * Set the ingredient type of this alchemic ingredient to the
@@ -174,6 +175,7 @@ public class AlchemicIngredient {
     private void setIngredientType(IngredientType ingredientType){
         this.ingredientType = ingredientType;
     }
+    // --> moet er getest worden of ingredientType bestaat?
 
     public IngredientType getIngredientType() {
         return ingredientType;
@@ -185,7 +187,7 @@ public class AlchemicIngredient {
     /**
      * The state of the alchemic ingredient.
      */
-    public State state = ingredientType.getStdState();
+    public State state;
 
     /**
      * Change the state of this alchemic ingredient to the
@@ -194,7 +196,7 @@ public class AlchemicIngredient {
      * @param state
      *        The given state
      */
-    private void setState(State state) {
+    private void changeState(State state) {
         this.state = state;
     }
     // --> if it has been in the Transmogrifier
@@ -250,23 +252,15 @@ public class AlchemicIngredient {
     /**
      * The current temperature of the alchemic ingredient.
      */
-    private int[] temperature;
+    private int[] temperature = null;
 
     /**
      * Change the curren temperature of this alchemic ingredient to the
      * given temperature.
      *
      */
-    private void setTemperature() {
-        this.temperature = ingredientType.getStdTemp();
+    private void setTemperature() { this.temperature = ingredientType.getStdTemp();;
     }
-
-
-    //get coldness , get hotness
-
-    // change temp
-    // if it has been in the oven or cooler
-    // correct input voor temp? --> ingriedientType
 
     protected boolean canHaveAsStdTemperature(int[] temperature, int maxValue) {
         if (maxValue > Long.MAX_VALUE) {
@@ -292,6 +286,23 @@ public class AlchemicIngredient {
         return true;
     }
 
+    private void changeTemperature(int[]temp) {
+        if (canHaveAsStdTemperature(temp, 10000)) {
+            this.temperature = temp;
+        }
+    }
+    // if it has been in the oven or cooler
 
+    public int[] getTemperature(){
+        return temperature;
+    }
+
+    public int getColdness(){
+        return temperature[0];
+    }
+
+    public int getHotness(){
+        return temperature[1];
+    }
 
 }

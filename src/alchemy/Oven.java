@@ -34,7 +34,7 @@ public class Oven extends Device {
      */
     protected void addPrefixHeated(AlchemicIngredient ingredient){
         String newName = "Heated" + ingredient.getFullName();
-        ingredient.setFullName(newName);
+        ingredient.changeFullName(newName);
     }
 
 

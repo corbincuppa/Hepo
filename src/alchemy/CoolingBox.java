@@ -41,7 +41,7 @@ public class CoolingBox extends Device{
      */
     protected void addPrefixCooled(AlchemicIngredient ingredient){
         String newName = "Cooled" + ingredient.getFullName();
-        ingredient.setFullName(newName);
+        ingredient.changeFullName(newName);
     }
 
 

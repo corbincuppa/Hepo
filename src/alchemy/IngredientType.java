@@ -236,7 +236,7 @@ public class IngredientType {
      *
      * @note The first integer refers to the coldness and the second integer to the hotness.
      */
-    private int[] stdTemp = getDefaultTemp();
+    private int[] stdTemp = null;
 
 
     /**
