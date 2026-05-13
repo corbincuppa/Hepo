@@ -2,8 +2,6 @@ package alchemy;
 
 import be.kuleuven.cs.som.annotate.*;
 
-import java.util.ArrayList;
-
 /**
  * A class of ingredient containers.
  *
@@ -44,7 +42,6 @@ public class IngredientContainer {
     public IngredientContainer(UnitOfQuantity capacity, AlchemicIngredient ingredient) {
            setCapacity(capacity);
            setContents(ingredient);
-       }
     }
 
     public void terminate() {
@@ -177,5 +174,3 @@ public class IngredientContainer {
         return false;
     }
 
-
-}
