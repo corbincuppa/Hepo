@@ -72,7 +72,7 @@ public class IngredientType {
      *          false otherwise.
      *          | character == '\'' || character == '(' || character == ')'
      */
-    private static boolean acceptableSymbols(Character character){
+    private boolean acceptableSymbols(Character character){
         // is dat de bedoeling:   '\''   ?
         if (character == '\'' || character == '(' || character == ')') {
             return true;
@@ -91,7 +91,7 @@ public class IngredientType {
      *          rest of the word container an uppercase letter.
      *          | i dont know??
      */
-    private static boolean restWithLowercases(String word, int index) {
+    private boolean restWithLowercases(String word, int index) {
         for (int i = index; i < word.length(); i++) {
             char c = word.charAt(i);
             if (acceptableSymbols(c)){
@@ -110,7 +110,7 @@ public class IngredientType {
      * @param word
      * @return
      */
-    private static boolean startsUppercaseRestLower(String word) {
+    private boolean startsUppercaseRestLower(String word) {
         char first = word.charAt(0);
         if (Character.isLetter(first)){
             return (Character.isUpperCase(first) && restWithLowercases(word, 1));
@@ -123,7 +123,7 @@ public class IngredientType {
     }
 
     // deze paar functies die te maken hebben met een validname moet je me een keer uitleggen want mn brein werkt op dit moment niet
-    protected static String[] letters(String word){
+    protected String[] letters(String word){
         String[] letters = new String[word.length()];
         for (int i = 0 ; i < word.length(); i++) {
             char c = word.charAt(i);
@@ -142,7 +142,7 @@ public class IngredientType {
      * @return
      */
     @Raw
-    protected static boolean canHaveAsName(String name) {
+    protected boolean canHaveAsName(String name) {
         if (name == null || name.isEmpty() || name.toLowerCase().contains("mixed") || name.toLowerCase().contains("with")) {
             return false;
         }

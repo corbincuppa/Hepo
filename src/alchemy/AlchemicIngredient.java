@@ -35,7 +35,6 @@ public class AlchemicIngredient {
         this.state = ingredientType.getStdState();
         setQuantity(amount, unit);
         setTemperature();
-        //container
     }
 
 
@@ -110,6 +109,111 @@ public class AlchemicIngredient {
         }
     }
 
+
+    /**
+     * Check whether the given character is a valid character for the name of this ingredient type
+     *
+     * @param   character
+     *          The given character to be checked
+     * @return  True if the given character is equal to the backwards slash, the open bracket or closed bracket,
+     *          false otherwise.
+     *          | character == '\'' || character == '(' || character == ')'
+     */
+    private boolean acceptableSymbols(Character character){
+        // is dat de bedoeling:   '\''   ?
+        if (character == '\'' || character == '(' || character == ')') {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Check whether the rest of the word (without the first uppercase letter) is a valid word.
+     *
+     * @param   word
+     *          The given word to be checked
+     * @param   index
+     *          The index at which to start so unnecessary beginning of word isn't checked
+     * @return  True if the rest of the word is compiled of acceptable characters, false if the
+     *          rest of the word container an uppercase letter.
+     *          | i dont know??
+     */
+    private boolean restWithLowercases(String word, int index) {
+        for (int i = index; i < word.length(); i++) {
+            char c = word.charAt(i);
+            if (acceptableSymbols(c)){
+                i ++;
+            }
+            if (!Character.isLowerCase(c)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Check if the word
+     *
+     * @param word
+     * @return
+     */
+    private boolean startsUppercaseRestLower(String word) {
+        char first = word.charAt(0);
+        if (Character.isLetter(first)){
+            return (Character.isUpperCase(first) && restWithLowercases(word, 1));
+        }
+        if (acceptableSymbols(first)){
+            char second = word.charAt(1);
+            return (Character.isUpperCase(second) && restWithLowercases(word, 2));
+        }
+        return false;
+    }
+
+    // deze paar functies die te maken hebben met een validname moet je me een keer uitleggen want mn brein werkt op dit moment niet
+    protected String[] letters(String word){
+        String[] letters = new String[word.length()];
+        for (int i = 0 ; i < word.length(); i++) {
+            char c = word.charAt(i);
+            if (Character.isLetter(c)){
+                letters[i] = String.valueOf(c);
+            }
+        }
+        return letters;
+    }
+
+    /**
+     * Check whether the given name is a legal name for an ingredient type.
+     *
+     * @param  	name
+     *			The name to be checked
+     * @return
+     */
+    @Raw
+    protected boolean isSpecialNameValid(String name) {
+        if (name == null || name.isEmpty() || name.toLowerCase().contains("mixed") || name.toLowerCase().contains("with")) {
+            return false;
+        }
+        String[] words = name.split(" ");
+        if (words.length == 1) {
+            if (letters(words[0]).length < 3) {
+                return false;
+            } else {
+                return startsUppercaseRestLower(words[0]);
+            }
+        }
+        for (String word : words) {
+            if (letters(word).length < 2) {
+                return false;
+            } else {
+                if (!startsUppercaseRestLower(word)){
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+
     /**
      * Set the special name of this alchemic ingredient to the given name.
      *
@@ -123,7 +227,8 @@ public class AlchemicIngredient {
      *          | ! isValidName(specialName)
      */
     protected void setSpecialName(String specialName) throws IllegalNameException{
-        if (IngredientType.canHaveAsName(specialName)) {
+        //instanceof ingredient type mixed
+        if (isSpecialNameValid(specialName)) {
             this.specialName = specialName;
         } else {
             throw new IllegalNameException(specialName);
@@ -154,6 +259,35 @@ public class AlchemicIngredient {
         }
     }
     //--> only kettle can use this ----> maybe in the MixedIngredient subclass instead?
+
+    /**
+     * Add "Heated" to the full name of the given alchemic ingredient.
+     *
+     */
+    protected void addPrefixHeated(){
+        String newName = "Heated" + this.getFullName();
+        this.changeFullName(newName);
+    }
+    // only oven can use this
+
+    /**
+     * Add "Cooled" to the full name of the given alchemic ingredient.
+     *
+     */
+    protected void addPrefixCooled(){
+        String newName = "Cooled" + this.getFullName();
+        this.changeFullName(newName);
+    }
+    // only coolingbox can use this
+
+    protected void addPrefixState(State state){
+        String prefix = "Powdered";
+        if (state == State.LIQUID)
+            prefix = "Liquid";
+        String newName = prefix + this.getFullName();
+        this.changeFullName(newName);
+    }
+    // only transmogrifier can use this
 
 
     /**********************************************************
@@ -286,7 +420,7 @@ public class AlchemicIngredient {
         return true;
     }
 
-    private void changeTemperature(int[]temp) {
+    protected void changeTemperature(int[]temp) {
         if (canHaveAsStdTemperature(temp, 10000)) {
             this.temperature = temp;
         }
