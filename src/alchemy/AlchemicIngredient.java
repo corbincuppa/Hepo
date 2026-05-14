@@ -235,8 +235,7 @@ public class AlchemicIngredient {
      *          | ! isValidName(specialName)
      */
     protected void setSpecialName(String specialName) throws IllegalNameException{
-        //instanceof ingredient type mixed
-        if (isSpecialNameValid(specialName)) {
+        if (IngredientType.canHaveAsName(specialName)) {
             this.specialName = specialName;
         } else {
             throw new IllegalNameException(specialName);
