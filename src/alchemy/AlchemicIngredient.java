@@ -347,7 +347,7 @@ public class AlchemicIngredient {
      * @param state
      *        The given state
      */
-    private void changeState(State state) {
+    protected void changeState(State state) {
         this.state = state;
     }
     // --> if it has been in the Transmogrifier
