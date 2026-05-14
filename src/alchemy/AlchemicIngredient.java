@@ -34,6 +34,7 @@ public class AlchemicIngredient {
         setTemperature();
     }
     // waarom throws illegalNameException? is it bcs of setSpecialName? (not used here)
+    // --> name moet defensief uitgewerkt worden, dus kan illegalNameException gooien
 
 
     /**********************************************************
@@ -103,18 +104,11 @@ public class AlchemicIngredient {
      *
      * @param   name
      *          The given name
-     * @post    If the given name is null then the full name is set to the simple name of this alchemic ingredient,
-     *          otherwise it is set to the given name.
-     *          | if (name == null) then this.fullName = getSimpleName()
-     *          | else this.fullName = name
+     * @post    The full name is set to the given name.
+     *          | this.fullName = name
      */
     protected void changeFullName(String name){
-        if (name == null) {
-            this.fullName = getSimpleName();
-        }
-        else{
-            this.fullName = name;
-        }
+        this.fullName = name;
     }
 
 
@@ -143,7 +137,7 @@ public class AlchemicIngredient {
      *          The index at which to start so unnecessary beginning of word isn't checked
      * @return  True if the rest of the word is compiled of acceptable characters, false if the
      *          rest of the word container an uppercase letter.
-     *          | is in ingredient type
+     *          | is in ingredient type --> ????
      */
     private boolean restWithLowercases(String word, int index) {
         for (int i = index; i < word.length(); i++) {
@@ -176,7 +170,7 @@ public class AlchemicIngredient {
         return false;
     }
 
-    // in ing type?
+    // in ing type? ---> ????
     protected String[] letters(String word){
         String[] letters = new String[word.length()];
         for (int i = 0 ; i < word.length(); i++) {
@@ -234,13 +228,15 @@ public class AlchemicIngredient {
      *          | ! isValidName(specialName)
      */
     protected void setSpecialName(String specialName) throws IllegalNameException{
-        if (IngredientType.canHaveAsName(specialName)) {
-            this.specialName = specialName;
-        } else {
-            throw new IllegalNameException(specialName);
+        if (this.getIngredientType() instanceof IngredientTypeMixed){
+            if (isSpecialNameValid(specialName)) {
+                this.specialName = specialName;
+            } else {
+                throw new IllegalNameException(specialName);
+            }
         }
+        //IllegalIngredientTypeException???
     }
-    //--> alleen mixed kan speciale naam hebben
 
     /**
      *
@@ -251,7 +247,9 @@ public class AlchemicIngredient {
     protected void mixedNames(String[] ingredients){
         int length = ingredients.length;
         if (length < 2){
-            //exception
+            //exception --> hier of bij kettle als er maar 1 ingredient erin zit
+            // of miss hoeft er geen exception
+            // 1 ingredient in kettle --> gewoon die ingredient terug
         }else{
             String newName = ingredients[0] + " mixed with " + ingredients[1];
             for (int i = 2 ; i < length; i++){
@@ -265,7 +263,7 @@ public class AlchemicIngredient {
         }
     }
     //--> only kettle can use this
-    // should this return the name instead?
+    // should this return the name instead? --> Miss wel en bij kettle steken zodat het de naam van de new IngredientType wordt
 
     /**
      * Add "Heated" to the full name of the given alchemic ingredient.
@@ -424,7 +422,7 @@ public class AlchemicIngredient {
     }
 
     /**
-     * Check if the given temperature is a valid standard temperature for an alchemic ingredient given a maximum value.
+     * Check if the given temperature is a valid temperature for an alchemic ingredient given a maximum value.
      *
      * @param   temperature
      *          The given temperature to be checked
@@ -445,7 +443,7 @@ public class AlchemicIngredient {
      *          | if (coldness != 0 && hotness != 0) then result == false else
      *          | result == true
      */
-    protected boolean canHaveAsStdTemperature(int[] temperature, int maxValue) {
+    protected boolean canHaveAsTemperature(int[] temperature, int maxValue) {
         if (maxValue > Long.MAX_VALUE) {
             return false;
         }
@@ -479,7 +477,7 @@ public class AlchemicIngredient {
      *          | canHaveAsStdTemperature(temp, 10 000)
      */
     private void changeTemperature(int[]temp) {
-        if (canHaveAsStdTemperature(temp, 10000)) {
+        if (canHaveAsTemperature(temp, 10000)) {
             this.temperature = temp;
         }
     }
