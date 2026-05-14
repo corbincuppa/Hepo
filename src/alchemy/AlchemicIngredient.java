@@ -33,7 +33,7 @@ public class AlchemicIngredient {
         setQuantity(amount, unit);
         setTemperature();
     }
-
+    // waarom throws illegalNameException? is it bcs of setSpecialName? (not used here)
 
 
     /**********************************************************
@@ -73,9 +73,13 @@ public class AlchemicIngredient {
     }
 
     /**
+     * Get the full name of this alchemic ingredient.
      *
-     *
-     * @return
+     * @return  The special name with the full name between brackets of this ingredient is the special name is not null,
+     *          otherwise the full name of this alchemic ingredient.
+     *          | if (this.getSpecialName() != null) then result == this.getSpecialName() +
+     *          |        "(" + this.getFullName() + ")"
+     *          | else result == this.getFullName()
      */
     public String getName() {
         if (this.getSpecialName() != null){
@@ -85,18 +89,25 @@ public class AlchemicIngredient {
     }
 
     /**
-     * Set the full name of this alchemic ingredient to the given name.
+     * Set the full name of this alchemic ingredient.
      *
-     * @effect  If the given name is a null-pointer, the full name of this alchemic ingredient is
-     *          set to the simple name of this alchemic ingredient (the name of the type of ingredient).
-     *          The full name of this alchemic ingredient is otherwise set to the given name.
-     *          | fullName == null
-     *          | XCBHIQEWVEFIYPVCBEWHI;VBFEWHI;EWVBUIV;WEB;UIVE //idk
+     * @post    The full name of this alchemic ingredient is set to the simple name
+     *          | this.fullName = getSimpleName()
      */
     protected void setFullName() {
             this.fullName = getSimpleName();
     }
 
+    /**
+     * Set the full name of this alcheic ingredient to the given name.
+     *
+     * @param   name
+     *          The given name
+     * @post    If the given name is null then the full name is set to the simple name of this alchemic ingredient,
+     *          otherwise it is set to the given name.
+     *          | if (name == null) then this.fullName = getSimpleName()
+     *          | else this.fullName = name
+     */
     protected void changeFullName(String name){
         if (name == null) {
             this.fullName = getSimpleName();
@@ -150,12 +161,13 @@ public class AlchemicIngredient {
         }
     }
     //--> only kettle can use this ----> maybe in the MixedIngredient subclass instead?
+    // isn't a new ingredient made instead of changing the name of this ingredient?
 
 
     /**********************************************************
      * IngredientType
      **********************************************************/
-    //      THIS OR THE ALCHEMIC INGREDIENT? PERIOD OR NO PERIOD FOR JAVADOC COMMENTS?????????????
+
     /**
      * The ingredient type of the alchemic ingredient.
      */
@@ -180,6 +192,7 @@ public class AlchemicIngredient {
     /**********************************************************
      * State
      **********************************************************/
+
     /**
      * The state of the alchemic ingredient.
      */
@@ -209,6 +222,7 @@ public class AlchemicIngredient {
     /**********************************************************
      * Quantity - Nominal programming
      **********************************************************/
+
     /**
      * The quantity of the alchemic ingredient expressed in an amount.
      */
