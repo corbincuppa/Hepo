@@ -3,8 +3,6 @@ package alchemy;
 import be.kuleuven.cs.som.annotate.*;
 import exceptions.*;
 
-import java.util.ArrayList;
-
 /**
  * A class of alchemic ingredients.
  *
@@ -12,7 +10,6 @@ import java.util.ArrayList;
  * @author  Boglárka Csorba-Vitus
  * @version 1.0
  */
-
 public class AlchemicIngredient {
     /**********************************************************
      * Constructors
@@ -29,14 +26,14 @@ public class AlchemicIngredient {
      * @param unit
      *        The given unit of the quantity of the alchemic ingredient
      */
-    public void AlchemicIngredient( IngredientType ingredientType, int amount, UnitOfQuantity unit) throws IllegalNameException {
+    public AlchemicIngredient( IngredientType ingredientType, int amount, UnitOfQuantity unit) throws IllegalNameException {
         setFullName();
         setIngredientType(ingredientType);
         this.state = ingredientType.getStdState();
         setQuantity(amount, unit);
         setTemperature();
     }
-
+    // waarom throws illegalNameException? is it bcs of setSpecialName? (not used here)
 
 
     /**********************************************************
@@ -76,9 +73,13 @@ public class AlchemicIngredient {
     }
 
     /**
+     * Get the full name of this alchemic ingredient.
      *
-     *
-     * @return
+     * @return  The special name with the full name between brackets of this ingredient is the special name is not null,
+     *          otherwise the full name of this alchemic ingredient.
+     *          | if (this.getSpecialName() != null) then result == this.getSpecialName() +
+     *          |        "(" + this.getFullName() + ")"
+     *          | else result == this.getFullName()
      */
     public String getName() {
         if (this.getSpecialName() != null){
@@ -88,18 +89,25 @@ public class AlchemicIngredient {
     }
 
     /**
-     * Set the full name of this alchemic ingredient to the given name.
+     * Set the full name of this alchemic ingredient.
      *
-     * @effect  If the given name is a null-pointer, the full name of this alchemic ingredient is
-     *          set to the simple name of this alchemic ingredient (the name of the type of ingredient).
-     *          The full name of this alchemic ingredient is otherwise set to the given name.
-     *          | fullName == null
-     *          | XCBHIQEWVEFIYPVCBEWHI;VBFEWHI;EWVBUIV;WEB;UIVE //idk
+     * @post    The full name of this alchemic ingredient is set to the simple name
+     *          | this.fullName = getSimpleName()
      */
     protected void setFullName() {
             this.fullName = getSimpleName();
     }
 
+    /**
+     * Set the full name of this alcheic ingredient to the given name.
+     *
+     * @param   name
+     *          The given name
+     * @post    If the given name is null then the full name is set to the simple name of this alchemic ingredient,
+     *          otherwise it is set to the given name.
+     *          | if (name == null) then this.fullName = getSimpleName()
+     *          | else this.fullName = name
+     */
     protected void changeFullName(String name){
         if (name == null) {
             this.fullName = getSimpleName();
@@ -259,6 +267,7 @@ public class AlchemicIngredient {
         }
     }
     //--> only kettle can use this ----> maybe in the MixedIngredient subclass instead?
+    // isn't a new ingredient made instead of changing the name of this ingredient?
 
     /**
      * Add "Heated" to the full name of the given alchemic ingredient.
@@ -293,7 +302,7 @@ public class AlchemicIngredient {
     /**********************************************************
      * IngredientType
      **********************************************************/
-    //      THIS OR THE ALCHEMIC INGREDIENT? PERIOD OR NO PERIOD FOR JAVADOC COMMENTS?????????????
+
     /**
      * The ingredient type of the alchemic ingredient.
      */
@@ -318,6 +327,7 @@ public class AlchemicIngredient {
     /**********************************************************
      * State
      **********************************************************/
+
     /**
      * The state of the alchemic ingredient.
      */
@@ -335,11 +345,19 @@ public class AlchemicIngredient {
     }
     // --> if it has been in the Transmogrifier
 
+    /**
+     * Return the state of this alchemic ingredient.
+     */
+    public State getState() {
+        return state;
+    }
+
 
 
     /**********************************************************
      * Quantity - Nominal programming
      **********************************************************/
+
     /**
      * The quantity of the alchemic ingredient expressed in an amount.
      */
@@ -389,13 +407,35 @@ public class AlchemicIngredient {
     private int[] temperature = null;
 
     /**
-     * Change the curren temperature of this alchemic ingredient to the
+     * Change the current temperature of this alchemic ingredient to the
      * given temperature.
      *
      */
     private void setTemperature() { this.temperature = ingredientType.getStdTemp();;
     }
 
+    /**
+     * Check if the given temperature is a valid standard temperature for an alchemic ingredient given a maximum value.
+     *
+     * @param   temperature
+     *          The given temperature to be checked
+     * @param   maxValue
+     *          The given maximum value for the temperature
+     * @return  False if the given maximum value is greater than the Java MAX_VALUE.
+     *          False if the given temperature expressed as an array is not composed of two elements (its size is not 2).
+     *          False if the coldness of the temperature is lesser than 0 or if the coldness is greater than the given
+     *          maximum value.
+     *          False if the hotness of the temperature is lesser than 0 or if the hotness is greater than the given
+     *          maximum value.
+     *          False of the coldness of the temperature is not 0 and the hotness of the temperature is not 0,
+     *          true otherwise.
+     *          | if (maxValue > Long.MAX_VALUE) then result == false else
+     *          | if (temperature.length != 2) then result == false else
+     *          | if (coldness < 0 || coldness > maxValue) then result == false else
+     *          | if (hotness < 0 || hotness > maxValue) then result == false else
+     *          | if (coldness != 0 && hotness != 0) then result == false else
+     *          | result == true
+     */
     protected boolean canHaveAsStdTemperature(int[] temperature, int maxValue) {
         if (maxValue > Long.MAX_VALUE) {
             return false;
@@ -420,6 +460,15 @@ public class AlchemicIngredient {
         return true;
     }
 
+    /**
+     * Set the temperature of this alchemic ingredient to the given temperature.
+     *
+     * @param   temp
+     *          The given temperature
+     * @post    If the given temperature is a valid temperature then the temperature of this alchemic
+     *          ingredient is set to the given temperature.
+     *          | canHaveAsStdTemperature(temp, 10 000)
+     */
     protected void changeTemperature(int[]temp) {
         if (canHaveAsStdTemperature(temp, 10000)) {
             this.temperature = temp;
@@ -427,14 +476,23 @@ public class AlchemicIngredient {
     }
     // if it has been in the oven or cooler
 
+    /**
+     * Returns the temperature of this alchemic ingredient.
+     */
     public int[] getTemperature(){
         return temperature;
     }
 
+    /**
+     * Returns the coldness of the temperature of this alchemic ingredient.
+     */
     public int getColdness(){
         return temperature[0];
     }
 
+    /**
+     * Returns the hotness of the temperature of this alchemic ingredient
+     */
     public int getHotness(){
         return temperature[1];
     }

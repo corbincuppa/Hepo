@@ -17,6 +17,7 @@ public class IngredientType {
     /**********************************************************
      * Constructors
      **********************************************************/
+
     /**
      * Initialize a new ingredient type with a given name, standard state and standard temperature.
      *
@@ -34,13 +35,6 @@ public class IngredientType {
     }
 
 
-
-    /**********************************************************
-     * IngredientType
-     **********************************************************/
-
-    // ???? why is header called ingredient type
-    IngredientType water = new IngredientType("Water", State.LIQUID, new int[]{0, 20});
 
     /**********************************************************
      * Name
@@ -70,10 +64,9 @@ public class IngredientType {
      *          The given character to be checked
      * @return  True if the given character is equal to the backwards slash, the open bracket or closed bracket,
      *          false otherwise.
-     *          | character == '\'' || character == '(' || character == ')'
+     *          | result == (character == '\'' || character == '(' || character == ')')
      */
-    private boolean acceptableSymbols(Character character){
-        // is dat de bedoeling:   '\''   ?
+    private static boolean acceptableSymbols(Character character){
         if (character == '\'' || character == '(' || character == ')') {
             return true;
         }
@@ -86,10 +79,15 @@ public class IngredientType {
      * @param   word
      *          The given word to be checked
      * @param   index
-     *          The index at which to start so unnecessary beginning of word isn't checked
+     *          The index at which to start so the unnecessary beginning of the word up until the index isn't checked
      * @return  True if the rest of the word is compiled of acceptable characters, false if the
-     *          rest of the word container an uppercase letter.
-     *          | i dont know??
+     *          rest of the word contains an uppercase letter.
+     *          | for each i in index..word.length()
+     *          |   if (acceptableSymbols(word.charAt(i)))
+     *          |       i++
+     *          |   else if (!Character.isLowerCase(word.charAt(i)))
+     *          |       result == false
+     *          | result == true
      */
     private boolean restWithLowercases(String word, int index) {
         for (int i = index; i < word.length(); i++) {
@@ -105,10 +103,20 @@ public class IngredientType {
     }
 
     /**
-     * Check if the word
+     * Check if the given word starts with an uppercase letter and the rest is lower case.
      *
-     * @param word
-     * @return
+     * @param   word
+     *          The given word to be checked
+     * @return  If the first character of the word is a letter, then it is checked if that character is uppercase and if
+     *          the rest of the word without that character consists of lowercase letters.
+     *          If the first character of the word is instead an accepted symbol, then it is checked if the second character
+     *          is an uppercase letter and the rest of the word without those two characters consister of lowercase letters.
+     *          False otherwise.
+     *          | if (Character.isLetter(word.charAt(0)))
+     *          |   then result == (Character.isUpperCase(word.charAt(0)) && restWithLowercases(word, 1))
+     *          | if (acceptableSymbols(word.charAt(1)))
+     *          |   then result == (Character.isUpperCase(word.charAt(1)) && restWithLowercases(word, 2))
+     *          | else result == false
      */
     private boolean startsUppercaseRestLower(String word) {
         char first = word.charAt(0);
@@ -122,7 +130,19 @@ public class IngredientType {
         return false;
     }
 
-    // deze paar functies die te maken hebben met een validname moet je me een keer uitleggen want mn brein werkt op dit moment niet
+    /**
+     * Returns the letters of a given word.
+     *
+     * @param   word
+     *          The given word
+     * @effect  For each character in the given word, if that character is a letter, then it is appended to the String
+     *          of letter which is to be returned.
+     *          | for each i in 0..word.length()
+     *          |   if (Character.isLetter(word.charAt(i)))
+     *          |       then letters[i] == String.valueOf(word.charAt(i))
+     * @return  The list of letter in the given word.
+     *          | result == letters
+     */
     protected String[] letters(String word){
         String[] letters = new String[word.length()];
         for (int i = 0 ; i < word.length(); i++) {
@@ -139,7 +159,27 @@ public class IngredientType {
      *
      * @param  	name
      *			The name to be checked
-     * @return
+     * @return  False if name is null, empty, contains the word "mixed" or contains the word "with".
+     *          False if the name contains but one word, and if then that word is lesser than 3 characters long, else
+     *          it is checked if the word starts with an uppercase letter and otherwise lowercase letters.
+     *          False if any word in the name consists of less than two characters.
+     *          False if any word in the name consists of more than two characters but it does not start with an
+     *          uppercase letters.
+     *          True otherwise.
+     *          | if (name == null || name.isEmpty() ||
+     *          |       name.toLowerCase().contains("mixed") || name.toLowerCase().contains("with"))
+     *          |   then result == false
+     *          |
+     *          | if (words.length == 1) then
+     *          |   if (letters(words[0]).length < 3) then
+     *          |       result == false
+     *          |   else result == tartsUppercaseRestLower(words[0])
+     *          |
+     *          | for each word in words
+     *          |   if (letters(word).length < 2) then result == false
+     *          |   else if (!startsUppercaseRestLower(word)) then result == false
+     *          |
+     *          | result == true
      */
     @Raw
     protected boolean canHaveAsName(String name) {
@@ -196,6 +236,7 @@ public class IngredientType {
     }
 
 
+
     /**********************************************************
      * Standard state
      **********************************************************/
@@ -225,6 +266,7 @@ public class IngredientType {
     public State getStdState() {
         return stdState;
     }
+
 
 
     /**********************************************************

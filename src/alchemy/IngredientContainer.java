@@ -5,12 +5,10 @@ import be.kuleuven.cs.som.annotate.*;
 /**
  * A class of ingredient containers.
  *
- * @invar   The states of the capacity of this container and the state of the unit of quantity of the
- *          given alchemic ingredient must be the same or one of them must have both states.
- *          | quantityUnit.getState() == capacity.getState() || capacity.getState() == State.BOTH || quantityUnit.getState() == State.BOTH
- * @invar   The unit of quantity expressed in spoons multiplied by the given amount is lesser than or
- *          equal to the capacity of this container expressed in spoons.
- *          | (quantityUnit.getAmountSpoons() * quantityAmount) <= capacity.getAmountSpoons()
+ * @invar   The capacity of an ingredient container must be a valid capacity.
+ *          | isValidCapacity(capacity)
+ * @invar   The quantity of a given ingredient inside a container must be a valid quantity.
+ *          | isValidQuantity(ingredient.getQuantity())
  *
  * @author  Adelina Vozianu
  * @author  Boglárka Csorba-Vitus
@@ -35,14 +33,30 @@ public class IngredientContainer {
      * @pre     The quantity of the given alchemic ingredient must be a valid quantity for an ingredient container.
      *          | isValidQuantity(ingredient.getQuantityAmount(), ingredient.getQuantityUnit())
      */
-    // do you have to write out full pre or just state that it must be valid?
     public IngredientContainer(UnitOfQuantity capacity, AlchemicIngredient ingredient) {
         setCapacity(capacity);
         setContents(ingredient);
     }
 
-    public void terminate() {
-
+    /**
+     * Initialize a container with a given alchemic ingredient which fits the given ingredient the best
+     * in terms of size.
+     *
+     * @param   ingredient
+     *          The given alchemic ingredient to be stored in a best fitting container
+     * @pre     The given capacity must be a valid capacity for an ingredient container.
+     *          | isValidCapacity(capacity)
+     * @pre     The quantity of the given alchemic ingredient must be a valid quantity for an ingredient container.
+     *          | isValidQuantity(ingredient.getQuantityAmount(), ingredient.getQuantityUnit())
+     */
+    public IngredientContainer(AlchemicIngredient ingredient) {
+        State state = ingredient.getState();
+        int amount = ingredient.getQuantityAmount();
+        UnitOfQuantity unit1 = ingredient.getQuantityUnit();
+        double inSpoons = unit1.getAmountSpoons() * amount;
+        UnitOfQuantity capacity = UnitOfQuantity.getBestUnit(inSpoons, state);
+        setCapacity(capacity);
+        setContents(ingredient);
     }
 
 
@@ -122,12 +136,19 @@ public class IngredientContainer {
      *          The given alchemic ingredient to be stored inside this container.
      * @pre     The states of the capacity of this container and the state of the unit of quantity of the
      *          given alchemic ingredient must be the same or one of them must have both states.
-     *          | quantityUnit.getState() == capacity.getState() || capacity.getState() == State.BOTH || quantityUnit.getState() == State.BOTH
+     *          | quantityUnit.getState() == capacity.getState() || capacity.getState() == State.BOTH
+     *          |   || quantityUnit.getState() == State.BOTH
      * @pre     The unit of quantity expressed in spoons multiplied by the given amount is
      *          lesser than or equal to the capacity of this container expressed in spoons.
      *          | (quantityUnit.getAmountSpoons() * quantityAmount) <= capacity.getAmountSpoons()
+     * @throws  IllegalStateException
+     *          | isTerminated()
      */
-    private void setContents(AlchemicIngredient ingredient) {
+    private void setContents(AlchemicIngredient ingredient) throws IllegalStateException {
+        if (this.isTerminated()) {
+            throw new IllegalStateException("Object is terminated");
+        }
+
         int amount = ingredient.getQuantityAmount();
         UnitOfQuantity quantityUnit = ingredient.getQuantityUnit();
         if (isValidQuantity(amount, quantityUnit)) {
@@ -166,5 +187,38 @@ public class IngredientContainer {
             }
         }
         return false;
+    }
+
+
+
+    /**********************************************************
+     * IsTerminated
+     **********************************************************/
+
+    /**
+     * Variable referencing whether this ingredient container is terminated.
+     */
+    private boolean isTerminated = false;
+
+    /**
+     * Check if this container is terminated.
+     *
+     * @return True if this container is terminated, false otherwise.
+     */
+    private boolean isTerminated() {
+        return isTerminated;
+    }
+
+    /**
+     * Terminate this ingredient container.
+     *
+     * @effect  The contents of this container is set to null.
+     * @effect  The capacity of this container is set to null.
+     * @effect  The isTerminated variable is set to true.
+     */
+    protected void terminate() {
+        this.contents = null;
+        this.capacity = null;
+        isTerminated = true;
     }
 }

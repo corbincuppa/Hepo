@@ -1,6 +1,8 @@
 package alchemy;
 
+import exceptions.IllegalAmountException;
 import java.util.ArrayList;
+import java.util.NoSuchElementException;
 
 /**
  * A class of laboratories.
@@ -11,6 +13,7 @@ import java.util.ArrayList;
  */
 
 public class Laboratory {
+
     /**********************************************************
      * Constructors
      **********************************************************/
@@ -43,9 +46,8 @@ public class Laboratory {
     /**
      * Return the capacity of this laboratory.
      */
-    public String getCapacity() {
-        return this.capacity + " " + UnitOfQuantity.STOREROOM.getUnit() + "s";
-        // maybe should return the actual int instead..
+    public int getCapacity() {
+        return capacity;
     }
 
     /**
@@ -61,7 +63,7 @@ public class Laboratory {
      */
     private void setCapacity(int capacity) {
         if (capacity < 0)
-            this.capacity += capacity;
+            this.capacity = capacity;
     }
 
 
@@ -78,8 +80,6 @@ public class Laboratory {
     /**
      * Return the device(s) available in this laboratory.
      */
-    // returns in string so that devices list cannot be changed by the user.
-    // wait but i kinda to return the device so that user can actually use device...uhm
     public String getDevices() {
         String returnStr = new String();
         for (Device device : devices) {
@@ -118,91 +118,189 @@ public class Laboratory {
     /**
      * Add the contents of the given container to the laboratory.
      *
-     * @param  container
-     *         The given container to be added to storage.
+     * @param   container
+     *          The given container to be added to storage.
+     * @effect
      *
      * @effect  The given container is terminated.
+     *          | container.terminate()
      */
     public void storeIngredient(IngredientContainer container) {
-        // CHECK CONTAINER
         UnitOfQuantity capacity = container.getCapacity();
         AlchemicIngredient ingredient = container.getIngredient();
-        // shouldn;t it get the quantity of the ingredient inside the container? and make a new which fits the ingredient best
         IngredientContainer newContainer = new IngredientContainer(capacity, ingredient);
         storage.add(newContainer);
-        // THEN DELETE CONTAINER
+        // Delete the old container
         container.terminate();
-
     }
 
     /**
+     * Check if an ingredient with the given name is stored inside this laboratory.
      *
-     *
-     * @param name
-     * @param quantity
+     * @param   name
+     *          The given name of the alchemic ingredient to be checked
+     * @return  True if, checking the name of each ingredient in storage, the given name matches the name of one of
+     *          the ingredients in storage, false otherwise.
+     *          | for each container in storage
+     *          |   result == container.getIngredient().getName().equals(name)
      */
-    public IngredientContainer takeIngredient(String name, ArrayList quantity) {
+    public boolean isIngredientInStorage(String name) {
         for (IngredientContainer container : storage) {
             String ingName = container.getIngredient().getName();
-            int ingQuantity = container.getIngredient().getQuantityAmount();
+            // Look for the given name
             if (ingName.equals(name)) {
-                // check if units are legals
-                // ingQuantity - quantity
-                container.getIngredient().setQuantity();
-                // check if ingQuantity is now null
-                if (ingQuantity == 0) {
-                    // delete container from storage
-                }
-                // new container with taken ingredient
-                IngredientContainer newContainer = new IngredientContainer(quantity, container.getIngredient());
-                return newContainer;
+                return true;
             }
+        }
+        return false;
+    }
 
-            if (!ingName.equals(name)) {
-                // EXCEPTION INGREDIENT NOT IN STORAGE
+    /**
+     * Get the container from storage containing the ingredient with the given name.
+     *
+     * @pre     The given name must be the name of an ingredient which is indeed stored in this laboratory
+     *          | isIngredientInStorage()
+     * @param   name
+     *          The given name of the ingredient to be found
+     * @return  If the given name is a name for an ingredient which is stored in this laboratory, then
+     *          the container containing the ingredient with that name is returned.
+     *          | if isIngredientInStorage(name)
+     *          |   for each container in storage
+     *          |       if container.getIngredient().getName().equals(name)
+     *          |           result = container
+     * @throws NoSuchElementException
+     *          | ! isIngredientInStorage()
+     */
+    public IngredientContainer getContainerIngredientWithName(String name) throws NoSuchElementException {
+        if (isIngredientInStorage(name)) {
+            for (IngredientContainer container : storage) {
+                String ingName = container.getIngredient().getName();
+                // Look for the given name
+                if (ingName.equals(name)) {
+                    return container;
+                }
+            }
+        }
+        throw new NoSuchElementException(name);
+    }
+
+    /**
+     * Take a given amount, with an accompanying given unit, of a given ingredient from the storage of this laboratory.
+     *
+     * @pre     The given quantity must not be greater than the available quantity of the given ingredient in storage.
+     *          | unit.getAmountSpoons() * amount <= ingUnit.getAmountSpoons() * ingAmount
+     * @pre     The given quantity must be of the same state as the state of the available quantity of
+     *          the given ingredient stored inside this laboratory.
+     *          | unit.getState() == container.getIngredient().getQuantityUnit().getState()
+     * @pre     The given ingredient must be stored in this laboratory.
+     *          | isIngredientInStorage()
+     * @param   name
+     *          The given name of the ingredient to be taken
+     * @param   amount
+     *          The given amount of the ingredient
+     * @param   unit
+     *          The given unit of the amount
+     * @effect  The quantity of the ingredient inside the container in storage is decreased by the given quantity.
+     *          | ingredient.setQuantity((unit.getAmountSpoons() * amount - ingUnit.getAmountSpoons() * ingAmount),
+     *          |       UnitOfQuantity.SPOON)
+     * @post    The container containing the ingredient with the given name is terminated if the given quantity
+     *          is the same as the available quantity of ingredient in storage.
+     *          | if (unit.getAmountSpoons() * amount == ingUnit.getAmountSpoons() * ingAmount)
+     *          |   then container.terminate()
+     * @return  The given quantity of the ingredient with the given name in a new container.
+     *          | result = new IngredientContainer(ingredient)
+     * @throws  NoSuchElementException
+     *          | ! isIngredientInStorage()
+     * @throws  IllegalAmountException
+     *          | unit.getAmountSpoons() * amount > ingUnit.getAmountSpoons() * ingAmount
+     * @throws  IllegalArgumentException
+     *          | unit.getState() != container.getIngredient().getQuantityUnit().getState()
+     */
+    public IngredientContainer takeIngredient(String name, int amount, UnitOfQuantity unit)
+            throws NoSuchElementException, IllegalAmountException, IllegalArgumentException {
+        if (isIngredientInStorage(name)) {
+            IngredientContainer container = getContainerIngredientWithName(name);
+            AlchemicIngredient ingredient = container.getIngredient();
+            int ingAmount = ingredient.getQuantityAmount();
+            UnitOfQuantity ingUnit = ingredient.getQuantityUnit();
+            // Check if states are equal
+            if (ingUnit.getState() == unit.getState()) {
+                // Convert to spoons
+                double ingSpoons = ingUnit.getAmountSpoons() * ingAmount;
+                double spoons = unit.getAmountSpoons() * amount;
+                // ingAmount - quantity
+                if (spoons <= ingSpoons) {
+                    double newQuantityAmount = (ingSpoons - spoons);
+                    // Check if ingAmount is now null
+                    if (ingAmount == 0) {
+                        // Delete container from storage, since it is empty
+                        container.terminate();
+                    }
+                    // Set the quantity of the taken ingredient to the new quantity
+                    ingredient.setQuantity((int) newQuantityAmount, UnitOfQuantity.SPOON);
+                    // Make the taken ingredient
+                    AlchemicIngredient takenIngredient =
+                            new AlchemicIngredient(ingredient.getIngredientType(), amount, unit);
+                    IngredientContainer newContainer = new IngredientContainer(ingredient);
+                    return newContainer;
+                }
+                // If asked amount is more than the quantity inside the laboratory:
+                else {
+                    throw new IllegalAmountException(amount);
+                }
+            }
+            // States do not match
+            else {
+                throw new IllegalArgumentException("The given quantity is not of the same state.");
             }
         }
     }
 
     /**
+     * Take the whole ingredient with the given name from the storage of this laboratory.
      *
-     * @param name
+     * @pre     The given name must be the name of an ingredient stored inside this laboratory.
+     *          | isIngredientInStorage(name)
+     * @param   name
+     *          The given name of the ingredient
+     * @effect  If the name is a valid name, then the old container is terminated.
+     *          | if isIngredientInStorage(name) then getContainerIngredientWithName(name).terminate()
+     * @return  If the given name is a valid name, the ingredient with that name is placed in a new
+     *          container with the best fitting capacity for that ingredient which is returned.
+     *          | if isIngredientInStorage(name)
+     *          |   then result = new IngredientContainer(ingredient)
      */
     public IngredientContainer takeIngredient(String name) {
-        for (IngredientContainer container : storage) {
-            String ingName = container.getIngredient().getName();
-            int ingQuantity = container.getIngredient().getQuantity();
-            UnitOfQuantity ingQuantityUnit = container.getIngredient().getQuantityUnit();
-            ArrayList<Object> quantity = new ArrayList<Object>();
-            if (ingName.equals(name)) {
-
-                // delete container from storage
-
-                // new container with taken ingredient
-                IngredientContainer newContainer = new IngredientContainer(quantity, container.getIngredient());
-                return newContainer;
-            }
-
-            if (!ingName.equals(name)) {
-                // EXCEPTION INGREDIENT NOT IN STORAGE
-            }
+        if (isIngredientInStorage(name)) {
+            IngredientContainer container = getContainerIngredientWithName(name);
+            // Take out the ingredient
+            AlchemicIngredient ingredient = container.getIngredient();
+            // Terminate old container
+            container.terminate();
+            // Make new container with best fitting capacity
+            IngredientContainer newContainer = new IngredientContainer(ingredient);
+            return newContainer;
         }
     }
 
     /**
-     * Returns the stored ingredients and their respective quantities.
+     * Get the stored ingredients and their respective quantities.
+     *
+     * @return  For each container in storage, the name, the amount of quantity and the unit of quantity
+     *          of the ingredient inside the container is returned.
+     *          | for each container in storage
+     *          |   result == "- " + ingName + ": " + ingQuantityAmount + " " + ingQuantityUnit + "\n"
      */
     public String getStoredIng() {
         String returnStr = new String();
-        // THERE CAN ALSO BE NO CONTAINERS
         for (IngredientContainer container : storage) {
             String ingName = container.getIngredient().getName();
-            int ingQuantity = container.getIngredient().getQuantity();
-            String ingQuantityUnit = container.getIngredient().getQuantityUnit().getUnit();
+            int ingQuantityAmount = container.getIngredient().getQuantityAmount();
+            UnitOfQuantity ingQuantityUnit = container.getIngredient().getQuantityUnit();
 
-            returnStr += "- " + ingName + ", " + ingQuantity + " " + ingQuantityUnit + "\n";
+            returnStr += "- " + ingName + ": " + ingQuantityAmount + " " + ingQuantityUnit + "\n";
         }
-        System.out.println(returnStr);
+        return returnStr;
     }
 
 
