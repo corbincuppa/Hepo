@@ -3,8 +3,6 @@ package alchemy;
 import be.kuleuven.cs.som.annotate.*;
 import exceptions.*;
 
-import java.util.ArrayList;
-
 /**
  * A class of alchemic ingredients.
  *
@@ -12,7 +10,6 @@ import java.util.ArrayList;
  * @author  Boglárka Csorba-Vitus
  * @version 1.0
  */
-
 public class AlchemicIngredient {
     /**********************************************************
      * Constructors
@@ -35,35 +32,6 @@ public class AlchemicIngredient {
         this.state = ingredientType.getStdState();
         setQuantity(amount, unit);
         setTemperature();
-    }
-
-    // make ingredient with best fitting container
-    public IngredientContainer makeIngredient(AlchemicIngredient ingredient) {
-        State state = ingredient.getState();
-        ArrayList<UnitOfQuantity> order = quantityUnit.getInOrder(state);
-        int amount = ingredient.getQuantityAmount();
-        UnitOfQuantity unit1 = ingredient.getQuantityUnit();
-        double inSpoons = unit1.getAmountSpoons() * amount;
-        //for (int i = 0; i<=order.size()) {
-            //UnitOfQuantity unit = order.get(i);
-            //double unitSpoons = unit.getAmountSpoons();
-            //if (inSpoons > unitSpoons) {
-                //i++;
-            //}
-            //capacity = unit;
-        //}
-
-        UnitOfQuantity capacity = null;
-        for (UnitOfQuantity unit : order) {
-
-            double unitSpoons = unit.getAmountSpoons();
-
-            if (inSpoons <= unitSpoons) {
-                capacity = unit;
-            }
-        }
-
-        IngredientContainer container = new IngredientContainer(capacity, ingredient);
     }
 
 
@@ -290,13 +258,35 @@ public class AlchemicIngredient {
     private int[] temperature = null;
 
     /**
-     * Change the curren temperature of this alchemic ingredient to the
+     * Change the current temperature of this alchemic ingredient to the
      * given temperature.
      *
      */
     private void setTemperature() { this.temperature = ingredientType.getStdTemp();;
     }
 
+    /**
+     * Check if the given temperature is a valid standard temperature for an alchemic ingredient given a maximum value.
+     *
+     * @param   temperature
+     *          The given temperature to be checked
+     * @param   maxValue
+     *          The given maximum value for the temperature
+     * @return  False if the given maximum value is greater than the Java MAX_VALUE.
+     *          False if the given temperature expressed as an array is not composed of two elements (its size is not 2).
+     *          False if the coldness of the temperature is lesser than 0 or if the coldness is greater than the given
+     *          maximum value.
+     *          False if the hotness of the temperature is lesser than 0 or if the hotness is greater than the given
+     *          maximum value.
+     *          False of the coldness of the temperature is not 0 and the hotness of the temperature is not 0,
+     *          true otherwise.
+     *          | if (maxValue > Long.MAX_VALUE) then result == false else
+     *          | if (temperature.length != 2) then result == false else
+     *          | if (coldness < 0 || coldness > maxValue) then result == false else
+     *          | if (hotness < 0 || hotness > maxValue) then result == false else
+     *          | if (coldness != 0 && hotness != 0) then result == false else
+     *          | result == true
+     */
     protected boolean canHaveAsStdTemperature(int[] temperature, int maxValue) {
         if (maxValue > Long.MAX_VALUE) {
             return false;
@@ -321,6 +311,15 @@ public class AlchemicIngredient {
         return true;
     }
 
+    /**
+     * Set the temperature of this alchemic ingredient to the given temperature.
+     *
+     * @param   temp
+     *          The given temperature
+     * @post    If the given temperature is a valid temperature then the temperature of this alchemic
+     *          ingredient is set to the given temperature.
+     *          | canHaveAsStdTemperature(temp, 10 000)
+     */
     private void changeTemperature(int[]temp) {
         if (canHaveAsStdTemperature(temp, 10000)) {
             this.temperature = temp;
@@ -328,14 +327,23 @@ public class AlchemicIngredient {
     }
     // if it has been in the oven or cooler
 
+    /**
+     * Returns the temperature of this alchemic ingredient.
+     */
     public int[] getTemperature(){
         return temperature;
     }
 
+    /**
+     * Returns the coldness of the temperature of this alchemic ingredient.
+     */
     public int getColdness(){
         return temperature[0];
     }
 
+    /**
+     * Returns the hotness of the temperature of this alchemic ingredient
+     */
     public int getHotness(){
         return temperature[1];
     }
