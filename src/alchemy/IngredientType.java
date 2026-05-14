@@ -50,11 +50,11 @@ public class IngredientType {
      * given name is not valid.
      *
      * @return	A valid disk item name.
-     *         	| canHaveAsName(result) && result.equals("ingredient_type"")
+     *         	| canHaveAsName(result) && result.equals("Ingredient Type"")
      */
     @Model
     protected String getDefaultName() {
-        return "ingredient_type";
+        return "Ingredient Type";
     }
 
     /**
@@ -212,18 +212,14 @@ public class IngredientType {
      * @param   name
      * 			The new name for this ingredient type.
      * @post    If the given name is valid, the name of
-     *          this ingredient type is set to the given name,
-     *          otherwise it throws an IllegalNameException
+     *          this ingredient type is set to the given name
      *          | if (canHaveAsName(name))
      *          | then new.getName().equals(name)
-     *          | else new.getName().equals(getDefaultName())
      */
     @Raw @Model
     private void setName(String name) {
         if (canHaveAsName(name)) {
             this.name = name;
-        } else {
-            this.name = getDefaultName();
         }
     }
 
@@ -278,13 +274,13 @@ public class IngredientType {
      *
      * @note The first integer refers to the coldness and the second integer to the hotness.
      */
-    private int[] stdTemp = null;
+    private int[] stdTemp = this.getDefaultTemp();
 
 
     /**
      * Return the default temperature.
      */
-    private static int[] getDefaultTemp() {
+    protected int[] getDefaultTemp() {
         return new int[]{0, 20};
     }
 
@@ -338,12 +334,12 @@ public class IngredientType {
      *          ingredient type is set to the default temperature.
      *          | ! isValidTemperature(temp, 10 000)
      *          |   then this.stdTemp = getDefaultTemp()
+     * --> tweede effect is nu niet nodig, want ik heb code weggedaan
+     *     ik wou de commentaar niet verwijdere voor het geval dat je niet akkoord gaat met de changes
      */
     public void setTemp(int[] temp) {
         if (canHaveAsStdTemperature(temp, 10000)){
             this.stdTemp = temp;
-        }else{
-            this.stdTemp = getDefaultTemp();
         }
     }
 }
