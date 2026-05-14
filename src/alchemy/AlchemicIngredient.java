@@ -125,10 +125,9 @@ public class AlchemicIngredient {
      *          The given character to be checked
      * @return  True if the given character is equal to the backwards slash, the open bracket or closed bracket,
      *          false otherwise.
-     *          | character == '\'' || character == '(' || character == ')'
+     *          | result = (character == '\'' || character == '(' || character == ')')
      */
     private boolean acceptableSymbols(Character character){
-        // is dat de bedoeling:   '\''   ?
         if (character == '\'' || character == '(' || character == ')') {
             return true;
         }
@@ -144,7 +143,7 @@ public class AlchemicIngredient {
      *          The index at which to start so unnecessary beginning of word isn't checked
      * @return  True if the rest of the word is compiled of acceptable characters, false if the
      *          rest of the word container an uppercase letter.
-     *          | i dont know??
+     *          | is in ingredient type
      */
     private boolean restWithLowercases(String word, int index) {
         for (int i = index; i < word.length(); i++) {
@@ -177,7 +176,7 @@ public class AlchemicIngredient {
         return false;
     }
 
-    // deze paar functies die te maken hebben met een validname moet je me een keer uitleggen want mn brein werkt op dit moment niet
+    // in ing type?
     protected String[] letters(String word){
         String[] letters = new String[word.length()];
         for (int i = 0 ; i < word.length(); i++) {
@@ -270,7 +269,6 @@ public class AlchemicIngredient {
 
     /**
      * Add "Heated" to the full name of the given alchemic ingredient.
-     *
      */
     protected void addPrefixHeated(){
         String newName = "Heated" + this.getFullName();
@@ -287,6 +285,19 @@ public class AlchemicIngredient {
     }
     // only coolingbox can use this
 
+    /**
+     * Add the needed prefix to the name based on the given state.
+     *
+     * @param   state
+     *          The given state
+     * @post    If the given state is State.LIQUID, "Liquid" will be added before the full name of this ingredient,
+     *          otherwise "Powdered" will be added.
+     *          | if (state == State.LIQUID)
+     *          |   then prefix = "Liquid"
+     *          | else prefix = "Powdered"
+     *          |
+     *          | this.changeFullName(prefix + this.getFullName())
+     */
     protected void addPrefixState(State state){
         String prefix = "Powdered";
         if (state == State.LIQUID)
