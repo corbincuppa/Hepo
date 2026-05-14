@@ -5,12 +5,10 @@ import be.kuleuven.cs.som.annotate.*;
 /**
  * A class of ingredient containers.
  *
- * @invar   The states of the capacity of this container and the state of the unit of quantity of the
- *          given alchemic ingredient must be the same or one of them must have both states.
- *          | quantityUnit.getState() == capacity.getState() || capacity.getState() == State.BOTH || quantityUnit.getState() == State.BOTH
- * @invar   The unit of quantity expressed in spoons multiplied by the given amount is lesser than or
- *          equal to the capacity of this container expressed in spoons.
- *          | (quantityUnit.getAmountSpoons() * quantityAmount) <= capacity.getAmountSpoons()
+ * @invar   The capacity of an ingredient container must be a valid capacity.
+ *          | isValidCapacity(capacity)
+ * @invar   The quantity of a given ingredient inside a container must be a valid quantity.
+ *          | isValidQuantity(ingredient.getQuantity())
  *
  * @author  Adelina Vozianu
  * @author  Boglárka Csorba-Vitus
@@ -35,7 +33,6 @@ public class IngredientContainer {
      * @pre     The quantity of the given alchemic ingredient must be a valid quantity for an ingredient container.
      *          | isValidQuantity(ingredient.getQuantityAmount(), ingredient.getQuantityUnit())
      */
-    // do you have to write out full pre or just state that it must be valid?
     public IngredientContainer(UnitOfQuantity capacity, AlchemicIngredient ingredient) {
         setCapacity(capacity);
         setContents(ingredient);
