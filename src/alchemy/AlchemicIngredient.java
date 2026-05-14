@@ -476,7 +476,7 @@ public class AlchemicIngredient {
      *          ingredient is set to the given temperature.
      *          | canHaveAsStdTemperature(temp, 10 000)
      */
-    private void changeTemperature(int[]temp) {
+    protected void changeTemperature(int[] temp) {
         if (canHaveAsTemperature(temp, 10000)) {
             this.temperature = temp;
         }

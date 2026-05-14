@@ -5,43 +5,64 @@ public class CoolingBox extends Device{
     /**********************************************************
      * Constructors
      **********************************************************/
-    public CoolingBox(int temperature) {
-        setTemperature(temperature);
+    public CoolingBox(IngredientContainer container, int[] temperature) {
+        this.container = container;
+        this.temperature = temperature;
     }
 
 
     /**********************************************************
-     * Contents
+     * Container
      **********************************************************/
-    // super(contents)
+
+    private IngredientContainer container;
+
+    public IngredientContainer getContainer() {
+        return container;
+    }
 
 
     /**********************************************************
      * Temperature
      **********************************************************/
 
+    private int[] temperature;
 
-    public final int temperature = 0;
-
-    protected void setTemperature(int newTemp) {
-        this.temperature += temperature;
+    public int[] getTemperature() {
+        return temperature;
     }
 
+    private boolean canItBeCooled(){
+        int coldnessCoolingBox = this.getTemperature()[0];
+        int hotnessCoolingBox = this.getTemperature()[1];
+        AlchemicIngredient ingredient = this.getContainer().getIngredient();
+        int coldnessIng = ingredient.getColdness();
+        int hotnessIng = ingredient.getHotness();
+        if (coldnessCoolingBox == 0){
+            if (hotnessIng >= hotnessCoolingBox){
+                return true;
+            }
+            return false;
+        }
+        if (coldnessIng <= coldnessCoolingBox){
+            return true;
+        }
+        return false;
+    }
 
 
     /**********************************************************
      * Methods
      **********************************************************/
 
-    /**
-     * Add "Cooled" to the full name of the given alchemic ingredient.
-     *
-     * @param ingredient
-     *        The given alchemic ingredient
-     */
-    protected void addPrefixCooled(AlchemicIngredient ingredient){
-        String newName = "Cooled" + ingredient.getFullName();
-        ingredient.changeFullName(newName);
+    protected void cool(){
+        AlchemicIngredient ingredient = this.getContainer().getIngredient();
+        //oude container moet vernietigd worden
+        if (this.canItBeCooled()){
+            ingredient.addPrefixCooled();
+            ingredient.changeTemperature(this.getTemperature());
+        }
+        //nieuwe container moet gemaakt worden
     }
 
 
