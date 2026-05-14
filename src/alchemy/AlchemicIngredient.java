@@ -266,8 +266,8 @@ public class AlchemicIngredient {
             changeFullName(newName);
         }
     }
-    //--> only kettle can use this ----> maybe in the MixedIngredient subclass instead?
-    // isn't a new ingredient made instead of changing the name of this ingredient?
+    //--> only kettle can use this
+    // should this return the name instead?
 
     /**
      * Add "Heated" to the full name of the given alchemic ingredient.
@@ -281,7 +281,6 @@ public class AlchemicIngredient {
 
     /**
      * Add "Cooled" to the full name of the given alchemic ingredient.
-     *
      */
     protected void addPrefixCooled(){
         String newName = "Cooled" + this.getFullName();
