@@ -26,7 +26,7 @@ public class AlchemicIngredient {
      * @param unit
      *        The given unit of the quantity of the alchemic ingredient
      */
-    public void AlchemicIngredient( IngredientType ingredientType, int amount, UnitOfQuantity unit) throws IllegalNameException {
+    public AlchemicIngredient( IngredientType ingredientType, int amount, UnitOfQuantity unit) throws IllegalNameException {
         setFullName();
         setIngredientType(ingredientType);
         this.state = ingredientType.getStdState();

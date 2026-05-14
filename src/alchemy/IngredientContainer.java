@@ -49,7 +49,7 @@ public class IngredientContainer {
      * @pre     The quantity of the given alchemic ingredient must be a valid quantity for an ingredient container.
      *          | isValidQuantity(ingredient.getQuantityAmount(), ingredient.getQuantityUnit())
      */
-    public void makeIngredient(AlchemicIngredient ingredient) {
+    public IngredientContainer(AlchemicIngredient ingredient) {
         State state = ingredient.getState();
         int amount = ingredient.getQuantityAmount();
         UnitOfQuantity unit1 = ingredient.getQuantityUnit();
@@ -211,8 +211,14 @@ public class IngredientContainer {
 
     /**
      * Terminate this ingredient container.
+     *
+     * @effect  The contents of this container is set to null.
+     * @effect  The capacity of this container is set to null.
+     * @effect  The isTerminated variable is set to true.
      */
     protected void terminate() {
+        this.contents = null;
+        this.capacity = null;
         isTerminated = true;
     }
 }
