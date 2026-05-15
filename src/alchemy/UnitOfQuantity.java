@@ -3,6 +3,8 @@ package alchemy;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import static java.lang.Math.round;
+
 /**
  * An enum of units of quantity.
  *
@@ -86,12 +88,18 @@ public enum UnitOfQuantity {
      *
      * @param   state
      *          The given state
+     * @throws  IllegalArgumentException
+     *          | state != State.POWDER || state != State.LIQUID
      */
-    public static ArrayList<UnitOfQuantity> getInOrder(State state){
+    public static ArrayList<UnitOfQuantity> getInOrder(State state) throws IllegalArgumentException{
         if (state == State.POWDER) {
             return new ArrayList<>(Arrays.asList(UnitOfQuantity.SPOON, UnitOfQuantity.SACHET,UnitOfQuantity.BOX,UnitOfQuantity.SACK,UnitOfQuantity.CHEST));
         }
-        return new ArrayList<>(Arrays.asList(UnitOfQuantity.SPOON, UnitOfQuantity.VIAL, UnitOfQuantity.BOTTLE, UnitOfQuantity.JUG, UnitOfQuantity.BARREL));
+
+        if (state == State.LIQUID) {
+            return new ArrayList<>(Arrays.asList(UnitOfQuantity.SPOON, UnitOfQuantity.VIAL, UnitOfQuantity.BOTTLE, UnitOfQuantity.JUG, UnitOfQuantity.BARREL));
+        }
+        else throw new IllegalArgumentException("Such state is not supported: "+state);
     }
 
     /**
@@ -105,14 +113,34 @@ public enum UnitOfQuantity {
     public static UnitOfQuantity getBestUnit(double amountSpoons, State state){
         ArrayList<UnitOfQuantity> order = getInOrder(state);
         for (UnitOfQuantity unit : order) {
-
             double unitSpoons = unit.getAmountSpoons();
-
             if (amountSpoons <= unitSpoons) {
                 return unit;
             }
         }
-        //return statement nodig
+        return order.get(order.size() - 1);
+    }
+
+    public static int getBestFitAmount(double amountSpoons, State state) {
+        ArrayList<UnitOfQuantity> order = getInOrder(state);
+        // Default to the largest unit if amount exceeds all units
+        UnitOfQuantity bestUnit = getBestFitUnit(amountSpoons, state);
+        double amount = amountSpoons / bestUnit.getAmountSpoons();
+        return (int)amount;
+    }
+
+    public static UnitOfQuantity getBestFitUnit(double amountSpoons, State state) {
+        ArrayList<UnitOfQuantity> order = getInOrder(state);
+        // Default to the largest unit if amount exceeds all units
+        UnitOfQuantity bestUnit = order.getLast();
+        for (int i = 0; i < order.size() - 1; i++) {
+            UnitOfQuantity next = order.get(i + 1);
+            if (amountSpoons < next.getAmountSpoons()) {
+                bestUnit = order.get(i);
+                return bestUnit;
+            }
+        }
+        return order.get(order.size() - 1);
     }
 
 }

@@ -52,6 +52,7 @@ public class Device {
         if (contents.size() == 0) {
             contents.add(container.getIngredient());
         }
+        container.terminate();
     }
 
     public void takeResult() {

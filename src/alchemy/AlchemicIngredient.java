@@ -3,6 +3,8 @@ package alchemy;
 import be.kuleuven.cs.som.annotate.*;
 import exceptions.*;
 
+import java.util.ArrayList;
+
 /**
  * A class of alchemic ingredients.
  *
@@ -290,24 +292,19 @@ public class AlchemicIngredient {
      * @param   ingredients
      *
      */
-    protected String mixedNames(String[] ingredients){
-        int length = ingredients.length;
-        if (length < 2){
-            //exception --> hier of bij kettle als er maar 1 ingredient erin zit
-            // of miss hoeft er geen exception
-            // 1 ingredient in kettle --> gewoon die ingredient terug
-        }else{
-            String newName = ingredients[0] + " mixed with " + ingredients[1];
-            for (int i = 2 ; i < length; i++){
-                    if (i == length-1){
-                        newName = newName +" and " + ingredients[i];
-                    }else {
-                        newName = newName + ", " + ingredients[i];
-                    }
-                }
-            return newName;
+    protected static String mixedNames(ArrayList<String> ingredients) {
+        int length = ingredients.size();
+        String newName = ingredients.get(0) + " mixed with " + ingredients.get(1);
+        for (int i = 2; i < length; i++) {
+            if (i == length - 1) {
+                newName = newName + " and " + ingredients.get(i);
+            } else {
+                newName = newName + ", " + ingredients.get(i);
+            }
         }
+        return newName;
     }
+
     //--> only kettle can use this
     // should this return the name instead? --> Miss wel en bij kettle steken zodat het de naam van de new IngredientType wordt
 

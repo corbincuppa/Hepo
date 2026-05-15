@@ -87,7 +87,7 @@ public class IngredientContainer {
      *          |       || capacity1 == UnitOfQuantity.STOREROOM)
      */
     @Model
-    protected boolean isValidCapacity(UnitOfQuantity capacity1) {
+    protected static boolean isValidCapacity(UnitOfQuantity capacity1) {
         // Check that it is not drop(), pinch() or storeroom()
         if (capacity1 == UnitOfQuantity.PINCH || capacity1 == UnitOfQuantity.DROP
                 || capacity1 == UnitOfQuantity.STOREROOM) {
@@ -151,7 +151,7 @@ public class IngredientContainer {
 
         int amount = ingredient.getQuantityAmount();
         UnitOfQuantity quantityUnit = ingredient.getQuantityUnit();
-        if (isValidQuantity(amount, quantityUnit)) {
+        if (canHaveAsQuantity(amount, quantityUnit)) {
             this.contents = ingredient;
         }
     }
@@ -172,7 +172,7 @@ public class IngredientContainer {
      *          |   && (quantityUnit.getAmountSpoons() * quantityAmount) <= capacity.getAmountSpoons()
      */
     @Model
-    private boolean isValidQuantity(int quantityAmount, UnitOfQuantity quantityUnit) {
+    private boolean canHaveAsQuantity(int quantityAmount, UnitOfQuantity quantityUnit) {
         // Set the capacity and unit of quantity into amount of spoons
         double unitSpoons = (quantityUnit.getAmountSpoons() * quantityAmount);
         double capacitySpoons = capacity.getAmountSpoons();
