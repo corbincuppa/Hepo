@@ -75,7 +75,7 @@ public class Oven extends Device {
         this.temperature = new int[]{coldness, hotness};
     }
 
-    private boolean canItBeHeated(){
+    protected boolean canItBeHeated(){
         this.deviateTemperature();
         int coldnessOven = this.getTemperature()[0];
         int hotnessOven = this.getTemperature()[1];

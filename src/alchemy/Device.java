@@ -43,8 +43,7 @@ public class Device {
     }
 
     public void takeResult(AlchemicIngredient ingredient) {
-        UnitOfQuantity capacity = ingredient.getQuantityUnit();
-        new IngredientContainer(capacity, ingredient);
+        new IngredientContainer(ingredient);
     }
 
     public void use() {
