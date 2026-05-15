@@ -19,14 +19,14 @@ public class IngredientTypeTest {
 
     @Before
     public void setUp() {
-        this.flower = new IngredientType("Flower", State.LIQUID, new int[]{0, 18});
+        this.flower = new IngredientType("Flower", State.POWDER, new int[]{0, 18});
         this.flowerIllegal = new IngredientType("flowers I LikE!", null, new int[]{18, 18});
     }
 
     @Test
     public void testConstructorIngredientType_Legal() {
         assertEquals("Flower", this.flower.getName());
-        assertSame(State.LIQUID, this.flower.getStdState());
+        assertSame(State.POWDER, this.flower.getStdState());
         assertEquals(new int[]{0, 18}, this.flower.getStdTemp());
     }
 
@@ -43,6 +43,7 @@ public class IngredientTypeTest {
         assertFalse(flower.canHaveAsName("FLOWER"));
         assertFalse(flower.canHaveAsName("flower"));
         assertFalse(flower.canHaveAsName("Flower: Rose"));
+        assertTrue(flower.canHaveAsName("Flower (Rose)"));
         assertFalse(flower.canHaveAsName("Flower mixed with Sugar"));
         assertFalse(flower.canHaveAsName("Fl"));
         assertFalse(flower.canHaveAsName("The Flower That I Grew"));
