@@ -65,7 +65,7 @@ public class IngredientTypeMixed extends IngredientType{
             return false;
         }
         for (String word : words) {
-            if (word.toLowerCase() != "mixed" || word.toLowerCase() != "with"){
+            if (!word.toLowerCase().equals("mixed") && !word.toLowerCase().equals("with")){
                 if (letters(word).length < 2) {
                     return false;
                 } else {

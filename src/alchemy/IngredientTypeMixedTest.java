@@ -17,8 +17,8 @@ public class IngredientTypeMixedTest {
 
     @Before
     public void setUp() {
-        this.flower = new IngredientType("Flower mixed with Sugar", State.LIQUID, new int[]{0, 18});
-        this.flowerIllegal = new IngredientType("flowers mixed With Sugar", null, new int[]{18, 18});
+        this.flower = new IngredientTypeMixed("Flower mixed with Sugar", State.LIQUID, new int[]{0, 18});
+        this.flowerIllegal = new IngredientTypeMixed("flowers mixed With Sugar", null, new int[]{18, 18});
     }
 
     @Test
