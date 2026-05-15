@@ -118,7 +118,7 @@ public class IngredientType {
      *          |   then result == (Character.isUpperCase(word.charAt(1)) && restWithLowercases(word, 2))
      *          | else result == false
      */
-    private boolean startsUppercaseRestLower(String word) {
+    protected boolean startsUppercaseRestLower(String word) {
         char first = word.charAt(0);
         if (Character.isLetter(first)){
             return (Character.isUpperCase(first) && restWithLowercases(word, 1));

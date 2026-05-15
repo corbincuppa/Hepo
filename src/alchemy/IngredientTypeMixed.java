@@ -36,8 +36,6 @@ public class IngredientTypeMixed extends IngredientType{
      * Name
      **********************************************************/
 
-    // mixed and with moeten niet met hoofletter beginnen
-
     /**
      * Check whether the given name is a legal name for an ingredient type.
      *
@@ -52,17 +50,19 @@ public class IngredientTypeMixed extends IngredientType{
         }
         String[] words = name.split(" ");
         if (words.length == 1) {
-            if (letters(words[0]).length < 3) {
-                return false;
-            } else {
-                return startsUppercaseRestLower(words[0]);
-            }
+            return false;
         }
         for (String word : words) {
-            if (letters(word).length < 2) {
-                return false;
-            } else {
-                if (!startsUppercaseRestLower(word)){
+            if (word.toLowerCase() != "mixed" || word.toLowerCase() != "with"){
+                if (letters(word).length < 2) {
+                    return false;
+                } else {
+                    if (!startsUppercaseRestLower(word)){
+                        return false;
+                    }
+                }
+            }else{
+                if (!word.equals(word.toLowerCase())){
                     return false;
                 }
             }
