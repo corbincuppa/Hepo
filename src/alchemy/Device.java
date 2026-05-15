@@ -1,5 +1,7 @@
 package alchemy;
 
+import exceptions.IllegalAmountException;
+
 import java.util.ArrayList;
 
 /**
@@ -55,11 +57,14 @@ public abstract class Device {
      *
      * @return  The result, stored in the contents of this device, if there is only one ingredient in this device.
      *          | if (contents.size() == 2) then result == contents.get(0)
+     * @throws  IllegalAmountException
+     *          | contents.size() > 1
      */
-    public AlchemicIngredient takeResult() {
+    public AlchemicIngredient takeResult() throws IllegalAmountException {
         if (contents.size() == 1) {
             return contents.get(0);
         }
+        throw new IllegalAmountException(contents.size());
     }
 
     /**
