@@ -13,7 +13,6 @@ import java.util.Arrays;
  * @author  Boglárka Csorba-Vitus
  * @version 1.0
  */
-
 public class OvenTest {
 
     IngredientType honey;

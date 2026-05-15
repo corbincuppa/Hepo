@@ -44,7 +44,7 @@ public class Laboratory {
     /**
      * Variable referencing the capacity of this laboratory expressed in storerooms.
      */
-    private int capacity = 0;
+    private int capacity;
 
     /**
      * Return the capacity of this laboratory.
@@ -61,10 +61,12 @@ public class Laboratory {
      * @return  True if the given capacity is strictly positive, false otherwise.
      */
     protected static boolean isValidCapacity(int capacity) {
-        if (capacity < 0) {
+        if (capacity > 0) {
             return true;
         }
-        return false;
+        else{
+            return false;
+        }
     }
 
     /**
@@ -82,7 +84,7 @@ public class Laboratory {
         if (isValidCapacity(capacity)) {
             this.capacity = capacity;
         }
-        throw new IllegalAmountException(capacity);
+        else{throw new IllegalAmountException(capacity);}
     }
 
 

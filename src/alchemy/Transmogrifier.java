@@ -4,6 +4,13 @@ import be.kuleuven.cs.som.annotate.Model;
 
 import java.util.ArrayList;
 
+/**
+ * A class of transmogrifiers.
+ *
+ * @author  Adelina Vozianu
+ * @author  Boglárka Csorba-Vitus
+ * @version 1.0
+ */
 public class Transmogrifier extends Device {
 
     /**********************************************************

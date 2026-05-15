@@ -5,13 +5,12 @@ import be.kuleuven.cs.som.annotate.*;
 import java.util.ArrayList;
 
 /**
- * A class of oven
+ * A class of ovens.
  *
  * @author  Adelina Vozianu
  * @author  Boglárka Csorba-Vitus
  * @version 1.0
  */
-
 public class Oven extends Device {
 
     /**********************************************************
