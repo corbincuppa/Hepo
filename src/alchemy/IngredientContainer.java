@@ -112,7 +112,9 @@ public class IngredientContainer {
         if (isValidCapacity(capacity)) {
             this.capacity = capacity;
         }
-        throw new IllegalArgumentException("A capacity for a container cannot be the smallest or largest units.");
+        else{
+            throw new IllegalArgumentException("A capacity for a container cannot be the smallest or largest units.");
+        }
     }
 
 
