@@ -375,6 +375,7 @@ public class AlchemicIngredient {
     /**
      * Returns the ingredient type of this alchemic ingredient.
      */
+    @Model
     public IngredientType getIngredientType() {
         return ingredientType;
     }
