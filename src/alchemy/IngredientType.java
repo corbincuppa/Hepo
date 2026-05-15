@@ -293,11 +293,22 @@ public class IngredientType {
     }
 
     /**
-     * Check if the given temperature is a valid temperature
+     * Check if the given temperature is a valid temperature for an alchemic ingredient given a maximum value.
      *
-     * @param temperature
-     * @param maxValue
-     * @return
+     * @param   temperature
+     *          The given temperature to be checked
+     * @param   maxValue
+     *          The given maximum value for the temperature
+     * @return  False if the given maximum value is greater than the Java MAX_VALUE.
+     *          False if the given temperature expressed as an array is not composed of two elements (its size is not 2).
+     *          False if the coldness of the temperature is not equal to 0.
+     *          False if the hotness of the temperature is lesser than or equal to 0 or if the hotness is greater than the given
+     *          maximum value.
+     *          | if (maxValue > Long.MAX_VALUE) then result == false else
+     *          | if (temperature.length != 2) then result == false else
+     *          | if (coldness != 0) then result == false else
+     *          | if (hotness <= 0 || hotness > maxValue) then result == false else
+     *          | result == true
      */
     protected boolean canHaveAsStdTemperature(int[] temperature, int maxValue) {
         if (maxValue > Long.MAX_VALUE) {
@@ -330,12 +341,6 @@ public class IngredientType {
      *          then the standard temperature of this ingredient type is set to the given temperature.
      *          | isValidTemperature(temp, 10 000)
      *          |   then this.stdTemp = temp
-     * @effect  If the given temperature is not a valid temperature, then the standard temperature of this
-     *          ingredient type is set to the default temperature.
-     *          | ! isValidTemperature(temp, 10 000)
-     *          |   then this.stdTemp = getDefaultTemp()
-     * --> tweede effect is nu niet nodig, want ik heb code weggedaan
-     *     ik wou de commentaar niet verwijdere voor het geval dat je niet akkoord gaat met de changes
      */
     public void setTemp(int[] temp) {
         if (canHaveAsStdTemperature(temp, 10000)){
