@@ -29,11 +29,11 @@ public class AlchemicIngredient {
      *        The given unit of the quantity of the alchemic ingredient
      */
     public AlchemicIngredient( IngredientType ingredientType, int amount, UnitOfQuantity unit) {
-        setFullName();
         setIngredientType(ingredientType);
         this.state = ingredientType.getStdState();
         setQuantity(amount, unit);
         setTemperature();
+        setFullName();
     }
 
 
@@ -85,7 +85,7 @@ public class AlchemicIngredient {
      */
     public String getName() {
         if (this.getSpecialName() != null){
-            return (this.getSpecialName() + "(" + this.getFullName() + ")" );
+            return (this.getSpecialName() + " (" + this.getFullName() + ")" );
         }
         return this.getFullName();
     }
@@ -148,10 +148,9 @@ public class AlchemicIngredient {
     private boolean restWithLowercases(String word, int index) {
         for (int i = index; i < word.length(); i++) {
             char c = word.charAt(i);
-            if (acceptableSymbols(c)){
-                i ++;
-            }
-            if (!Character.isLowerCase(c)) {
+            if (acceptableSymbols(c)) {
+                i++;
+            } else if (!Character.isLowerCase(c)) {
                 return false;
             }
         }
