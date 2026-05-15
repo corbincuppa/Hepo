@@ -23,13 +23,15 @@ public class LaboratoryTest {
         this.flower = new IngredientType("Flower", State.LIQUID, new int[]{0, 18});
         this.validIng = new AlchemicIngredient(flower, 8, UnitOfQuantity.JUG);
         this.containerValidIng = new IngredientContainer(UnitOfQuantity.BARREL, validIng);
-        this.oven = new Oven(containerValidIng, new int[]{20, 0});
-        this.cooler = new CoolingBox(containerValidIng, new int[]{20, 0});
+        ArrayList<IngredientContainer> container = new ArrayList<>();
+        container.add(containerValidIng);
+        this.oven = new Oven(container, new int[]{20, 0});
+        this.cooler = new CoolingBox(container, new int[]{20, 0});
         ArrayList<Device> devices = new ArrayList<>();
         devices.add(oven);
         devices.add(cooler);
         this.lab = new Laboratory(1, devices);
-        this.cooler2electricboogaloo = new CoolingBox(containerValidIng, new int[]{90, 0});
+        this.cooler2electricboogaloo = new CoolingBox(container, new int[]{90, 0});
     }
 
     @Test

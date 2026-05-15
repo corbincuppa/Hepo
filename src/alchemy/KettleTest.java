@@ -63,12 +63,11 @@ public class KettleTest {
     @Test
     public void testUseKettleSameIng(){
         kettleFlower.use();
-        AlchemicIngredient newIng = kettleFlower.takeResult();
+        AlchemicIngredient newIng = kettleFlower.takeResult().getIngredient();
         Assert.assertEquals(oneIng.getIngredientType(), newIng.getIngredientType());
         Assert.assertEquals(moreOfTheSame.getIngredientType(), newIng.getIngredientType());
         Assert.assertEquals(moreOfTheSame.getSimpleName(), newIng.getSimpleName());
         Assert.assertFalse(newIng.getIngredientType() instanceof IngredientTypeMixed);
-        //??
         Assert.assertEquals(new int[]{0, 20}, newIng.getTemperature());
         Assert.assertEquals(new int[]{0, 11}, newIng.getIngredientType().getStdTemp());
         Assert.assertEquals(State.LIQUID, newIng.getState());
@@ -80,7 +79,7 @@ public class KettleTest {
     @Test
     public void testUseKettleMix(){
         kettleMix.use();
-        AlchemicIngredient newIng = kettleFlower.takeResult();
+        AlchemicIngredient newIng = kettleFlower.takeResult().getIngredient();
         Assert.assertEquals("Wall Mold mixed with Floor Mold", newIng.getIngredientType().getName());
         Assert.assertFalse(wall.getIngredientType() == newIng.getIngredientType());
         Assert.assertFalse(floor.getIngredientType() == newIng.getIngredientType());

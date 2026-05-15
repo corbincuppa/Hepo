@@ -70,6 +70,5 @@ public class CoolingBox extends Device{
             ingredient.addPrefixCooled();
             ingredient.changeTemperature(this.getTemperature());
         }
-        takeResult(ingredient);
     }
 }
