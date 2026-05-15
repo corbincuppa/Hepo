@@ -15,7 +15,6 @@ public class KettleTest {
     IngredientType flower, wallMold, floorMold;
     AlchemicIngredient oneIng, moreOfTheSame, wall, floor;
     IngredientContainer containerOneIng, containerMoreOfTheSame, containerWall, containerFloor;
-    Laboratory lab;
     Kettle kettleOneIng, kettleFlower, kettleMix;
 
 
