@@ -2,6 +2,8 @@ package alchemy;
 
 import be.kuleuven.cs.som.annotate.*;
 
+import java.util.ArrayList;
+
 /**
  * A class of oven
  *
@@ -15,8 +17,8 @@ public class Oven extends Device {
     /**********************************************************
      * Constructors
      **********************************************************/
-    public void Oven(IngredientContainer container, int[] temperature) {
-        this.container = container;
+    public Oven(ArrayList<IngredientContainer> contents, int[] temperature) {
+        super(contents);
         this.temperature = temperature;
     }
 
@@ -24,10 +26,13 @@ public class Oven extends Device {
      * Container
      **********************************************************/
 
-    private IngredientContainer container;
 
-    public IngredientContainer getContainer() {
-        return container;
+    public AlchemicIngredient getAlchemicIngredient() {
+        int length = this.getAlchemicIngredients().size();
+        if (length != 1){
+            throw new IllegalArgumentException("You can only put one thing in the oven at a time. Current number of items : " + length);
+        }
+        return this.getAlchemicIngredients().get(0);
     }
 
     /**********************************************************
@@ -70,7 +75,7 @@ public class Oven extends Device {
         this.deviateTemperature();
         int coldnessOven = this.getTemperature()[0];
         int hotnessOven = this.getTemperature()[1];
-        AlchemicIngredient ingredient = this.getContainer().getIngredient();
+        AlchemicIngredient ingredient = this.getAlchemicIngredient();
         int coldnessIng = ingredient.getColdness();
         int hotnessIng = ingredient.getHotness();
         if (coldnessOven == 0){
@@ -89,14 +94,17 @@ public class Oven extends Device {
      * Methods
      **********************************************************/
 
-    protected void heat(){
-        AlchemicIngredient ingredient = this.getContainer().getIngredient();
-        //oude container moet vernietigd worden
+    @Override
+    public void use(){
+        AlchemicIngredient ingredient = this.getAlchemicIngredient();
+        IngredientContainer oldContainer = this.getContents().get(0);
+        UnitOfQuantity capacity = oldContainer.getCapacity();
+        oldContainer.terminate();
         if (this.canItBeHeated()){
             ingredient.addPrefixHeated();
             ingredient.changeTemperature(this.getTemperature());
         }
-        //nieuwe container moet gemaakt worden
+        new IngredientContainer(capacity, ingredient);
     }
 
 }

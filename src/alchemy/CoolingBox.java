@@ -1,12 +1,14 @@
 package alchemy;
 
+import java.util.ArrayList;
+
 public class CoolingBox extends Device{
 
     /**********************************************************
      * Constructors
      **********************************************************/
-    public CoolingBox(IngredientContainer container, int[] temperature) {
-        this.container = container;
+    public CoolingBox(ArrayList<IngredientContainer> contents, int[] temperature) {
+        super(contents);
         this.temperature = temperature;
     }
 
@@ -15,10 +17,12 @@ public class CoolingBox extends Device{
      * Container
      **********************************************************/
 
-    private IngredientContainer container;
-
-    public IngredientContainer getContainer() {
-        return container;
+    public AlchemicIngredient getAlchemicIngredient() {
+        int length = this.getAlchemicIngredients().size();
+        if (length != 1){
+            throw new IllegalArgumentException("You can only put one thing in the cooling box at a time. Current number of items : " + length);
+        }
+        return this.getAlchemicIngredients().get(0);
     }
 
 
@@ -35,7 +39,7 @@ public class CoolingBox extends Device{
     private boolean canItBeCooled(){
         int coldnessCoolingBox = this.getTemperature()[0];
         int hotnessCoolingBox = this.getTemperature()[1];
-        AlchemicIngredient ingredient = this.getContainer().getIngredient();
+        AlchemicIngredient ingredient = this.getAlchemicIngredient();
         int coldnessIng = ingredient.getColdness();
         int hotnessIng = ingredient.getHotness();
         if (coldnessCoolingBox == 0){
@@ -55,14 +59,16 @@ public class CoolingBox extends Device{
      * Methods
      **********************************************************/
 
-    protected void cool(){
-        AlchemicIngredient ingredient = this.getContainer().getIngredient(); // --> add()????
-        //oude container moet vernietigd worden
+    @Override
+    public void use(){
+        AlchemicIngredient ingredient = this.getAlchemicIngredient();
+        IngredientContainer oldContainer = this.getContents().get(0);
+        UnitOfQuantity capacity = oldContainer.getCapacity();
         if (this.canItBeCooled()){
             ingredient.addPrefixCooled();
             ingredient.changeTemperature(this.getTemperature());
         }
-        //nieuwe container moet gemaakt worden
+        new IngredientContainer(capacity, ingredient);
     }
 
 

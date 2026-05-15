@@ -1,13 +1,15 @@
 package alchemy;
 
+import java.util.ArrayList;
+
 public class Transmogrifier extends Device {
 
     /**********************************************************
      * Constructors
      **********************************************************/
 
-    public Transmogrifier(IngredientContainer container, State state) {
-        this.container = container;
+    public Transmogrifier(ArrayList<IngredientContainer> contents, State state) {
+        super(contents);
         this.state = state;
     }
 
@@ -16,10 +18,12 @@ public class Transmogrifier extends Device {
      * Container
      **********************************************************/
 
-    private IngredientContainer container;
-
-    public IngredientContainer getContainer() {
-        return container;
+    public AlchemicIngredient getAlchemicIngredient() {
+        int length = this.getAlchemicIngredients().size();
+        if (length != 1){
+            throw new IllegalArgumentException("You can only put one thing in the transmogrifier at a time. Current number of items : " + length);
+        }
+        return this.getAlchemicIngredients().get(0);
     }
 
 
@@ -35,7 +39,7 @@ public class Transmogrifier extends Device {
 
     private boolean canItBeTransmogrified(){
         State stateTransmogrifier = this.getState();
-        AlchemicIngredient ingredient = this.getContainer().getIngredient();
+        AlchemicIngredient ingredient = this.getAlchemicIngredient();
         State stateIng = ingredient.getState();
         if (stateTransmogrifier != stateIng){
             return true;
@@ -48,14 +52,16 @@ public class Transmogrifier extends Device {
      * Methods
      **********************************************************/
 
-    protected void transmogrify(){
-        AlchemicIngredient ingredient = this.getContainer().getIngredient();
-        //oude container moet vernietigd worden
+    @Override
+    public void use(){
+        AlchemicIngredient ingredient = this.getAlchemicIngredient();
+        IngredientContainer oldContainer = this.getContents().get(0);
+        UnitOfQuantity capacity = oldContainer.getCapacity();
         if (this.canItBeTransmogrified()){
             ingredient.addPrefixState(this.getState());
             ingredient.changeState(this.getState());
         }
-        //nieuwe container moet gemaakt worden
+        new IngredientContainer(capacity, ingredient);
     }
 
 

@@ -38,7 +38,15 @@ public class Device {
     public void setContents(ArrayList<IngredientContainer> contents) {
         this.contents = contents;
     }
-    // bij oven enzo exception gooien als lengte != 1?
+
+    public ArrayList<AlchemicIngredient> getAlchemicIngredients() {
+        int length = this.getContents().size();
+        ArrayList<AlchemicIngredient> ingredients= new ArrayList<AlchemicIngredient>();
+        for (int i = 0; i < length; i++){
+            ingredients.add(this.getContents().get(i).getIngredient());
+        }
+        return ingredients;
+    }
 
 
     /**
@@ -48,16 +56,14 @@ public class Device {
      *          The given container containing the alchemic ingredient to be added
      */
     public void add(IngredientContainer container){
-        // deletes old container
-        if (contents.size() == 0) {
-            contents.add(container.getIngredient());
-        }
+        contents.add(container.getIngredient());
         container.terminate();
     }
+    //--> zouden we het wegdoen, we gebruiken het niet
 
     public void takeResult() {
-        // makes new container
     }
+    //--> zouden we het wegdoen, we gebruiken het niet
 
     public void use() {
         // INSERT use method here for each device

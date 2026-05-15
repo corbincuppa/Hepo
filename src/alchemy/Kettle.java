@@ -10,18 +10,9 @@ public class Kettle extends Device {
     /**********************************************************
      * Constructors
      **********************************************************/
-
-
-
-    /**********************************************************
-     * Contents
-     **********************************************************/
-
-    /**
-     * Variable referencing the contents of this kettle.
-     */
-    private final ArrayList<AlchemicIngredient> contents = new ArrayList<>();
-
+    public Kettle(ArrayList<IngredientContainer> contents) {
+        super(contents);
+    }
 
 
     /**********************************************************
@@ -64,7 +55,7 @@ public class Kettle extends Device {
 
         // Quantity: amount is total amount (with conversion)
         int tempAmount = 0;
-        for (AlchemicIngredient ing: contents) {
+        for (AlchemicIngredient ing: this.getAlchemicIngredients()) {
             double amount = ing.getQuantityAmount() * ing.getQuantityUnit().getAmountSpoons();
             tempAmount += amount;
         }
@@ -117,7 +108,7 @@ public class Kettle extends Device {
             AlchemicIngredient newIngredient = new AlchemicIngredient(newIngType, newAmount, newUnit);
 
             alchemy.IngredientContainer container = new IngredientContainer(newIngredient);
-            contents.clear();
+            this.getAlchemicIngredients().clear();
             // Add container, which is then deleted
             add(container);
         }
@@ -143,7 +134,7 @@ public class Kettle extends Device {
     protected ArrayList<String> makeIntoList(){
         if(canHaveAsContentsToMix()) {
             ArrayList<String> names = new ArrayList<>();
-            for (AlchemicIngredient ing : contents) {
+            for (AlchemicIngredient ing : this.getAlchemicIngredients()) {
                 String simpleName = ing.getSimpleName();
                 if (!names.contains(simpleName)) {
                     names.add(simpleName);
@@ -165,7 +156,7 @@ public class Kettle extends Device {
      *          |   result == ingredient.getName().equals(name)
      */
     public boolean isIngredientInKettle(String name) {
-        for (AlchemicIngredient ingredient: contents) {
+        for (AlchemicIngredient ingredient: this.getAlchemicIngredients()) {
             String ingName = ingredient.getSimpleName();
             // Look for the given name
             if (ingName.equals(name)) {
@@ -193,7 +184,7 @@ public class Kettle extends Device {
      */
     public AlchemicIngredient getIngredientWithName(String name) throws NoSuchElementException {
         if (isIngredientInKettle(name)) {
-            for (AlchemicIngredient ingredient:contents) {
+            for (AlchemicIngredient ingredient:this.getAlchemicIngredients()) {
                 String ingName = ingredient.getSimpleName();
                 // Look for the given name
                 if (ingName.equals(name)) {
@@ -209,7 +200,7 @@ public class Kettle extends Device {
      */
     protected ArrayList<int[]> getTemps() {
         ArrayList<int[]> list = new ArrayList<>();
-        for (AlchemicIngredient ing: contents) {
+        for (AlchemicIngredient ing: this.getAlchemicIngredients()) {
             int[] temp = ing.getIngredientType().getStdTemp();
             list.add(temp);
         }
@@ -228,7 +219,7 @@ public class Kettle extends Device {
         int[] roomTemp = {0, 20};
         int roomTempColdness = 0;
         int roomTempHotness = 20;
-        for (AlchemicIngredient ing:contents) {
+        for (AlchemicIngredient ing:this.getAlchemicIngredients()) {
             int[] temp = ing.getIngredientType().getStdTemp();
             int error = abs((temp[0] - roomTempColdness) + (temp[1] - roomTempHotness));
             listErrors.add(error);
@@ -242,7 +233,7 @@ public class Kettle extends Device {
                 int min1 = min(listErrors);
                 while(min == min1) {
                     int index = listErrors.indexOf(min1);
-                    AlchemicIngredient closest = contents.get(index);
+                    AlchemicIngredient closest = this.getAlchemicIngredients().get(index);
                     listErrors.add(index, 10000);
                     list.add(closest);
                 }
@@ -258,7 +249,7 @@ public class Kettle extends Device {
      *          | result == ( this.contents.size() >= 2 )
      */
     protected boolean canHaveAsContentsToMix(){
-        if (this.contents.size()<2){
+        if (this.getAlchemicIngredients().size()<2){
             return false;
         }
         return true;
