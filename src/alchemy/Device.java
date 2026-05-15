@@ -16,8 +16,8 @@ public class Device {
      * Constructors
      **********************************************************/
 
-    public Device() {
-
+    public Device(ArrayList<IngredientContainer> contents) {
+        setContents(contents);
     }
 
 
@@ -29,13 +29,17 @@ public class Device {
     /**
      * Variable referencing the contents of this device.
      */
-    private ArrayList<AlchemicIngredient> contents = new ArrayList<AlchemicIngredient>();
+    private ArrayList<IngredientContainer> contents ;
 
+    public ArrayList<IngredientContainer> getContents() {
+        return contents;
+    }
 
+    public void setContents(ArrayList<IngredientContainer> contents) {
+        this.contents = contents;
+    }
+    // bij oven enzo exception gooien als lengte != 1?
 
-    /**********************************************************
-     *
-     **********************************************************/
 
     /**
      * Add the ingredient inside a given container to this device.
