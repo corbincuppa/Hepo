@@ -32,14 +32,16 @@ public class AlchemicIngredientTest {
         assertSame(State.POWDER, this.redFlower.getState());
         assertEquals(5, this.redFlower.getQuantityAmount());
         assertSame(UnitOfQuantity.SPOON, this.redFlower.getQuantityUnit());
-        assertEquals(new int[]{0, 18}, this.redFlower.getTemperature());
+        assertEquals(0, this.redFlower.getTemperature()[0]);
+        assertEquals(18, this.redFlower.getTemperature()[1]);
 
         assertEquals("Flower mixed with Sugar", this.redFlowerMixed.getName());
         assertSame(flowerMixed, this.redFlowerMixed.getIngredientType());
         assertSame(State.POWDER, this.redFlowerMixed.getState());
         assertEquals(5, this.redFlowerMixed.getQuantityAmount());
         assertSame(UnitOfQuantity.SPOON, this.redFlowerMixed.getQuantityUnit());
-        assertEquals(new int[]{0, 18}, this.redFlowerMixed.getTemperature());
+        assertEquals(0, this.redFlowerMixed.getTemperature()[0]);
+        assertEquals(18, this.redFlowerMixed.getTemperature()[1]);
     }
 
     @Test
