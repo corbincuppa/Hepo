@@ -293,6 +293,9 @@ public class AlchemicIngredient {
      */
     protected static String mixedNames(ArrayList<String> ingredients) {
         int length = ingredients.size();
+        if (length == 1) {
+            return ingredients.get(0); // same ingredient type, no mixing needed
+        }
         String newName = ingredients.get(0) + " mixed with " + ingredients.get(1);
         for (int i = 2; i < length; i++) {
             if (i == length - 1) {

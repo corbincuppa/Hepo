@@ -31,7 +31,7 @@ public abstract class Device {
     /**
      * Variable referencing the contents of this device.
      */
-    private ArrayList<AlchemicIngredient> contents = new ArrayList<AlchemicIngredient>();
+    protected ArrayList<AlchemicIngredient> contents = new ArrayList<AlchemicIngredient>();
 
     public ArrayList<AlchemicIngredient> getContents() {
         return contents;

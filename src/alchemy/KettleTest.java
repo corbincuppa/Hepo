@@ -33,6 +33,7 @@ public class KettleTest {
         this.moreOfTheSame = new AlchemicIngredient(flower, 2, UnitOfQuantity.BOTTLE);
         this.containerMoreOfTheSame = new IngredientContainer(UnitOfQuantity.BARREL, moreOfTheSame);
         ArrayList<IngredientContainer> container2 = new ArrayList<>();
+        this.containerOneIng = new IngredientContainer(UnitOfQuantity.BARREL, oneIng);
         container2.add(containerOneIng);
         container2.add(containerMoreOfTheSame);
         this.kettleFlower = new Kettle(container2);
@@ -64,7 +65,7 @@ public class KettleTest {
     public void testUseKettleSameIng(){
         kettleFlower.use();
         AlchemicIngredient newIng = kettleFlower.takeResult().getIngredient();
-        Assert.assertEquals(oneIng.getIngredientType(), newIng.getIngredientType());
+        Assert.assertEquals("Flower", newIng.getIngredientType().getName());
         Assert.assertEquals(moreOfTheSame.getIngredientType(), newIng.getIngredientType());
         Assert.assertEquals(moreOfTheSame.getSimpleName(), newIng.getSimpleName());
         Assert.assertFalse(newIng.getIngredientType() instanceof IngredientTypeMixed);
