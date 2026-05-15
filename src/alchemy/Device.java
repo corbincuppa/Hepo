@@ -57,6 +57,8 @@ public abstract class Device {
      * @effect  The contents of this device is expanded with the alchemic ingredients in the given containers.
      *          | for each container in containers
      *          |    contents.add(containers.get(i).getIngredient())
+     * @throws IllegalArgumentException [can]
+     *          | ? containers.size() != 1
      */
     public void add(ArrayList<IngredientContainer> containers) {
         int length = containers.size();
