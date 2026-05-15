@@ -254,6 +254,7 @@ public class Laboratory {
                 throw new IllegalArgumentException("The given quantity is not of the same state.");
             }
         }
+        throw new NoSuchElementException("No ingredient by that name is stored inside this Laboratory.");
     }
 
     /**
@@ -269,8 +270,10 @@ public class Laboratory {
      *          container with the best fitting capacity for that ingredient which is returned.
      *          | if isIngredientInStorage(name)
      *          |   then result = new IngredientContainer(ingredient)
+     * @throws  NoSuchElementException
+     *          | !isIngredientInStorage(name)
      */
-    public IngredientContainer takeIngredient(String name) {
+    public IngredientContainer takeIngredient(String name) throws NoSuchElementException{
         if (isIngredientInStorage(name)) {
             IngredientContainer container = getContainerIngredientWithName(name);
             // Take out the ingredient
@@ -281,6 +284,7 @@ public class Laboratory {
             IngredientContainer newContainer = new IngredientContainer(ingredient);
             return newContainer;
         }
+        throw new NoSuchElementException("No ingredient by that name is stored inside this Laboratory.");
     }
 
     /**

@@ -118,19 +118,13 @@ public enum UnitOfQuantity {
                 return unit;
             }
         }
+        return order.get(order.size() - 1);
     }
 
     public static int getBestFitAmount(double amountSpoons, State state) {
         ArrayList<UnitOfQuantity> order = getInOrder(state);
         // Default to the largest unit if amount exceeds all units
-        UnitOfQuantity bestUnit = order.getLast();
-        for (int i = 0; i < order.size() - 1; i++) {
-            UnitOfQuantity next = order.get(i + 1);
-            if (amountSpoons < next.getAmountSpoons()) {
-                bestUnit = order.get(i);
-                break;
-            }
-        }
+        UnitOfQuantity bestUnit = getBestFitUnit(amountSpoons, state);
         double amount = amountSpoons / bestUnit.getAmountSpoons();
         return (int)amount;
     }
@@ -146,6 +140,7 @@ public enum UnitOfQuantity {
                 return bestUnit;
             }
         }
+        return order.get(order.size() - 1);
     }
 
 }

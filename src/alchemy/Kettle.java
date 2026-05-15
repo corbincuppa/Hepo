@@ -1,5 +1,6 @@
 package alchemy;
 
+import alchemy.State;
 import java.util.*;
 import static java.lang.Math.abs;
 import static java.util.Collections.min;
@@ -52,7 +53,7 @@ public class Kettle extends Device {
             newState = states.get(0);
         }
         for (State state:states) {
-            if (state instanceof State.LIQUID) {
+            if (state == State.LIQUID) {
                 newState = State.LIQUID;
             }
         }
@@ -136,9 +137,11 @@ public class Kettle extends Device {
      *          |   for ing in contents
      *          |       if !names.contains(ing.getSimpleName()) then
      *          |           names.add(ing.getSimpleName())
+     * @throws  IllegalArgumentException
+     *          | contents.size() < 2
      */
     protected ArrayList<String> makeIntoList(){
-        if(contents.size() >= 2) {
+        if(canHaveAsContentsToMix()) {
             ArrayList<String> names = new ArrayList<>();
             for (AlchemicIngredient ing : contents) {
                 String simpleName = ing.getSimpleName();
@@ -148,6 +151,7 @@ public class Kettle extends Device {
             }
             return names;
         }
+        throw new IllegalArgumentException("A kettle must have more than one ingredient present to mix.");
     }
 
     /**
@@ -245,6 +249,19 @@ public class Kettle extends Device {
             }
         }
         return list;
+    }
+
+    /**
+     * Check if this kettle has enough ingredients inside it to mix.
+     *
+     * @return  True is there are two or more ingredients inside this kettle, false otherwise.
+     *          | result == ( this.contents.size() >= 2 )
+     */
+    protected boolean canHaveAsContentsToMix(){
+        if (this.contents.size()<2){
+            return false;
+        }
+        return true;
     }
 
 }
