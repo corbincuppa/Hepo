@@ -99,12 +99,12 @@ public class Laboratory {
     /**
      * Return the device(s) available in this laboratory.
      */
-    public String getDevices() {
-        String returnStr = new String();
+    public ArrayList<Device> getDevices() {
+        ArrayList<Device> copy = new ArrayList<>();
         for (Device device : devices) {
-            returnStr += device;
+            copy.add(device);
         }
-        return returnStr;
+        return copy;
     }
 
     /**

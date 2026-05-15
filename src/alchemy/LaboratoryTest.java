@@ -11,8 +11,8 @@ import java.util.ArrayList;
  */
 public class LaboratoryTest {
     IngredientType flower;
-    AlchemicIngredient validIng, fullIng, invalidQuant;
-    IngredientContainer containerValidIng, containerFull;
+    AlchemicIngredient validIng;
+    IngredientContainer containerValidIng;
     Laboratory lab;
     Oven oven;
     CoolingBox cooler, cooler2electricboogaloo;
@@ -22,10 +22,7 @@ public class LaboratoryTest {
     public void setUp() {
         this.flower = new IngredientType("Flower", State.LIQUID, new int[]{0, 18});
         this.validIng = new AlchemicIngredient(flower, 8, UnitOfQuantity.JUG);
-        this.fullIng= new AlchemicIngredient(flower, 1, UnitOfQuantity.BARREL);
         this.containerValidIng = new IngredientContainer(UnitOfQuantity.BARREL, validIng);
-        this.containerFull = new IngredientContainer(UnitOfQuantity.BARREL, fullIng);
-        this.invalidQuant = new AlchemicIngredient(flower, 1, UnitOfQuantity.STOREROOM);
         this.oven = new Oven(containerValidIng, new int[]{20, 0});
         this.cooler = new CoolingBox(containerValidIng, new int[]{20, 0});
         ArrayList<Device> devices = new ArrayList<>();
@@ -38,7 +35,10 @@ public class LaboratoryTest {
     @Test
     public void testConstructorLaboratory(){
         Assert.assertEquals(1, lab.getCapacity());
-        Assert.assertEquals(bhivp, lab.getDevices());
+        ArrayList<Device> devices = new ArrayList<>();
+        devices.add(oven);
+        devices.add(cooler);
+        Assert.assertEquals(devices, lab.getDevices());
         Assert.assertNull(lab.getStoredIng());
     }
 
@@ -58,9 +58,14 @@ public class LaboratoryTest {
 
     @Test
     public void testAddDevice(){
-        Assert.assertEquals(blablaba, lab.getDevices());
+        ArrayList<Device> devices = new ArrayList<>();
+        devices.add(oven);
+        devices.add(cooler);
+        Assert.assertEquals(devices, lab.getDevices());
+        Assert.assertEquals(devices, lab.getDevices());
         lab.addDevice(cooler2electricboogaloo);
-        Assert.assertEquals(more, lab.getDevices());
+        devices.add(cooler2electricboogaloo)
+        Assert.assertEquals(devices, lab.getDevices());
     }
 
     @Test
