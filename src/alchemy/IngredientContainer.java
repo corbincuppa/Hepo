@@ -104,11 +104,15 @@ public class IngredientContainer {
      *          capacity is a valid capacity.
      *          | if isValidCapacity(capacity)
      *          |   then this.capacity = capacity
+     * @throws  IllegalArgumentException
+     *          | ! isValidCapacity(capacity)
      */
     @Model
-    private void setCapacity(UnitOfQuantity capacity) {
-        if (isValidCapacity(capacity))
+    private void setCapacity(UnitOfQuantity capacity) throws IllegalArgumentException {
+        if (isValidCapacity(capacity)) {
             this.capacity = capacity;
+        }
+        throw new IllegalArgumentException("A capacity for a container cannot be the smallest or largest units.");
     }
 
 
@@ -172,7 +176,7 @@ public class IngredientContainer {
      *          |   && (quantityUnit.getAmountSpoons() * quantityAmount) <= capacity.getAmountSpoons()
      */
     @Model
-    private boolean canHaveAsQuantity(int quantityAmount, UnitOfQuantity quantityUnit) {
+    protected boolean canHaveAsQuantity(int quantityAmount, UnitOfQuantity quantityUnit) {
         // Set the capacity and unit of quantity into amount of spoons
         double unitSpoons = (quantityUnit.getAmountSpoons() * quantityAmount);
         double capacitySpoons = capacity.getAmountSpoons();

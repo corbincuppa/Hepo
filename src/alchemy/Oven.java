@@ -105,6 +105,6 @@ public class Oven extends Device {
             ingredient.addPrefixHeated();
             ingredient.changeTemperature(this.getTemperature());
         }
-        takeResult(ingredient);
     }
+
 }

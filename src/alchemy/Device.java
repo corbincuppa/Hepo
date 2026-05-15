@@ -1,5 +1,7 @@
 package alchemy;
 
+import exceptions.IllegalAmountException;
+
 import java.util.ArrayList;
 
 /**
@@ -10,7 +12,7 @@ import java.util.ArrayList;
  * @version 1.0
  */
 
-public class Device {
+public abstract class Device {
 
     /**********************************************************
      * Constructors
@@ -19,6 +21,7 @@ public class Device {
     public Device(ArrayList<IngredientContainer> contents) {
         add(contents);
     }
+
 
 
     /**********************************************************
@@ -34,18 +37,26 @@ public class Device {
         return contents;
     }
 
+
     public void add(ArrayList<IngredientContainer> containers) {
         int length = containers.size();
-        for (int i = 0; i < length; i++){
+        for (int i = 0; i < length; i++) {
             contents.add(containers.get(i).getIngredient());
             containers.get(i).terminate();
         }
     }
 
-    public void takeResult(AlchemicIngredient ingredient) {
-        new IngredientContainer(ingredient);
+    public IngredientContainer takeResult() throws IllegalAmountException {
+        if(contents.size() == 1) {
+            AlchemicIngredient ing = this.getContents().get(0);
+            return new IngredientContainer(ing);
+        }
+        throw new IllegalAmountException(contents.size());
     }
 
+    /**
+     * Use this device.
+     */
     public void use() {
         // INSERT use method here for each device
     }

@@ -7,6 +7,9 @@ import java.util.NoSuchElementException;
 /**
  * A class of laboratories.
  *
+ * @invar   The capacity of this laboratory must be a valid capacity.
+ *          | isValidCapacity()
+ *
  * @author  Adelina Vozianu
  * @author  Boglárka Csorba-Vitus
  * @version 1.0
@@ -51,19 +54,35 @@ public class Laboratory {
     }
 
     /**
+     * Check if the given capacity is a valid capacity for a laboratory.
+     *
+     * @param   capacity
+     *          The given capacity to be checked
+     * @return  True if the given capacity is strictly positive, false otherwise.
+     */
+    protected static boolean isValidCapacity(int capacity) {
+        if (capacity < 0) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
      * Set the capacity of this laboratory to the given capacity.
      *
      * @param   capacity
      *          The given capacity expressed in amount of storerooms.
      *
-     * @effect  If the given capacity is strictly positive, then the capacity of this
+     * @effect  If the given capacity is a valid capacity, then the capacity of this
      *          laboratory is set to the given capacity.
-     *          |  if (capacity < 0)
+     *          |  if (isValidCapacity(capacity))
      *          |    then this.capacity = capacity;
      */
     private void setCapacity(int capacity) {
-        if (capacity < 0)
+        if (isValidCapacity(capacity)) {
             this.capacity = capacity;
+        }
+        throw new IllegalAmountException(capacity);
     }
 
 
@@ -80,12 +99,12 @@ public class Laboratory {
     /**
      * Return the device(s) available in this laboratory.
      */
-    public String getDevices() {
-        String returnStr = new String();
+    public ArrayList<Device> getDevices() {
+        ArrayList<Device> copy = new ArrayList<>();
         for (Device device : devices) {
-            returnStr += device;
+            copy.add(device);
         }
-        return returnStr;
+        return copy;
     }
 
     /**
@@ -99,7 +118,7 @@ public class Laboratory {
      *          | if(newDevice != null)
      *          |   then this.devices.add(newDevice)
      */
-    private void addDevice(Device newDevice) {
+    protected void addDevice(Device newDevice) {
         if(newDevice != null)
             this.devices.add(newDevice);
     }

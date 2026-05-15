@@ -63,6 +63,5 @@ public class Transmogrifier extends Device {
             ingredient.addPrefixState(this.getState());
             ingredient.changeState(this.getState());
         }
-        takeResult(ingredient);
     }
 }

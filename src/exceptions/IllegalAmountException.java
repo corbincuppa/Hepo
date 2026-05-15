@@ -29,7 +29,7 @@ public class IllegalAmountException extends RuntimeException {
      *          The amount for this new illegal amount exception.
      * @post    The amount for this new illegal amount exception
      *          is equal to the given amount.
-     *          | new.getName().equals(amount)
+     *          | new.getAmount().equals(amount)
      */
     public IllegalAmountException(int amount) {
         this.amount = amount;
