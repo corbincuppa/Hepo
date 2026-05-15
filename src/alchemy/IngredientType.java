@@ -253,7 +253,7 @@ public class IngredientType {
     public static boolean isValidStdState(State stdState){
         return stdState != null;
     }
-    // bij vorige practicum was er zoiets bij type -> is het hier ook nodig
+    // --> voor in de testen
 
     /**
      * Return the standard state of this ingredient type.
@@ -329,7 +329,6 @@ public class IngredientType {
         }
         return true;
     }
-    // std moet strikt warmer zijn dan [0,0]
 
 
     /**
