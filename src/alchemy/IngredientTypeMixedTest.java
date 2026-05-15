@@ -32,7 +32,6 @@ public class IngredientTypeMixedTest {
     @Test
     public void testConstructorIngredientType_Illegal() {
         assertEquals("Ingredient Type Mixed", this.flowerIllegal.getName());
-        //state???
         assertEquals(0, this.flowerIllegal.getStdTemp()[0]);
         assertEquals(20, this.flowerIllegal.getStdTemp()[1]);
     }

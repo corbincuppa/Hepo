@@ -15,6 +15,16 @@ public class Kettle extends Device {
     /**********************************************************
      * Constructors
      **********************************************************/
+
+    /**
+     * Initialize a new kettle with given contents.
+     *
+     * @param  	contents
+     *         	The contents of the new device.
+     * @effect 	The kettle is initialized as a devices
+     * 			(contents is set)
+     * 			| super(contents)
+     */
     public Kettle(ArrayList<IngredientContainer> contents) {
         super(contents);
     }

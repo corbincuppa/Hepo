@@ -10,8 +10,6 @@ import be.kuleuven.cs.som.annotate.*;
  * @version 1.0
  */
 
-//invars??????? :(
-
 public class IngredientType {
 
     /**********************************************************

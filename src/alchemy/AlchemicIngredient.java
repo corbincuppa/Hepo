@@ -77,7 +77,7 @@ public class AlchemicIngredient {
     /**
      * Get the full name of this alchemic ingredient.
      *
-     * @return  The special name with the full name between brackets of this ingredient is the special name is not null,
+     * @return  The special name with the full name between brackets of this ingredient if the special name is not null,
      *          otherwise the full name of this alchemic ingredient.
      *          | if (this.getSpecialName() != null) then result == this.getSpecialName() +
      *          |        "(" + this.getFullName() + ")"
@@ -94,19 +94,19 @@ public class AlchemicIngredient {
      * Set the full name of this alchemic ingredient.
      *
      * @post    The full name of this alchemic ingredient is set to the simple name
-     *          | this.fullName = getSimpleName()
+     *          | new.fullName = getSimpleName()
      */
     protected void setFullName() {
             this.fullName = getSimpleName();
     }
 
     /**
-     * Set the full name of this alcheic ingredient to the given name.
+     * Set the full name of this alchemic ingredient to the given name.
      *
      * @param   name
      *          The given name
      * @post    The full name is set to the given name.
-     *          | this.fullName = name
+     *          | new.fullName = name
      */
     protected void changeFullName(String name){
         this.fullName = name;
@@ -136,8 +136,8 @@ public class AlchemicIngredient {
      *          The given word to be checked
      * @param   index
      *          The index at which to start so the unnecessary beginning of the word up until the index isn't checked
-     * @return  True if the rest of the word is compiled of acceptable characters, false if the
-     *          rest of the word contains an uppercase letter.
+     * @return  True if the rest of the word is compiled of acceptable characters.
+     *          False if the rest of the word contains an uppercase letter.
      *          | for each i in index..word.length()
      *          |   if (acceptableSymbols(word.charAt(i)))
      *          |       i++
@@ -165,7 +165,7 @@ public class AlchemicIngredient {
      * @return  If the first character of the word is a letter, then it is checked if that character is uppercase and if
      *          the rest of the word without that character consists of lowercase letters.
      *          If the first character of the word is instead an accepted symbol, then it is checked if the second character
-     *          is an uppercase letter and the rest of the word without those two characters consister of lowercase letters.
+     *          is an uppercase letter and the rest of the word without those two characters consisted of lowercase letters.
      *          False otherwise.
      *          | if (Character.isLetter(word.charAt(0)))
      *          |   then result == (Character.isUpperCase(word.charAt(0)) && restWithLowercases(word, 1))
@@ -286,9 +286,11 @@ public class AlchemicIngredient {
     }
 
     /**
-     *
+     * Strings the given ingredient names together
      *
      * @param   ingredients
+     *          The ingredient names that needs to be stringed together
+     * @return  A string of the given ingredient names stringed together
      *
      */
     protected static String mixedNames(ArrayList<String> ingredients) {
@@ -307,8 +309,6 @@ public class AlchemicIngredient {
         return newName;
     }
 
-    //--> only kettle can use this
-    // should this return the name instead? --> Miss wel en bij kettle steken zodat het de naam van de new IngredientType wordt
 
     /**
      * Add "Heated" to the full name of this alchemic ingredient.
