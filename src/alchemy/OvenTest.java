@@ -45,7 +45,8 @@ public class OvenTest {
     @Test
     public void testConstructorIngredientType_Legal() {
         assertEquals(new ArrayList<AlchemicIngredient> (Arrays.asList(lavenderHoney)), this.oven.getContents());
-        assertEquals(new int[]{0, 40}, this.oven.getTemperature());
+        assertEquals(0, this.oven.getTemperature()[0]);
+        assertEquals(40, this.oven.getTemperature()[1]);
     }
 
     @Test

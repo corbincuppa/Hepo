@@ -25,14 +25,16 @@ public class IngredientTypeMixedTest {
     public void testConstructorIngredientType_Legal() {
         assertEquals("Flower mixed with Sugar", this.flower.getName());
         assertSame(State.LIQUID, this.flower.getStdState());
-        assertEquals(new int[]{0, 18}, this.flower.getStdTemp());
+        assertEquals(0, this.flower.getStdTemp()[0]);
+        assertEquals(18, this.flower.getStdTemp()[1]);
     }
 
     @Test
     public void testConstructorIngredientType_Illegal() {
         assertEquals("Ingredient Type Mixed", this.flowerIllegal.getName());
         //state???
-        assertEquals(new int[]{0, 20}, this.flowerIllegal.getStdTemp());
+        assertEquals(0, this.flowerIllegal.getStdTemp()[0]);
+        assertEquals(20, this.flowerIllegal.getStdTemp()[1]);
     }
 
     @Test

@@ -68,8 +68,10 @@ public class KettleTest {
         Assert.assertEquals(moreOfTheSame.getIngredientType(), newIng.getIngredientType());
         Assert.assertEquals(moreOfTheSame.getSimpleName(), newIng.getSimpleName());
         Assert.assertFalse(newIng.getIngredientType() instanceof IngredientTypeMixed);
-        Assert.assertEquals(new int[]{0, 20}, newIng.getTemperature());
-        Assert.assertEquals(new int[]{0, 11}, newIng.getIngredientType().getStdTemp());
+        Assert.assertEquals(0, newIng.getTemperature()[0]);
+        Assert.assertEquals(20, newIng.getTemperature()[1]);
+        Assert.assertEquals(0, newIng.getIngredientType().getStdTemp()[0]);
+        Assert.assertEquals(11, newIng.getIngredientType().getStdTemp()[1]);
         Assert.assertEquals(State.LIQUID, newIng.getState());
         Assert.assertEquals(State.LIQUID, newIng.getIngredientType().getStdState());
         Assert.assertEquals(32, newIng.getQuantityAmount());
@@ -84,8 +86,10 @@ public class KettleTest {
         Assert.assertFalse(wall.getIngredientType() == newIng.getIngredientType());
         Assert.assertFalse(floor.getIngredientType() == newIng.getIngredientType());
         Assert.assertTrue(newIng.getIngredientType() instanceof IngredientTypeMixed);
-        Assert.assertEquals(new int[]{50, 0}, newIng.getTemperature());
-        Assert.assertEquals(new int[]{0, 100}, newIng.getIngredientType().getStdTemp());
+        Assert.assertEquals(50, newIng.getTemperature()[0]);
+        Assert.assertEquals(0, newIng.getTemperature()[0]);
+        Assert.assertEquals(0, newIng.getIngredientType().getStdTemp()[0]);
+        Assert.assertEquals(100, newIng.getIngredientType().getStdTemp()[1]);
         Assert.assertEquals(State.LIQUID, newIng.getState());
         Assert.assertEquals(State.LIQUID, newIng.getIngredientType().getStdState());
         Assert.assertEquals(100, newIng.getQuantityAmount());

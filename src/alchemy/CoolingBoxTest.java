@@ -43,7 +43,8 @@ public class CoolingBoxTest {
     @Test
     public void testConstructorIngredientType_Legal() {
         assertEquals(new ArrayList<AlchemicIngredient> (Arrays.asList(lavenderHoney)), this.coolingBox.getContents());
-        assertEquals(new int[]{0, 10}, this.coolingBox.getTemperature());
+        assertEquals(0, this.coolingBox.getTemperature()[0]);
+        assertEquals(10, this.coolingBox.getTemperature()[1]);
     }
 
     @Test
@@ -61,6 +62,7 @@ public class CoolingBoxTest {
     public void testUse(){
         this.coolingBox.use();
         assertEquals("Cooled Honey", this.lavenderHoney.getName());
-        assertEquals(new int[] {0,10}, lavenderHoney.getTemperature());
+        assertEquals(0, lavenderHoney.getTemperature()[0]);
+        assertEquals(10, lavenderHoney.getTemperature()[1]);
     }
 }
