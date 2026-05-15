@@ -64,7 +64,7 @@ public class LaboratoryTest {
         Assert.assertEquals(devices, lab.getDevices());
         Assert.assertEquals(devices, lab.getDevices());
         lab.addDevice(cooler2electricboogaloo);
-        devices.add(cooler2electricboogaloo)
+        devices.add(cooler2electricboogaloo);
         Assert.assertEquals(devices, lab.getDevices());
     }
 
