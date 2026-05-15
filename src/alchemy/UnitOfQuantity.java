@@ -103,7 +103,7 @@ public enum UnitOfQuantity {
     }
 
     /**
-     * Return the best fitting unit for the given amount of spoons and given state.
+     * Return the loosely fitting unit for the given amount of spoons and given state.
      *
      * @param   amountSpoons
      *          The given amount of spoons
@@ -121,6 +121,14 @@ public enum UnitOfQuantity {
         return order.get(order.size() - 1);
     }
 
+    /**
+     * Return the best fitting amount of unit for the given amount of spoons and given state.
+     *
+     * @param   amountSpoons
+     *          The given amount of spoons
+     * @param   state
+     *          The given state in which the given amount of spoons is valid
+     */
     public static int getBestFitAmount(double amountSpoons, State state) {
         ArrayList<UnitOfQuantity> order = getInOrder(state);
         // Default to the largest unit if amount exceeds all units
@@ -129,6 +137,14 @@ public enum UnitOfQuantity {
         return (int)amount;
     }
 
+    /**
+     * Return the best fitting unit for the given amount of spoons and given state.
+     *
+     * @param   amountSpoons
+     *          The given amount of spoons
+     * @param   state
+     *          The given state in which the given amount of spoons is valid
+     */
     public static UnitOfQuantity getBestFitUnit(double amountSpoons, State state) {
         ArrayList<UnitOfQuantity> order = getInOrder(state);
         // Default to the largest unit if amount exceeds all units

@@ -3,6 +3,13 @@ package alchemy;
 import be.kuleuven.cs.som.annotate.*;
 import java.util.ArrayList;
 
+/**
+ * A class of cooling boxes.
+ *
+ * @author  Adelina Vozianu
+ * @author  Boglárka Csorba-Vitus
+ * @version 1.0
+ */
 public class CoolingBox extends Device{
 
     /**********************************************************

@@ -12,7 +12,7 @@ import java.util.ArrayList;
 public class LaboratoryTest {
     IngredientType flower;
     AlchemicIngredient validIng;
-    IngredientContainer containerValidIng;
+    IngredientContainer containerValidIng, container2;
     Laboratory lab;
     Oven oven;
     CoolingBox cooler, cooler2electricboogaloo;
@@ -27,11 +27,15 @@ public class LaboratoryTest {
         container.add(containerValidIng);
         this.oven = new Oven(container, new int[]{20, 0});
         this.cooler = new CoolingBox(container, new int[]{20, 0});
+
         ArrayList<Device> devices = new ArrayList<>();
         devices.add(oven);
         devices.add(cooler);
+        ArrayList<IngredientContainer> containerArray2 = new ArrayList<>();
+        this.container2 = new IngredientContainer(UnitOfQuantity.BARREL, validIng);
+        containerArray2.add(containerValidIng);
         this.lab = new Laboratory(1, devices);
-        this.cooler2electricboogaloo = new CoolingBox(container, new int[]{90, 0});
+        this.cooler2electricboogaloo = new CoolingBox(containerArray2, new int[]{90, 0});
     }
 
     @Test
@@ -41,7 +45,7 @@ public class LaboratoryTest {
         devices.add(oven);
         devices.add(cooler);
         Assert.assertEquals(devices, lab.getDevices());
-        Assert.assertNull(lab.getStoredIng());
+        Assert.assertEquals(0, lab.getStoredIng().length());
     }
 
     @Test
