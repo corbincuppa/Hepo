@@ -8,7 +8,7 @@ public class Transmogrifier extends Device {
      * Constructors
      **********************************************************/
 
-    public Transmogrifier(ArrayList<IngredientContainer> contents, State state) {
+    public Transmogrifier(ArrayList<IngredientContainer> contents, State state) throws IllegalArgumentException {
         super(contents);
         this.state = state;
     }
@@ -18,12 +18,16 @@ public class Transmogrifier extends Device {
      * Container
      **********************************************************/
 
-    public AlchemicIngredient getAlchemicIngredient() {
-        int length = this.getAlchemicIngredients().size();
+    @Override
+    public void add(ArrayList<IngredientContainer> containers) throws IllegalArgumentException {
+        int length = containers.size();
         if (length != 1){
             throw new IllegalArgumentException("You can only put one thing in the transmogrifier at a time. Current number of items : " + length);
         }
-        return this.getAlchemicIngredients().get(0);
+        for (int i = 0; i < length; i++){
+            this.getContents().add(containers.get(i).getIngredient());
+            containers.get(i).terminate();
+        }
     }
 
 
@@ -39,7 +43,7 @@ public class Transmogrifier extends Device {
 
     private boolean canItBeTransmogrified(){
         State stateTransmogrifier = this.getState();
-        AlchemicIngredient ingredient = this.getAlchemicIngredient();
+        AlchemicIngredient ingredient = this.getContents().get(0);
         State stateIng = ingredient.getState();
         if (stateTransmogrifier != stateIng){
             return true;
@@ -54,15 +58,11 @@ public class Transmogrifier extends Device {
 
     @Override
     public void use(){
-        AlchemicIngredient ingredient = this.getAlchemicIngredient();
-        IngredientContainer oldContainer = this.getContents().get(0);
-        UnitOfQuantity capacity = oldContainer.getCapacity();
+        AlchemicIngredient ingredient = this.getContents().get(0);
         if (this.canItBeTransmogrified()){
             ingredient.addPrefixState(this.getState());
             ingredient.changeState(this.getState());
         }
-        new IngredientContainer(capacity, ingredient);
+        takeResult(ingredient);
     }
-
-
 }

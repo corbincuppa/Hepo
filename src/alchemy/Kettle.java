@@ -55,7 +55,7 @@ public class Kettle extends Device {
 
         // Quantity: amount is total amount (with conversion)
         int tempAmount = 0;
-        for (AlchemicIngredient ing: this.getAlchemicIngredients()) {
+        for (AlchemicIngredient ing: this.getContents()) {
             double amount = ing.getQuantityAmount() * ing.getQuantityUnit().getAmountSpoons();
             tempAmount += amount;
         }
@@ -108,9 +108,10 @@ public class Kettle extends Device {
             AlchemicIngredient newIngredient = new AlchemicIngredient(newIngType, newAmount, newUnit);
 
             alchemy.IngredientContainer container = new IngredientContainer(newIngredient);
-            this.getAlchemicIngredients().clear();
+            ArrayList<IngredientContainer> listContainer = new ArrayList<IngredientContainer> (Arrays.asList(container));
+            this.getContents().clear();
             // Add container, which is then deleted
-            add(container);
+            add(listContainer);
         }
 
         IngredientTypeMixed newIngType = new IngredientTypeMixed(newName, newStdState, newStdTemp);
@@ -134,7 +135,7 @@ public class Kettle extends Device {
     protected ArrayList<String> makeIntoList(){
         if(canHaveAsContentsToMix()) {
             ArrayList<String> names = new ArrayList<>();
-            for (AlchemicIngredient ing : this.getAlchemicIngredients()) {
+            for (AlchemicIngredient ing : this.getContents()) {
                 String simpleName = ing.getSimpleName();
                 if (!names.contains(simpleName)) {
                     names.add(simpleName);
@@ -156,7 +157,7 @@ public class Kettle extends Device {
      *          |   result == ingredient.getName().equals(name)
      */
     public boolean isIngredientInKettle(String name) {
-        for (AlchemicIngredient ingredient: this.getAlchemicIngredients()) {
+        for (AlchemicIngredient ingredient: this.getContents()) {
             String ingName = ingredient.getSimpleName();
             // Look for the given name
             if (ingName.equals(name)) {
@@ -184,7 +185,7 @@ public class Kettle extends Device {
      */
     public AlchemicIngredient getIngredientWithName(String name) throws NoSuchElementException {
         if (isIngredientInKettle(name)) {
-            for (AlchemicIngredient ingredient:this.getAlchemicIngredients()) {
+            for (AlchemicIngredient ingredient:this.getContents()) {
                 String ingName = ingredient.getSimpleName();
                 // Look for the given name
                 if (ingName.equals(name)) {
@@ -200,7 +201,7 @@ public class Kettle extends Device {
      */
     protected ArrayList<int[]> getTemps() {
         ArrayList<int[]> list = new ArrayList<>();
-        for (AlchemicIngredient ing: this.getAlchemicIngredients()) {
+        for (AlchemicIngredient ing: this.getContents()) {
             int[] temp = ing.getIngredientType().getStdTemp();
             list.add(temp);
         }
@@ -219,7 +220,7 @@ public class Kettle extends Device {
         int[] roomTemp = {0, 20};
         int roomTempColdness = 0;
         int roomTempHotness = 20;
-        for (AlchemicIngredient ing:this.getAlchemicIngredients()) {
+        for (AlchemicIngredient ing:this.getContents()) {
             int[] temp = ing.getIngredientType().getStdTemp();
             int error = abs((temp[0] - roomTempColdness) + (temp[1] - roomTempHotness));
             listErrors.add(error);
@@ -233,7 +234,7 @@ public class Kettle extends Device {
                 int min1 = min(listErrors);
                 while(min == min1) {
                     int index = listErrors.indexOf(min1);
-                    AlchemicIngredient closest = this.getAlchemicIngredients().get(index);
+                    AlchemicIngredient closest = this.getContents().get(index);
                     listErrors.add(index, 10000);
                     list.add(closest);
                 }
@@ -249,7 +250,7 @@ public class Kettle extends Device {
      *          | result == ( this.contents.size() >= 2 )
      */
     protected boolean canHaveAsContentsToMix(){
-        if (this.getAlchemicIngredients().size()<2){
+        if (this.getContents().size()<2){
             return false;
         }
         return true;

@@ -17,22 +17,26 @@ public class Oven extends Device {
     /**********************************************************
      * Constructors
      **********************************************************/
-    public Oven(ArrayList<IngredientContainer> contents, int[] temperature) {
+    public Oven(ArrayList<IngredientContainer> contents, int[] temperature) throws IllegalArgumentException {
         super(contents);
         this.temperature = temperature;
     }
 
+
     /**********************************************************
-     * Container
+     * Contents
      **********************************************************/
 
-
-    public AlchemicIngredient getAlchemicIngredient() {
-        int length = this.getAlchemicIngredients().size();
+    @Override
+    public void add(ArrayList<IngredientContainer> containers) throws IllegalArgumentException {
+        int length = containers.size();
         if (length != 1){
             throw new IllegalArgumentException("You can only put one thing in the oven at a time. Current number of items : " + length);
         }
-        return this.getAlchemicIngredients().get(0);
+        for (int i = 0; i < length; i++){
+            this.getContents().add(containers.get(i).getIngredient());
+            containers.get(i).terminate();
+        }
     }
 
     /**********************************************************
@@ -75,7 +79,7 @@ public class Oven extends Device {
         this.deviateTemperature();
         int coldnessOven = this.getTemperature()[0];
         int hotnessOven = this.getTemperature()[1];
-        AlchemicIngredient ingredient = this.getAlchemicIngredient();
+        AlchemicIngredient ingredient = this.getContents().get(0);
         int coldnessIng = ingredient.getColdness();
         int hotnessIng = ingredient.getHotness();
         if (coldnessOven == 0){
@@ -96,15 +100,11 @@ public class Oven extends Device {
 
     @Override
     public void use(){
-        AlchemicIngredient ingredient = this.getAlchemicIngredient();
-        IngredientContainer oldContainer = this.getContents().get(0);
-        UnitOfQuantity capacity = oldContainer.getCapacity();
-        oldContainer.terminate();
+        AlchemicIngredient ingredient = this.getContents().get(0);
         if (this.canItBeHeated()){
             ingredient.addPrefixHeated();
             ingredient.changeTemperature(this.getTemperature());
         }
-        new IngredientContainer(capacity, ingredient);
+        takeResult(ingredient);
     }
-
 }

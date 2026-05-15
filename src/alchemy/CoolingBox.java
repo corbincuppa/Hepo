@@ -7,7 +7,7 @@ public class CoolingBox extends Device{
     /**********************************************************
      * Constructors
      **********************************************************/
-    public CoolingBox(ArrayList<IngredientContainer> contents, int[] temperature) {
+    public CoolingBox(ArrayList<IngredientContainer> contents, int[] temperature) throws IllegalArgumentException{
         super(contents);
         this.temperature = temperature;
     }
@@ -17,12 +17,16 @@ public class CoolingBox extends Device{
      * Container
      **********************************************************/
 
-    public AlchemicIngredient getAlchemicIngredient() {
-        int length = this.getAlchemicIngredients().size();
+    @Override
+    public void add(ArrayList<IngredientContainer> containers) throws IllegalArgumentException {
+        int length = containers.size();
         if (length != 1){
             throw new IllegalArgumentException("You can only put one thing in the cooling box at a time. Current number of items : " + length);
         }
-        return this.getAlchemicIngredients().get(0);
+        for (int i = 0; i < length; i++){
+            this.getContents().add(containers.get(i).getIngredient());
+            containers.get(i).terminate();
+        }
     }
 
 
@@ -39,7 +43,7 @@ public class CoolingBox extends Device{
     private boolean canItBeCooled(){
         int coldnessCoolingBox = this.getTemperature()[0];
         int hotnessCoolingBox = this.getTemperature()[1];
-        AlchemicIngredient ingredient = this.getAlchemicIngredient();
+        AlchemicIngredient ingredient = this.getContents().get(0);
         int coldnessIng = ingredient.getColdness();
         int hotnessIng = ingredient.getHotness();
         if (coldnessCoolingBox == 0){
@@ -61,16 +65,11 @@ public class CoolingBox extends Device{
 
     @Override
     public void use(){
-        AlchemicIngredient ingredient = this.getAlchemicIngredient();
-        IngredientContainer oldContainer = this.getContents().get(0);
-        UnitOfQuantity capacity = oldContainer.getCapacity();
+        AlchemicIngredient ingredient = this.getContents().get(0);
         if (this.canItBeCooled()){
             ingredient.addPrefixCooled();
             ingredient.changeTemperature(this.getTemperature());
         }
-        new IngredientContainer(capacity, ingredient);
+        takeResult(ingredient);
     }
-
-
-
 }
