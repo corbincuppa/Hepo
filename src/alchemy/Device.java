@@ -10,15 +10,16 @@ import java.util.ArrayList;
  * @version 1.0
  */
 
-public class Device {
+public abstract class Device {
 
     /**********************************************************
      * Constructors
      **********************************************************/
 
-    public Device(ArrayList<IngredientContainer> contents) {
-        setContents(contents);
+    public Device(IngredientContainer container) {
+        add(container);
     }
+    public Device() {}
 
 
 
@@ -29,39 +30,42 @@ public class Device {
     /**
      * Variable referencing the contents of this device.
      */
-    private ArrayList<IngredientContainer> contents ;
+    private ArrayList<AlchemicIngredient> contents ;
 
-    public ArrayList<IngredientContainer> getContents() {
+    public ArrayList<AlchemicIngredient> getContents() {
         return contents;
     }
-
-    public void setContents(ArrayList<IngredientContainer> contents) {
-        this.contents = contents;
-    }
-    // bij oven enzo exception gooien als lengte != 1?
-
 
     /**
      * Add the ingredient inside a given container to this device.
      *
      * @param   container
      *          The given container containing the alchemic ingredient to be added
+     * @effect  The given container is terminated.
+     *          | container.terminate()
      */
-    public void add(IngredientContainer container){
-        // deletes old container
-        if (contents.size() == 0) {
-            contents.add(container.getIngredient());
-        }
+    public void add(IngredientContainer container){;
+        contents.add(container.getIngredient());
+        // Delete old container
         container.terminate();
     }
 
-    public void takeResult() {
-        // makes new container
+    /**
+     * Take the results from this device.
+     *
+     * @return  The result, stored in the contents of this device, if there is only one ingredient in this device.
+     *          | if (contents.size() == 2) then result == contents.get(0)
+     */
+    public AlchemicIngredient takeResult() {
+        if (contents.size() == 1) {
+            return contents.get(0);
+        }
     }
 
+    /**
+     * Use this device.
+     */
     public void use() {
         // INSERT use method here for each device
     }
-
-
 }

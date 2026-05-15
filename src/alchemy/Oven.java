@@ -15,7 +15,7 @@ public class Oven extends Device {
     /**********************************************************
      * Constructors
      **********************************************************/
-    public void Oven(IngredientContainer container, int[] temperature) {
+    public Oven(IngredientContainer container, int[] temperature) {
         this.container = container;
         this.temperature = temperature;
     }

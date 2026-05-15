@@ -28,6 +28,35 @@ public class Kettle extends Device {
      * Use
      **********************************************************/
 
+    /**
+     * Use this kettle.
+     *
+     * @effect  The name of the new ingredient is set to the mixed name of all
+     *          ingredients: thefirst ingredient's name followed by
+     *          'mixed with' and the remaining names separated by commas and 'and'.
+     *          If all ingredients share the same simple name, the name remains unchanged.
+     *
+     * @effect  The state of the new alchemic ingredient is set to the standard state
+     *          of the base ingredient whose standard temperature lies closest to [0, 20].
+     *          If multiple ingredients are equally close, LIQUID takes priority over POWDER.
+     *
+     * @effect  The standard state of the new ingredient type is set to the state
+     *          the new ingredient assumes after mixing.
+     *
+     * @effect  The temperature of the new alchemic ingredient is set to the weighted
+     *          average of the temperatures of all mixed ingredients, weighted by their
+     *          quantity in spoons.
+     *
+     * @effect  The standard temperature of the new ingredient type is set to the
+     *          standard temperature of the ingredient type whose standard temperature
+     *          lies closest to [0, 20]. If multiple candidates are equally close,
+     *          the warmest standard temperature is chosen.
+     *
+     * @effect  The quantity of the new alchemic ingredient is set to the total combined
+     *          quantity of all mixed ingredients in spoons, converted to the best fitting
+     *          unit. If the resulting state differs from one or more base ingredients,
+     *          fractional spoons from those ingredients are summed and rounded down.
+     */
     @Override
     public void use(){
         // New ingredient with (which just stays in the Kettle) :
@@ -220,7 +249,9 @@ public class Kettle extends Device {
      * Get the alchemic ingredients inside the contents of this kettle with
      * the standard temperature that is the closest to [0, 20] (room temperature).
      *
-     * @return
+     * @return  For each ingredient in contents, the difference between the temperature and the room temperature is stored
+     *          in a list. The minimum of that list is taken and the ingredients whose temperature is closer to the
+     *          room temperature is added to the list of ingredients which is returned.
      */
     protected ArrayList<AlchemicIngredient> getClosestToRoomTemp() {
         ArrayList<AlchemicIngredient> list = new ArrayList<>();
