@@ -43,7 +43,7 @@ public class Transmogrifier extends Device {
 
     protected boolean canItBeTransmogrified(){
         State stateTransmogrifier = this.getState();
-        AlchemicIngredient ingredient = this.getContents().get(0);
+        AlchemicIngredient ingredient = this.getContents().getLast();
         State stateIng = ingredient.getState();
         if (stateTransmogrifier != stateIng){
             return true;

@@ -16,8 +16,8 @@ import java.util.Arrays;
 
 public class TransmogrifierTest {
     IngredientType honey;
-    AlchemicIngredient lavenderHoney;
-    IngredientContainer bottledHoney;
+    AlchemicIngredient lavenderHoney, lavenderHoney2;
+    IngredientContainer bottledHoney, bottledHoney2;
     IngredientType flower;
     AlchemicIngredient redFlower;
     IngredientContainer jarFlower;
@@ -33,6 +33,11 @@ public class TransmogrifierTest {
         ArrayList<IngredientContainer> listContainer = new ArrayList<IngredientContainer> (Arrays.asList(bottledHoney));
         this.transmogrifier = new Transmogrifier(listContainer, State.POWDER);
         this.transmogrifierSame = new Transmogrifier(listContainer, State.LIQUID);
+
+        this.lavenderHoney2 = new AlchemicIngredient(honey, 1, UnitOfQuantity.BOTTLE);
+        this.bottledHoney2 = new IngredientContainer(lavenderHoney2);
+        ArrayList<IngredientContainer> listContainer2 = new ArrayList<>(Arrays.asList(bottledHoney2));
+        this.transmogrifierSame = new Transmogrifier(listContainer2, State.LIQUID);
 
         this.flower = new IngredientType("Flower", State.POWDER, new int[]{0, 18});
         this.redFlower = new AlchemicIngredient(flower, 1, UnitOfQuantity.SACHET);

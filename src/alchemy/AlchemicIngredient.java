@@ -343,9 +343,9 @@ public class AlchemicIngredient {
      *          | this.changeFullName(prefix + this.getFullName())
      */
     protected void addPrefixState(State state){
-        String prefix = "Powdered";
+        String prefix = "Powdered ";
         if (state == State.LIQUID)
-            prefix = "Liquid";
+            prefix = "Liquid ";
         String newName = prefix + this.getFullName();
         this.changeFullName(newName);
     }
