@@ -11,28 +11,51 @@ import org.junit.*;
  */
 public class IngredientContainerTest {
     IngredientType flower;
-    AlchemicIngredient validIng, invalidQuant;
-    IngredientContainer containerValidIng, containerInvalidQuant;
+    AlchemicIngredient validIng, fullIng, invalidQuant;
+    IngredientContainer containerValidIng, containerFull, containerInvalidQuant;
 
 
     @Before
     public void setUp() {
         this.flower = new IngredientType("Flower", State.LIQUID, new int[]{0, 18});
         this.validIng = new AlchemicIngredient(flower, 8, UnitOfQuantity.JUG);
-        this.invalidQuant = new AlchemicIngredient(flower, 1, UnitOfQuantity.STOREROOM);
+        this.fullIng= new AlchemicIngredient(flower, 1, UnitOfQuantity.BARREL);
         this.containerValidIng = new IngredientContainer(UnitOfQuantity.BARREL, validIng);
-        this.containerInvalidQuant = new IngredientContainer(UnitOfQuantity.BARREL, invalidQuant);
+        this.containerFull = new IngredientContainer(UnitOfQuantity.BARREL, fullIng);
+        this.invalidQuant = new AlchemicIngredient(flower, 1, UnitOfQuantity.STOREROOM);
+        this.containerInvalidQuant = new IngredientContainer(UnitOfQuantity.SPOON, invalidQuant);
     }
 
     @Test
     public void testConstructorContainer_Legal(){
         Assert.assertEquals(this.validIng, containerValidIng.getIngredient());
         Assert.assertEquals(UnitOfQuantity.BARREL, containerValidIng.getCapacity());
+        Assert.assertEquals(this.fullIng, containerValidIng.getIngredient());
+        Assert.assertEquals(UnitOfQuantity.BARREL, containerFull.getCapacity());
     }
 
     @Test
-    public void testConstructorContainer_IllegalQuant(){
+    public void testInvalidCap(){
+        Assert.assertFalse(IngredientContainer.isValidCapacity(UnitOfQuantity.DROP));
+        Assert.assertFalse(IngredientContainer.isValidCapacity(UnitOfQuantity.PINCH));
+        Assert.assertFalse(IngredientContainer.isValidCapacity(UnitOfQuantity.STOREROOM));
+    }
 
+    @Test
+    public void testInvalidQuant(){
+        int amount = invalidQuant.getQuantityAmount();
+        UnitOfQuantity unit = invalidQuant.getQuantityUnit();
+        assertFalse(containerInvalidQuant.canHaveAsQuantity(amount, unit));
+    }
+
+    @Test
+    public void testGetIngredient(){
+        assertEquals(validIng, containerValidIng.getIngredient());
+    }
+
+    @Test
+    public void testGetCapacity(){
+        assertEquals(UnitOfQuantity.BARREL, containerValidIng.getCapacity());
     }
 
 }

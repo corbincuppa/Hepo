@@ -10,7 +10,7 @@ import java.util.ArrayList;
  * @version 1.0
  */
 
-public class Device {
+public abstract class Device {
 
     /**********************************************************
      * Constructors
@@ -19,6 +19,7 @@ public class Device {
     public Device(ArrayList<IngredientContainer> contents) {
         add(contents);
     }
+
 
 
     /**********************************************************
@@ -42,12 +43,24 @@ public class Device {
         }
     }
 
-    public void takeResult(AlchemicIngredient ingredient) {
-        UnitOfQuantity capacity = ingredient.getQuantityUnit();
-        new IngredientContainer(capacity, ingredient);
+    /**
+     * Take the results from this device.
+     *
+     * @return  The result, stored in the contents of this device, if there is only one ingredient in this device.
+     *          | if (contents.size() == 2) then result == contents.get(0)
+     */
+    public AlchemicIngredient takeResult() {
+        if (contents.size() == 1) {
+            return contents.get(0);
+        }
     }
 
+    /**
+     * Use this device.
+     */
     public void use() {
         // INSERT use method here for each device
     }
+
+
 }
