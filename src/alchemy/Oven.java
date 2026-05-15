@@ -17,6 +17,19 @@ public class Oven extends Device {
     /**********************************************************
      * Constructors
      **********************************************************/
+    /**
+     * Initialize a new oven with given contents and temperature.
+     *
+     * @param  	contents
+     *         	The contents of the new device.
+     * @param  	temperature
+     *         	The temperature of the new oven.
+     * @effect 	The oven is initialized as a devices
+     * 			(contents is set)
+     * 			| super(contents)
+     * @post	The temperature of this new oven is set to the given temperature.
+     * 			| new.getTemperature == temperature
+     */
     public Oven(ArrayList<IngredientContainer> contents, int[] temperature) throws IllegalArgumentException {
         super(contents);
         this.temperature = temperature;
@@ -27,6 +40,17 @@ public class Oven extends Device {
      * Contents
      **********************************************************/
 
+    /**
+     * Set the contents of this device to the alchemic ingredients in the given containers.
+     *
+     * @param   containers
+     *          The given containers
+     * @effect  The contents of this device is expanded with the alchemic ingredients in the given containers.
+     *          | for each container in containers
+     *          |    contents.add(containers.get(i).getIngredient())
+     * @thows   IllegalArgumentException
+     *          | containers.size() != 1
+     */
     @Override
     public void add(ArrayList<IngredientContainer> containers) throws IllegalArgumentException {
         int length = containers.size();
@@ -43,18 +67,37 @@ public class Oven extends Device {
      * Temperature
      **********************************************************/
 
+    /**
+     * Variable referencing the temperature of this cooling box.
+     */
     private int[] temperature;
 
+    /**
+     * Return the contents of the device.
+     */
+    @Model
     public int[] getTemperature() {
         return temperature;
     }
 
+    /**
+     * Generate a random margin of error for temperature deviation.
+     * Selects a random integer value from a predefined range of [-5, 5]
+     *
+     * @return  A random integer between -5 and 5 (inclusive)
+     */
     private int errorOnTemperature(){
         int[] marginOfError = {-5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5};
         int randomIndex = (int)(Math.random() * marginOfError.length);
         return marginOfError[randomIndex];
     }
 
+    /**
+     * Applies a random deviation to the current temperature values.
+     *
+     * @effect  The error is applied to the temperature of the oven
+     *          | getTemperature() + error
+     */
     private void deviateTemperature(){
         int error = errorOnTemperature();
         int coldness = this.getTemperature()[0];
@@ -75,6 +118,16 @@ public class Oven extends Device {
         this.temperature = new int[]{coldness, hotness};
     }
 
+    /**
+     * Check whether the temperature of the oven
+     * is higher than or the same as the temperature of the contents
+     *
+     * @return  False if the temperature of the oven is lower than the temperature of the contents
+     *          True otherwise.
+     *          | if getTemperature() < getContents().get(0).getTemperature()
+     *          |   return false
+     *          | else return true
+     */
     protected boolean canItBeHeated(){
         this.deviateTemperature();
         int coldnessOven = this.getTemperature()[0];
@@ -98,6 +151,16 @@ public class Oven extends Device {
      * Methods
      **********************************************************/
 
+    /**
+     * Heat the contents up if the contents has a lower temperature than the oven.
+     *
+     * @effect  The full name of the alchemic ingredient is the prefix "Heated" added.
+     *          | if canItBeHeated()
+     *          | then getContents.get(0).getFullName.equals("Heated"+getContents.get(0).getSimpleName())
+     * @effect  The temperature of the alchemic ingredient is set to the temperature of the oven.
+     *          | if canItBeHeated()
+     *          | then getTemperature().equals(getContents.get(0).getTemperature)
+     */
     @Override
     public void use(){
         AlchemicIngredient ingredient = this.getContents().get(0);

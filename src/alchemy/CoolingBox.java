@@ -108,10 +108,12 @@ public class CoolingBox extends Device{
     /**
      * Cool the contents down if the contents has a higher temperature than the cooling box.
      *
-     * @effect  The full name of the alchemic ingredient is the prefic "Cooled" added.
-     *          | getContents.get(0).getFullName.equals("Cooled"+getContents.get(0).getSimpleName())
+     * @effect  The full name of the alchemic ingredient is the prefix "Cooled" added.
+     *          | if canItBeCooled()
+     *          | then getContents.get(0).getFullName.equals("Cooled"+getContents.get(0).getSimpleName())
      * @effect  The temperature of the alchemic ingredient is set to the temperature of the cooling box.
-     *          | getTemperature().equals(getContents.get(0).getTemperature)
+     *          | if canItBeCooled()
+     *          | then getTemperature().equals(getContents.get(0).getTemperature)
      */
     @Override
     public void use(){
