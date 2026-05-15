@@ -56,7 +56,7 @@ public class CoolingBox extends Device{
      **********************************************************/
 
     protected void cool(){
-        AlchemicIngredient ingredient = this.getContainer().getIngredient();
+        AlchemicIngredient ingredient = this.getContainer().getIngredient(); // --> add()????
         //oude container moet vernietigd worden
         if (this.canItBeCooled()){
             ingredient.addPrefixCooled();

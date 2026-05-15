@@ -37,6 +37,18 @@ public class IngredientTypeMixed extends IngredientType{
      **********************************************************/
 
     /**
+     * Return the name for a new ingredient type which is to be used when the
+     * given name is not valid.
+     *
+     * @return	A valid ingredient type name.
+     *         	| canHaveAsName(result) && result.equals("Ingredient Type Mixed")
+     */
+    @Override
+    protected String getDefaultName() {
+        return "Ingredient Type Mixed";
+    }
+
+    /**
      * Check whether the given name is a legal name for an ingredient type.
      *
      * @param  	name

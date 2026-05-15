@@ -46,11 +46,11 @@ public class IngredientType {
     private String name = getDefaultName();
 
     /**
-     * Return the name for a new disk item which is to be used when the
+     * Return the name for a new ingredient type which is to be used when the
      * given name is not valid.
      *
-     * @return	A valid disk item name.
-     *         	| canHaveAsName(result) && result.equals("Ingredient Type"")
+     * @return	A valid ingredient type name.
+     *         	| canHaveAsName(result) && result.equals("Ingredient Type")
      */
     @Model
     protected String getDefaultName() {
@@ -253,7 +253,7 @@ public class IngredientType {
     public static boolean isValidStdState(State stdState){
         return stdState != null;
     }
-    // bij vorige practicum was er zoiets bij type -> is het hier ook nodig
+    // --> voor in de testen
 
     /**
      * Return the standard state of this ingredient type.
@@ -329,7 +329,6 @@ public class IngredientType {
         }
         return true;
     }
-    // std moet strikt warmer zijn dan [0,0]
 
 
     /**

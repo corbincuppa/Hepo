@@ -275,15 +275,15 @@ public class AlchemicIngredient {
      * @throws  IllegalNameException
      *          | ! isValidName(specialName)
      */
-    protected void setSpecialName(String specialName) throws IllegalNameException{
-        if (this.getIngredientType() instanceof IngredientTypeMixed){
-            if (isSpecialNameValid(specialName)) {
-                this.specialName = specialName;
-            } else {
-                throw new IllegalNameException(specialName);
-            }
+    protected void setSpecialName(String specialName) throws IllegalArgumentException, IllegalNameException{
+        if (!(this.getIngredientType() instanceof IngredientTypeMixed)) {
+            throw new IllegalArgumentException("setSpecialName is permitted only for IngredientTypeMixed. Current type: " + this.getIngredientType());
         }
-        //IllegalIngredientTypeException???
+        if (isSpecialNameValid(specialName)) {
+            this.specialName = specialName;
+        } else {
+            throw new IllegalNameException(specialName);
+        }
     }
 
     /**
@@ -318,7 +318,6 @@ public class AlchemicIngredient {
         String newName = "Heated " + this.getFullName();
         this.changeFullName(newName);
     }
-    // only oven can use this
 
     /**
      * Add "Cooled" to the full name of this alchemic ingredient.
@@ -330,7 +329,6 @@ public class AlchemicIngredient {
         String newName = "Cooled " + this.getFullName();
         this.changeFullName(newName);
     }
-    // only coolingbox can use this
 
     /**
      * Add the needed prefix to the name of this alchemic ingredient based on the given state.
@@ -352,7 +350,6 @@ public class AlchemicIngredient {
         String newName = prefix + this.getFullName();
         this.changeFullName(newName);
     }
-    // only transmogrifier can use this
 
 
     /**********************************************************
@@ -374,7 +371,6 @@ public class AlchemicIngredient {
     private void setIngredientType(IngredientType ingredientType){
         this.ingredientType = ingredientType;
     }
-    // --> moet er getest worden of ingredientType bestaat?
 
     /**
      * Returns the ingredient type of this alchemic ingredient.
@@ -402,7 +398,6 @@ public class AlchemicIngredient {
     protected void changeState(State state) {
         this.state = state;
     }
-    // --> if it has been in the Transmogrifier
 
     /**
      * Return the state of this alchemic ingredient.
@@ -533,7 +528,6 @@ public class AlchemicIngredient {
             this.temperature = temp;
         }
     }
-    // if it has been in the oven or cooler
 
     /**
      * Returns the temperature of this alchemic ingredient.
