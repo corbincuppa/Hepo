@@ -65,7 +65,7 @@ public class CoolingBox extends Device{
     private int[] temperature;
 
     /**
-     * Return the contents of the device.
+     * Return the contents of the cooling box.
      */
     @Model
     public int[] getTemperature() {
@@ -113,7 +113,7 @@ public class CoolingBox extends Device{
      *          | then getContents.get(0).getFullName.equals("Cooled"+getContents.get(0).getSimpleName())
      * @effect  The temperature of the alchemic ingredient is set to the temperature of the cooling box.
      *          | if canItBeCooled()
-     *          | then getTemperature().equals(getContents.get(0).getTemperature)
+     *          | then getTemperature().equals(getContents.get(0).getTemperature())
      */
     @Override
     public void use(){
