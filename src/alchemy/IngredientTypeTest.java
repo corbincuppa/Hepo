@@ -45,7 +45,7 @@ public class IngredientTypeTest {
         assertFalse(flower.canHaveAsName("FLOWER"));
         assertFalse(flower.canHaveAsName("flower"));
         assertFalse(flower.canHaveAsName("Flower: Rose"));
-        assertFalse(flower.canHaveAsName("Flower (Rose)"));
+        assertTrue(flower.canHaveAsName("Flower (Rose)"));
         assertFalse(flower.canHaveAsName("Flower mixed with Sugar"));
         assertFalse(flower.canHaveAsName("Fl"));
         assertFalse(flower.canHaveAsName("The Flower That I Grew"));

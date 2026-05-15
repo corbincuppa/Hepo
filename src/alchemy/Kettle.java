@@ -1,10 +1,15 @@
 package alchemy;
-
-import alchemy.State;
 import java.util.*;
 import static java.lang.Math.abs;
 import static java.util.Collections.min;
 
+/**
+ * A class of alchemic ingredients.
+ *
+ * @author  Adelina Vozianu
+ * @author  Boglárka Csorba-Vitus
+ * @version 1.0
+ */
 public class Kettle extends Device {
 
     /**********************************************************
@@ -23,7 +28,7 @@ public class Kettle extends Device {
      * Use this kettle.
      *
      * @effect  The name of the new ingredient is set to the mixed name of all
-     *          ingredients: thefirst ingredient's name followed by
+     *          ingredients: the first ingredient's name followed by
      *          'mixed with' and the remaining names separated by commas and 'and'.
      *          If all ingredients share the same simple name, the name remains unchanged.
      *
@@ -117,34 +122,40 @@ public class Kettle extends Device {
 
 
         // StdTemp: stdTemp of ing with temp closest to [0, 20], multiple -> warmest
-        int[] newStdTemp = null;
-        for (int i=0 ; i<closestTemps.size()-1 ; i++) {
-            int[] stdTemp = closestTemps.get(i);
-            int hotness = stdTemp[1];
-            int[] nextStdTemp = closestTemps.get(i+1);
-            int nextHotness = nextStdTemp[1];
-            if (hotness > nextHotness) {
-                newStdTemp = stdTemp;
+        int[] newStdTemp = closestTemps.get(0);
+
+        for (int i = 1; i < closestTemps.size(); i++) {
+            int[] current = newStdTemp;
+            int[] candidate = closestTemps.get(i);
+
+            int currentHotness = current[1];
+            int candidateHotness = candidate[1];
+
+            if (candidateHotness > currentHotness) {
+                newStdTemp = candidate;
             }
-            newStdTemp = nextStdTemp;
         }
 
         // Check if the ingredients in the contents are the same ingredient type, then the mixedName will just be one name.
-        if (newName.length() == 1) {
+        if (!newName.trim().contains(" ")) {
             AlchemicIngredient oldIngredient = getIngredientWithName(newName);
             IngredientType newIngType = oldIngredient.getIngredientType();
-
             AlchemicIngredient newIngredient = new AlchemicIngredient(newIngType, newAmount, newUnit);
-
-            alchemy.IngredientContainer container = new IngredientContainer(newIngredient);
-            ArrayList<IngredientContainer> listContainer = new ArrayList<IngredientContainer> (Arrays.asList(container));
-            this.getContents().clear();
+            IngredientContainer container = new IngredientContainer(newIngredient);
+            ArrayList<IngredientContainer> listContainer = new ArrayList<> (Arrays.asList(container));
+            contents.clear();
             // Add container, which is then deleted
             add(listContainer);
         }
-
-        IngredientTypeMixed newIngType = new IngredientTypeMixed(newName, newStdState, newStdTemp);
-        AlchemicIngredient newIngredient = new AlchemicIngredient(newIngType, newAmount, newUnit);
+        else {
+            contents.clear();
+            IngredientTypeMixed newIngType = new IngredientTypeMixed(newName, newStdState, newStdTemp);
+            AlchemicIngredient newIngredient = new AlchemicIngredient(newIngType, newAmount, newUnit);
+            IngredientContainer newIngredientContainer = new IngredientContainer(newIngredient);
+            ArrayList<IngredientContainer> newIngredientArray = new ArrayList<>();
+            newIngredientArray.add(newIngredientContainer);
+            add(newIngredientArray);
+        }
     }
 
     /**
@@ -246,32 +257,29 @@ public class Kettle extends Device {
      *          room temperature is added to the list of ingredients which is returned.
      */
     protected ArrayList<AlchemicIngredient> getClosestToRoomTemp() {
-        ArrayList<AlchemicIngredient> list = new ArrayList<>();
-        List<Integer> listErrors = new ArrayList<>();
-        int[] roomTemp = {0, 20};
-        int roomTempColdness = 0;
-        int roomTempHotness = 20;
-        for (AlchemicIngredient ing:this.getContents()) {
+
+        ArrayList<AlchemicIngredient> result = new ArrayList<>();
+
+        int bestError = Integer.MAX_VALUE;
+
+        for (AlchemicIngredient ing : this.getContents()) {
+
             int[] temp = ing.getIngredientType().getStdTemp();
-            int error = abs((temp[0] - roomTempColdness) + (temp[1] - roomTempHotness));
-            listErrors.add(error);
-        }
-        Set<Integer> set = new HashSet<Integer>(listErrors);
-        if(set.size() < listErrors.size()){
-            // There are duplicates
-            int min = min(listErrors);
-            int range = set.size() - listErrors.size();
-            for (int i=0; i<range; i++) {
-                int min1 = min(listErrors);
-                while(min == min1) {
-                    int index = listErrors.indexOf(min1);
-                    AlchemicIngredient closest = this.getContents().get(index);
-                    listErrors.add(index, 10000);
-                    list.add(closest);
-                }
+
+            int error = Math.abs(temp[0] - 0)
+                    + Math.abs(temp[1] - 20);
+
+            if (error < bestError) {
+                result.clear();
+                result.add(ing);
+                bestError = error;
+            }
+            else if (error == bestError) {
+                result.add(ing);
             }
         }
-        return list;
+
+        return result;
     }
 
     /**

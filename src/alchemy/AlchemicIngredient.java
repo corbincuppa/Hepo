@@ -29,11 +29,11 @@ public class AlchemicIngredient {
      *        The given unit of the quantity of the alchemic ingredient
      */
     public AlchemicIngredient( IngredientType ingredientType, int amount, UnitOfQuantity unit) {
-        setFullName();
         setIngredientType(ingredientType);
         this.state = ingredientType.getStdState();
         setQuantity(amount, unit);
         setTemperature();
+        setFullName();
     }
 
 
@@ -85,7 +85,7 @@ public class AlchemicIngredient {
      */
     public String getName() {
         if (this.getSpecialName() != null){
-            return (this.getSpecialName() + "(" + this.getFullName() + ")" );
+            return (this.getSpecialName() + " (" + this.getFullName() + ")" );
         }
         return this.getFullName();
     }
@@ -148,10 +148,9 @@ public class AlchemicIngredient {
     private boolean restWithLowercases(String word, int index) {
         for (int i = index; i < word.length(); i++) {
             char c = word.charAt(i);
-            if (acceptableSymbols(c)){
-                i ++;
-            }
-            if (!Character.isLowerCase(c)) {
+            if (acceptableSymbols(c)) {
+                i++;
+            } else if (!Character.isLowerCase(c)) {
                 return false;
             }
         }
@@ -294,6 +293,9 @@ public class AlchemicIngredient {
      */
     protected static String mixedNames(ArrayList<String> ingredients) {
         int length = ingredients.size();
+        if (length == 1) {
+            return ingredients.get(0); // same ingredient type, no mixing needed
+        }
         String newName = ingredients.get(0) + " mixed with " + ingredients.get(1);
         for (int i = 2; i < length; i++) {
             if (i == length - 1) {
@@ -344,9 +346,9 @@ public class AlchemicIngredient {
      *          | this.changeFullName(prefix + this.getFullName())
      */
     protected void addPrefixState(State state){
-        String prefix = "Powdered";
+        String prefix = "Powdered ";
         if (state == State.LIQUID)
-            prefix = "Liquid";
+            prefix = "Liquid ";
         String newName = prefix + this.getFullName();
         this.changeFullName(newName);
     }

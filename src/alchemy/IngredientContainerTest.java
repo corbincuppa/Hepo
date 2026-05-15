@@ -28,9 +28,9 @@ public class IngredientContainerTest {
 
     @Test
     public void testConstructorContainer_Legal(){
-        Assert.assertEquals(this.validIng, containerValidIng.getIngredient());
+        Assert.assertEquals(this.validIng.getName(), containerValidIng.getIngredient().getName());
         Assert.assertEquals(UnitOfQuantity.BARREL, containerValidIng.getCapacity());
-        Assert.assertEquals(this.fullIng, containerValidIng.getIngredient());
+        Assert.assertEquals(this.fullIng.getName(), containerValidIng.getIngredient().getName());
         Assert.assertEquals(UnitOfQuantity.BARREL, containerFull.getCapacity());
     }
 

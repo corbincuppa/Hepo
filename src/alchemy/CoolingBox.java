@@ -85,7 +85,7 @@ public class CoolingBox extends Device{
     protected boolean canItBeCooled(){
         int coldnessCoolingBox = this.getTemperature()[0];
         int hotnessCoolingBox = this.getTemperature()[1];
-        AlchemicIngredient ingredient = this.getContents().get(0);
+        AlchemicIngredient ingredient = this.getContents().getFirst();
         int coldnessIng = ingredient.getColdness();
         int hotnessIng = ingredient.getHotness();
         if (coldnessCoolingBox == 0){
@@ -99,6 +99,8 @@ public class CoolingBox extends Device{
         }
         return false;
     }
+
+
 
 
     /**********************************************************

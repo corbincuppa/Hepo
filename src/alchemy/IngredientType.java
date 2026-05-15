@@ -92,10 +92,9 @@ public class IngredientType {
     private boolean restWithLowercases(String word, int index) {
         for (int i = index; i < word.length(); i++) {
             char c = word.charAt(i);
-            if (acceptableSymbols(c)){
-                i ++;
-            }
-            if (!Character.isLowerCase(c)) {
+            if (acceptableSymbols(c)) {
+                i++;
+            } else if (!Character.isLowerCase(c)) {
                 return false;
             }
         }

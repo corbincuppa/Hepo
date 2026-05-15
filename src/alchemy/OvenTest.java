@@ -17,8 +17,8 @@ import java.util.Arrays;
 public class OvenTest {
 
     IngredientType honey;
-    AlchemicIngredient lavenderHoney;
-    IngredientContainer bottledHoney;
+    AlchemicIngredient lavenderHoney, lavenderHoney2;
+    IngredientContainer bottledHoney, bottledHoney2;
     IngredientType flower;
     AlchemicIngredient redFlower;
     IngredientContainer jarFlower;
@@ -34,6 +34,11 @@ public class OvenTest {
         ArrayList<IngredientContainer> listContainer = new ArrayList<IngredientContainer> (Arrays.asList(bottledHoney));
         this.oven = new Oven(listContainer, new int[] {0,40});
         this.ovenCold = new Oven(listContainer, new int[] {0,10});
+
+        this.lavenderHoney2 = new AlchemicIngredient(honey, 1, UnitOfQuantity.BOTTLE);
+        this.bottledHoney2 = new IngredientContainer(lavenderHoney2);
+        ArrayList<IngredientContainer> listContainer2 = new ArrayList<>(Arrays.asList(bottledHoney2));
+        this.ovenCold = new Oven(listContainer2, new int[] {0,10});
 
         this.flower = new IngredientType("Flower", State.POWDER, new int[]{0, 18});
         this.redFlower = new AlchemicIngredient(flower, 1, UnitOfQuantity.SACHET);

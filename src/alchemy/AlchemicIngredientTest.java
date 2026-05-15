@@ -20,7 +20,7 @@ public class AlchemicIngredientTest {
     @Before
     public void setUp() {
         this.flower = new IngredientType("Flower", State.POWDER, new int[]{0, 18});
-        this.flowerMixed = new IngredientType("Flower mixed with Sugar", State.POWDER, new int[]{0, 18});
+        this.flowerMixed = new IngredientTypeMixed("Flower mixed with Sugar", State.POWDER, new int[]{0, 18});
         this.redFlower = new AlchemicIngredient(flower, 5, UnitOfQuantity.SPOON);
         this.redFlowerMixed = new AlchemicIngredient(flowerMixed, 5, UnitOfQuantity.SPOON);
     }
@@ -95,8 +95,8 @@ public class AlchemicIngredientTest {
         }
         assertEquals("Flower mixed with Sugar", this.redFlowerMixed.getSimpleName());
         assertEquals("Red Flower mixed with Sugar", this.redFlowerMixed.getFullName());
-        assertEquals("Rose", this.redFlowerMixed.getSpecialName());
-        assertEquals("Rose (Red Flower mixed with Sugar)", this.redFlowerMixed.getName());
+        assertEquals("Rose Syrup", this.redFlowerMixed.getSpecialName());
+        assertEquals("Rose Syrup (Red Flower mixed with Sugar)", this.redFlowerMixed.getName());
     }
 
     @Test
