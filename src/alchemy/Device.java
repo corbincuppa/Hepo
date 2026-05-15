@@ -21,8 +21,10 @@ public abstract class Device {
     /**
      * Create a new device with a given contents
      *
-     * @param contents
-     *        The given contents of the device
+     * @param   contents
+     *          The given contents of the device
+     * @effect	The contents of this device is expanded with the alchemic ingredients in the given containers.
+     *          | setWritable(writable)
      */
     public Device(ArrayList<IngredientContainer> contents) {
         add(contents);

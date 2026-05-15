@@ -1,5 +1,6 @@
 package alchemy;
 
+import be.kuleuven.cs.som.annotate.*;
 import java.util.ArrayList;
 
 public class CoolingBox extends Device{
@@ -7,6 +8,19 @@ public class CoolingBox extends Device{
     /**********************************************************
      * Constructors
      **********************************************************/
+    /**
+     * Initialize a new cooling box with given contents and temperature.
+     *
+     * @param  	contents
+     *         	The contents of the new device.
+     * @param  	temperature
+     *         	The temperature of the new cooling box.
+     * @effect 	The cooling box is initialized as a devices
+     * 			(contents is set)
+     * 			| super(contents)
+     * @post	The temperature of this new cooling box is set to the given temperature.
+     * 			| new.getTemperature == temperature
+     */
     public CoolingBox(ArrayList<IngredientContainer> contents, int[] temperature) throws IllegalArgumentException{
         super(contents);
         this.temperature = temperature;
@@ -17,6 +31,17 @@ public class CoolingBox extends Device{
      * Container
      **********************************************************/
 
+    /**
+     * Set the contents of this device to the alchemic ingredients in the given containers.
+     *
+     * @param   containers
+     *          The given containers
+     * @effect  The contents of this device is expanded with the alchemic ingredients in the given containers.
+     *          | for each container in containers
+     *          |    contents.add(containers.get(i).getIngredient())
+     * @thows   IllegalArgumentException
+     *          | containers.size() != 1
+     */
     @Override
     public void add(ArrayList<IngredientContainer> containers) throws IllegalArgumentException {
         int length = containers.size();
@@ -34,12 +59,29 @@ public class CoolingBox extends Device{
      * Temperature
      **********************************************************/
 
+    /**
+     * Variable referencing the temperature of this cooling box.
+     */
     private int[] temperature;
 
+    /**
+     * Return the contents of the device.
+     */
+    @Model
     public int[] getTemperature() {
         return temperature;
     }
 
+    /**
+     * Check whether the temperature of the cooling box
+     * is lower than or the same as the temperature of the contents
+     *
+     * @return  False if the temperature of the cooling box is higher than the temperature of the contents
+     *          True otherwise.
+     *          | if getTemperature() > getContents().get(0).getTemperature()
+     *          |   return false
+     *          | else return true
+     */
     protected boolean canItBeCooled(){
         int coldnessCoolingBox = this.getTemperature()[0];
         int hotnessCoolingBox = this.getTemperature()[1];
@@ -63,6 +105,14 @@ public class CoolingBox extends Device{
      * Methods
      **********************************************************/
 
+    /**
+     * Cool the contents down if the contents has a higher temperature than the cooling box.
+     *
+     * @effect  The full name of the alchemic ingredient is the prefic "Cooled" added.
+     *          | getContents.get(0).getFullName.equals("Cooled"+getContents.get(0).getSimpleName())
+     * @effect  The temperature of the alchemic ingredient is set to the temperature of the cooling box.
+     *          | getTemperature().equals(getContents.get(0).getTemperature)
+     */
     @Override
     public void use(){
         AlchemicIngredient ingredient = this.getContents().get(0);
