@@ -91,10 +91,7 @@ public enum UnitOfQuantity {
         if (state == State.POWDER) {
             return new ArrayList<>(Arrays.asList(UnitOfQuantity.SPOON, UnitOfQuantity.SACHET,UnitOfQuantity.BOX,UnitOfQuantity.SACK,UnitOfQuantity.CHEST));
         }
-
-        if (state == State.LIQUID) {
-            return new ArrayList<>(Arrays.asList(UnitOfQuantity.SPOON, UnitOfQuantity.VIAL, UnitOfQuantity.BOTTLE, UnitOfQuantity.JUG, UnitOfQuantity.BARREL));
-        }
+        return new ArrayList<>(Arrays.asList(UnitOfQuantity.SPOON, UnitOfQuantity.VIAL, UnitOfQuantity.BOTTLE, UnitOfQuantity.JUG, UnitOfQuantity.BARREL));
     }
 
     /**
@@ -115,6 +112,7 @@ public enum UnitOfQuantity {
                 return unit;
             }
         }
+        //return statement nodig
     }
 
 }

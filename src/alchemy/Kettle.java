@@ -42,7 +42,7 @@ public class Kettle extends Device {
             AlchemicIngredient firstIng = contents.get(0);
             String firstName = firstIng.getName();
             AlchemicIngredient secondIng = contents.get(1);
-            String secondName = secondIng.getName()
+            String secondName = secondIng.getName();
             // ing[0] mixed with ing[1]
             String name = firstName + " mixed with " + secondName;
         }
