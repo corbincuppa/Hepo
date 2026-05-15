@@ -37,7 +37,7 @@ public class IngredientTypeMixed extends IngredientType{
      **********************************************************/
 
     /**
-     * Return the name for a new ingredient type which is to be used when the
+     * Return the name for a new mixed ingredient type which is to be used when the
      * given name is not valid.
      *
      * @return	A valid ingredient type name.
@@ -49,11 +49,35 @@ public class IngredientTypeMixed extends IngredientType{
     }
 
     /**
-     * Check whether the given name is a legal name for an ingredient type.
+     * Check whether the given name is a legal name for a mixed ingredient type.
      *
      * @param  	name
      *			The name to be checked
-     * @return
+     * @return  False if name is null, empty.
+     *          False if the name contains but one word, and if then that word is lesser than 3 characters long.
+     *          False if the word is either "mixed" or "with" and not in lowercase letters.
+     *          False if any word in the name consists of less than two characters.
+     *          False if any word in the name consists of more than two characters but it does not start with an
+     *          uppercase letters.
+     *          True otherwise.
+     *          | if (name == null || name.isEmpty())
+     *          |   then result == false
+     *          |
+     *          | if (words.length == 1) then
+     *          |   if (letters(words[0]).length < 3) then
+     *          |       result == false
+     *          |   else result == tartsUppercaseRestLower(words[0])
+     *          |
+     *          | for each word in words
+     *          |   if (word != "mixed" && word != "with") then
+     *          |         if (letters(word).length < 2)
+     *          |          then result == false
+     *          |     else if (!startsUppercaseRestLower(word))
+     *          |            then result == false
+     *          |     else
+     *          |         if (!word.equals(word.toLowerCase()))
+     *          |             then result == false
+     *          | result == true
      */
     @Override
     protected boolean canHaveAsName(String name) {
