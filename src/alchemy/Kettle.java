@@ -76,8 +76,8 @@ public class Kettle extends Device {
             if (state == State.LIQUID) {
                 newState = State.LIQUID;
             }
+            else{newState = State.POWDER;}
         }
-        newState = State.POWDER;
 
         // StdState: State
         State newStdState = newState;
