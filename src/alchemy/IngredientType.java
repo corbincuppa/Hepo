@@ -26,7 +26,7 @@ public class IngredientType {
      * @param  stdTemp
      *         The given standard temperature of the ingredient type.
      */
-    protected IngredientType(String name, State stdState, int[] stdTemp) {
+    public IngredientType(String name, State stdState, int[] stdTemp) {
         setName(name);
         this.stdState = stdState;
         setTemp(stdTemp);
@@ -338,7 +338,7 @@ public class IngredientType {
      *          | isValidTemperature(temp, 10 000)
      *          |   then this.stdTemp = temp
      */
-    public void setTemp(int[] temp) {
+    protected void setTemp(int[] temp) {
         if (canHaveAsStdTemperature(temp, 10000)){
             this.stdTemp = temp;
         }

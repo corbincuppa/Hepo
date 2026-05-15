@@ -131,7 +131,7 @@ public class IngredientContainer {
     /**
      * Return the ingredient that is in this container.
      */
-    protected AlchemicIngredient getIngredient() {
+    public AlchemicIngredient getIngredient() {
         return contents;
     }
 
@@ -211,7 +211,7 @@ public class IngredientContainer {
      *
      * @return True if this container is terminated, false otherwise.
      */
-    private boolean isTerminated() {
+    protected boolean isTerminated() {
         return isTerminated;
     }
 

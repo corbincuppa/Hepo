@@ -28,7 +28,7 @@ public class IngredientTypeMixed extends IngredientType{
      * @throws IllegalNameException
      *         | !isValidName(name)
      */
-    protected IngredientTypeMixed(String name, State stdState, int[] stdTemp){
+    public IngredientTypeMixed(String name, State stdState, int[] stdTemp){
         super(name, stdState, stdTemp);
     }
 

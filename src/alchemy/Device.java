@@ -39,7 +39,7 @@ public abstract class Device {
     /**
      * Variable referencing the contents of this device.
      */
-    protected ArrayList<AlchemicIngredient> contents = new ArrayList<AlchemicIngredient>();
+    private ArrayList<AlchemicIngredient> contents = new ArrayList<AlchemicIngredient>();
 
     /**
      * Return the contents of the device.
@@ -60,7 +60,7 @@ public abstract class Device {
      * @throws IllegalArgumentException [can]
      *          | ? containers.size() != 1
      */
-    public void add(ArrayList<IngredientContainer> containers) {
+     protected void add(ArrayList<IngredientContainer> containers) {
         int length = containers.size();
         for (int i = 0; i < length; i++) {
             contents.add(containers.get(i).getIngredient());

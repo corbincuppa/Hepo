@@ -389,7 +389,7 @@ public class AlchemicIngredient {
     /**
      * The state of the alchemic ingredient.
      */
-    public State state;
+    private State state;
 
     /**
      * Change the state of this alchemic ingredient to the
@@ -434,7 +434,7 @@ public class AlchemicIngredient {
      * @param unit
      *        The given unit
      */
-    void setQuantity(int amount, UnitOfQuantity unit) {
+    protected void setQuantity(int amount, UnitOfQuantity unit) {
         this.quantityAmount = amount;
         this.quantityUnit = unit;
     }
@@ -442,14 +442,14 @@ public class AlchemicIngredient {
     /**
      * Return the numerical quantity of this alchemic ingredient.
      */
-    protected int getQuantityAmount() {
+    public int getQuantityAmount() {
         return quantityAmount;
     }
 
     /**
      * Return the unit of quantity of this alchemic ingredient.
      */
-    protected UnitOfQuantity getQuantityUnit() {
+    public UnitOfQuantity getQuantityUnit() {
         return quantityUnit;
     }
 

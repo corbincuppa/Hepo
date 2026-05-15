@@ -43,7 +43,7 @@ public class CoolingBox extends Device{
      *          | containers.size() != 1
      */
     @Override
-    public void add(ArrayList<IngredientContainer> containers) throws IllegalArgumentException {
+    protected void add(ArrayList<IngredientContainer> containers) throws IllegalArgumentException {
         int length = containers.size();
         if (length != 1){
             throw new IllegalArgumentException("You can only put one thing in the cooling box at a time. Current number of items : " + length);
